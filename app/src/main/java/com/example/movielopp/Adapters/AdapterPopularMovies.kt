@@ -1,4 +1,4 @@
-package com.example.movielopp
+package com.example.movielopp.Adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.movielopp.Model.Movie
+import com.example.movielopp.R
 
 class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.Adapter<AdapterPopularMovies.ViewHolder>() {
 
@@ -27,21 +31,22 @@ class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.
         return movies.size
     }
 
+    fun setMovies(movies: List<Movie>) {
+        this.movies = movies
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        /*Glide.with(mContext).
+
+        Glide.with(mContext).
             load(IMAGE_BASE_URL + movies[position].posterPath).
             apply(RequestOptions.placeholderOf(R.color.colorPrimary)).
-            into(holder.filmPoster!!)*/
-        GlideApp.with(mContext).
-            load(IMAGE_BASE_URL + movies[position].posterPath).
-            placeholder(R.color.colorPrimary).
             into(holder.filmPoster!!)
     }
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
         var filmPoster: ImageView? = null
         init {
-            filmPoster = root.findViewById(R.id.poster)
+            filmPoster = root.findViewById(R.id.filmPoster)
         }
     }
 }

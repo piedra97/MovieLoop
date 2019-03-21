@@ -1,5 +1,8 @@
-package com.example.movielopp
+package com.example.movielopp.Network
 
+import com.example.movielopp.Interfaces.OnGetMoviesCallBack
+import com.example.movielopp.Interfaces.TMDbApi
+import com.example.movielopp.Model.Movie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -10,7 +13,8 @@ import retrofit2.Retrofit
 class MoviesRepository private constructor(private val api: TMDbApi) {
 
     fun getMovies(callback: OnGetMoviesCallBack) {
-        api.getPopularMovies("5c50b6853338e52e5410679185dd182f", LANGUAGE, 1)
+        api.getPopularMovies("5c50b6853338e52e5410679185dd182f",
+            LANGUAGE, 1)
             .enqueue(object : Callback<MoviesResponse> {
 
                 override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
@@ -47,7 +51,8 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
 
-                    repository = MoviesRepository(retrofit.create(TMDbApi::class.java))
+                    repository =
+                        MoviesRepository(retrofit.create(TMDbApi::class.java))
                 }
 
                 return repository as MoviesRepository

@@ -1,6 +1,7 @@
-package com.example.movielopp
+package com.example.movielopp.Interfaces
 
 
+import com.example.movielopp.Network.MoviesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
