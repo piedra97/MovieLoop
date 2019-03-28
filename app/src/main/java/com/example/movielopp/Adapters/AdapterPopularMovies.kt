@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.movielopp.Model.Movie
 import com.example.movielopp.R
+import com.squareup.picasso.Picasso
 
 class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.Adapter<AdapterPopularMovies.ViewHolder>() {
 
@@ -37,10 +36,7 @@ class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Glide.with(mContext).
-            load(IMAGE_BASE_URL + movies[position].posterPath).
-            apply(RequestOptions.placeholderOf(R.color.colorPrimary)).
-            into(holder.filmPoster!!)
+        Picasso.get().load(IMAGE_BASE_URL + movies[position].posterPath).into(holder.filmPoster!!)
     }
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
