@@ -2,10 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="signIn"
-          app:showAsAction="always"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:icon="@drawable/ic_sign_in_white_24dp"
-          android:id="@+id/signInButton"/>
+    <item
+            android:title="signIn"
+            app:showAsAction="always"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_sign_in_white_24dp"
+            android:id="@+id/signInButton"/>
+
+    <item
+            android:id="@+id/sort"
+            android:enabled="true"
+            android:icon="@drawable/ic_sort_white_24dp"
+            android:title="Sort"
+            app:showAsAction="always" />
 </menu>

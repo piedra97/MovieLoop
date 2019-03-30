@@ -34,6 +34,11 @@ class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.
         this.movies = movies
     }
 
+    fun clearMovies() {
+        //movies.ArraylIST.CLEAR
+        //notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         Picasso.get().load(IMAGE_BASE_URL + movies[position].posterPath).into(holder.filmPoster!!)

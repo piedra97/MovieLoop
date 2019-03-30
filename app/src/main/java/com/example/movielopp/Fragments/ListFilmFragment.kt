@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 import com.example.movielopp.*
 import com.example.movielopp.Adapters.AdapterPopularMovies
@@ -29,6 +30,8 @@ class ListFilmFragment : Fragment() {
 
     private var moviesRepository: MoviesRepository? = null
 
+    private var sortBy = "POPULAR"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,18 +45,57 @@ class ListFilmFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         configureList()
         getSortedMovies()
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
         inflater.inflate(R.menu.menu, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            R.id.sort -> {
+                showSortMenu()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+
+    }
+
+    private fun showSortMenu() {
+        val sortMenu = PopupMenu(context, view)
+        sortMenu.setOnMenuItemClickListener(object: PopupMenu.OnMenuItemClickListener {
+            override fun onMenuItemClick(item: MenuItem?): Boolean {
+                when (item!!.getItemId()) {
+                    R.id.popular -> {
+                        sortBy = MoviesRepository.POPULAR
+                        getSortedMovies()
+                        return true
+                    }
+                    R.id.top_rated -> {
+                        sortBy = MoviesRepository.TOP_RATED
+                        getSortedMovies()
+                        return true
+                    }
+                    R.id.upcoming -> {
+                        sortBy = MoviesRepository.UPCOMING
+                        getSortedMovies()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+
+        })
+        sortMenu.inflate(R.menu.menu_movies_sort)
+        sortMenu.show()
     }
 
     private fun getSortedMovies() {
         moviesRepository = MoviesRepository.instance
-        moviesRepository!!.getMovies(object : OnGetMoviesCallBack {
+        moviesRepository!!.getMovies(sortBy, object : OnGetMoviesCallBack {
 
         override fun onSuccess(movies: List<Movie>) {
             adapterCustom!!.setMovies(movies)
@@ -65,6 +107,7 @@ class ListFilmFragment : Fragment() {
         }
         })
     }
+
 
     private fun configureList() {
         movies_listing.setHasFixedSize(true)

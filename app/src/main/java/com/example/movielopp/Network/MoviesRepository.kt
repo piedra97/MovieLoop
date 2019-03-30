@@ -1,5 +1,6 @@
 package com.example.movielopp.Network
 
+import com.example.movielopp.BuildConfig
 import com.example.movielopp.Interfaces.OnGetMoviesCallBack
 import com.example.movielopp.Interfaces.TMDbApi
 import com.example.movielopp.Model.Movie
@@ -10,12 +11,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit
 
 
+
+
+
 class MoviesRepository private constructor(private val api: TMDbApi) {
 
-    fun getMovies(callback: OnGetMoviesCallBack) {
-        api.getPopularMovies("5c50b6853338e52e5410679185dd182f",
-            LANGUAGE, 1)
-            .enqueue(object : Callback<MoviesResponse> {
+    fun getMovies(sortBy:String, callback: OnGetMoviesCallBack) {
+            val call = object : Callback<MoviesResponse> {
 
                 override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
                     if (response.isSuccessful) {
@@ -33,13 +35,26 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
                 override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
                     callback.onError()
                 }
-            })
+            }
+
+        when (sortBy) {
+            TOP_RATED -> api.getTopRatedMovies(BuildConfig.TMBD_API, LANGUAGE, 1)
+                .enqueue(call)
+            UPCOMING -> api.getUpcomingMovies(BuildConfig.TMBD_API ,LANGUAGE, 1)
+                .enqueue(call)
+            POPULAR -> api.getPopularMovies(BuildConfig.TMBD_API, LANGUAGE, 1)
+                .enqueue(call)
+            else -> api.getPopularMovies(BuildConfig.TMBD_API,LANGUAGE, 1).enqueue(call)
+        }
     }
 
     companion object {
 
         private const val BASE_URL = "https://api.themoviedb.org/3/"
         private const val LANGUAGE = "es-ES"
+        val POPULAR = "popular"
+        val TOP_RATED = "top_rated"
+        val UPCOMING = "upcoming"
 
         private var repository: MoviesRepository? = null
 
