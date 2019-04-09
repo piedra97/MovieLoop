@@ -32,6 +32,8 @@ class ListFilmFragment : Fragment() {
 
     private var sortBy = "POPULAR"
 
+    private var moviesList:List<Movie> = ArrayList()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,6 +100,7 @@ class ListFilmFragment : Fragment() {
         moviesRepository!!.getMovies(sortBy, object : OnGetMoviesCallBack {
 
         override fun onSuccess(movies: List<Movie>) {
+            moviesList = movies
             adapterCustom!!.setMovies(movies)
             adapterCustom!!.notifyDataSetChanged()
         }
