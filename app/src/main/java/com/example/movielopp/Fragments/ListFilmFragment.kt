@@ -1,7 +1,9 @@
 package com.example.movielopp.Fragments
 
 
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
@@ -53,6 +55,7 @@ class ListFilmFragment : Fragment() {
         inflater.inflate(R.menu.menu, menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when(item?.itemId) {
             R.id.sort -> {
@@ -66,11 +69,12 @@ class ListFilmFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun showSortMenu() {
-        val sortMenu = PopupMenu(context, view)
+        val sortMenu = PopupMenu(context, view, Gravity.END)
         sortMenu.setOnMenuItemClickListener(object: PopupMenu.OnMenuItemClickListener {
             override fun onMenuItemClick(item: MenuItem?): Boolean {
-                when (item!!.getItemId()) {
+                when (item!!.itemId) {
                     R.id.popular -> {
                         sortBy = MoviesRepository.POPULAR
                         getSortedMovies()
