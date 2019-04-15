@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "930958394826",
+    "firebase_url": "https://movieloop-ef5c5.firebaseio.com",
+    "project_id": "movieloop-ef5c5",
+    "storage_bucket": "movieloop-ef5c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930958394826:android:b0c8f35ff933059c",
+        "android_client_info": {
+          "package_name": "com.example.movielopp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930958394826-132l6jr503kekje3nq0vr3afh7g5snp4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.movielopp",
+            "certificate_hash": "9d3e01827a6148f5812677529282cb082d457613"
+          }
+        },
+        {
+          "client_id": "930958394826-p7etopsu3kp0vurg9lkcvjsl5vcg0n9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzAnVlEy85VffkjqLGq3VoydrzXt-pF1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930958394826-p7etopsu3kp0vurg9lkcvjsl5vcg0n9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

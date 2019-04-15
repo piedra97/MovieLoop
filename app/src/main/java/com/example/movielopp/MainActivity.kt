@@ -7,10 +7,16 @@ import com.example.movielopp.Fragments.LoginFragment
 import com.example.movielopp.Fragments.RegisterFragment
 
 
-class MainActivity : AppCompatActivity(), LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed /*RegisterFragment.OnRegistrationConfirmPressed*/{
-    /*override fun onRegistrationConfirmPressed() {
+class MainActivity : AppCompatActivity(), LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed{
 
-    }*/
+    override fun onRegistrationConfirmPressed() {
+        val loginFragment = LoginFragment()
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container, loginFragment).
+            commit()
+
+    }
 
     override fun onGoToLoginPressed() {
         val loginFragment = LoginFragment()
