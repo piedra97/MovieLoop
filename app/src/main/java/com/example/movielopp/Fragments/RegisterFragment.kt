@@ -11,14 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.example.movielopp.MainActivity
+import com.example.movielopp.Interfaces.OnGetRequestTokenCallback
 import com.example.movielopp.Model.User
 import com.example.movielopp.R
+import com.example.movielopp.RequestTokenRepository
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import java.util.regex.Pattern
 
@@ -47,7 +46,6 @@ class RegisterFragment : Fragment() {
     private lateinit var textGoToLoginPressed: OnGoToLoginPressed
     private var fieldsOk = false
     private lateinit var progressBar:ProgressBar
-    private lateinit var dbReference:DatabaseReference
     private lateinit var database:FirebaseDatabase
     private lateinit var auth:FirebaseAuth
 
@@ -69,7 +67,6 @@ class RegisterFragment : Fragment() {
         database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        dbReference = database.reference.child("User")
 
         signUp.setOnClickListener {
             fieldsOk = true
@@ -87,18 +84,35 @@ class RegisterFragment : Fragment() {
 
     }
 
+
     private fun createNewAccount() {
         val name = username.text.toString()
         val email = email.text.toString()
         val password = password1.text.toString()
 
+        var requesToken:String? = null
+        val requestTokenRepository = RequestTokenRepository.instance
+        requestTokenRepository.getRequestToken(object: OnGetRequestTokenCallback {
+
+            override fun onSuccess(request_token: String) {
+                requesToken = request_token
+            }
+
+            override fun onError() {
+                Toast.makeText(context, "La llamada del Request Token ha fallado", Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
 
             if (task.isComplete) {
+
                 val uid = FirebaseAuth.getInstance().uid ?: ""
                 val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 
-                val user = User(uid, name, password)
+                val user = User(uid, name, password, requesToken!!, " ")
 
                 ref.setValue(user)
                     .addOnSuccessListener {
@@ -106,6 +120,10 @@ class RegisterFragment : Fragment() {
                     }
             }
         }
+    }
+
+    private fun getRequestToken() {
+
     }
 
 
@@ -121,6 +139,7 @@ class RegisterFragment : Fragment() {
 
     private fun checkFields() {
         checkUserName()
+        checkEmail()
         checkPassword()
         checkRepeatPassword()
     }
@@ -145,6 +164,14 @@ class RegisterFragment : Fragment() {
         val user = username.text.toString()
         if (!Pattern.compile("^[a-zA-Z0-9]+$").matcher(user).matches()) {
             username.error = "Username not valid"
+            fieldsOk = false
+        }
+    }
+
+    private fun checkEmail() {
+        val mail = email.text.toString()
+        if (!Pattern.compile(".+\\@.+\\..+").matcher(mail).matches()) {
+            email.error = "Mail no válido"
             fieldsOk = false
         }
     }

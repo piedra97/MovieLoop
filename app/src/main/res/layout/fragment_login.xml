@@ -45,11 +45,11 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <EditText
-                android:id="@+id/username"
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Username"
+                android:hint="Email"
                 android:backgroundTint="#fff"
                 android:foregroundTint="#fff"
                 android:inputType="textPersonName"
@@ -89,6 +89,8 @@
             app:layout_constraintTop_toBottomOf="@+id/rel2">
 
         <TextView
+                android:id="@+id/signIn"
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

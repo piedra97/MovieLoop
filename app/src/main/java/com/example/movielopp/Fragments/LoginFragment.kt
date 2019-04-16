@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.movielopp.MainActivity
 import com.example.movielopp.R
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
@@ -23,8 +24,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class LoginFragment : Fragment() {
 
-    private lateinit var loginRegister: OnButtonLoginPressedListener
+    private lateinit var loginSuccesfull: OnButtonLoginPressedListener
     private lateinit var registerListener: OnTextRegistredPressedListener
+    private lateinit var auth:FirebaseAuth
+    var loginOk = false
 
 
     interface OnButtonLoginPressedListener {
@@ -36,15 +39,6 @@ class LoginFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,24 +51,35 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        btn1.setOnClickListener {
-            if (true) {
-                loginRegister.onLoginPressed()
-            } else {
-                username.error = "Wrong Email or Password"
-            }
+        auth = FirebaseAuth.getInstance()
+        signIn.setOnClickListener {
+            loginUser()
         }
 
         goToRegister.setOnClickListener {
-            registerListener.onRegisteredPressed(username.text.toString())
+            registerListener.onRegisteredPressed(email.text.toString())
         }
 
+    }
+
+    private fun loginUser() {
+        val user = email.text.toString()
+        val password = password.text.toString()
+
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(user, password).addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                loginSuccesfull.onLoginPressed()
+            }
+            else {
+                email.error = "Usuario o Contraseña incorrectos"
+            }
+        }
     }
 
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        //loginRegister = activity as OnButtonLoginPressedListener
+        loginSuccesfull = activity as OnButtonLoginPressedListener
         registerListener = activity as OnTextRegistredPressedListener
     }
 
