@@ -48,6 +48,8 @@ class RegisterFragment : Fragment() {
     private lateinit var progressBar:ProgressBar
     private lateinit var database:FirebaseDatabase
     private lateinit var auth:FirebaseAuth
+    private var authCreated = false
+    var requestToken:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,12 +70,26 @@ class RegisterFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
 
+        val requestTokenRepository = RequestTokenRepository.instance
+        requestTokenRepository.getRequestToken(object: OnGetRequestTokenCallback {
+
+            override fun onSuccess(request_token: String) {
+                requestToken = request_token
+            }
+
+            override fun onError() {
+                Toast.makeText(context, "La llamada del Request Token ha fallado", Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+
         signUp.setOnClickListener {
             fieldsOk = true
             checkFields()
             if (fieldsOk) {
                 createNewAccount()
-                buttonRegisteredListener.onRegistrationConfirmPressed()
+
             }
         }
 
@@ -86,44 +102,34 @@ class RegisterFragment : Fragment() {
 
 
     private fun createNewAccount() {
-        val name = username.text.toString()
-        val email = email.text.toString()
+        val mail = email.text.toString()
         val password = password1.text.toString()
 
-        var requesToken:String? = null
-        val requestTokenRepository = RequestTokenRepository.instance
-        requestTokenRepository.getRequestToken(object: OnGetRequestTokenCallback {
-
-            override fun onSuccess(request_token: String) {
-                requesToken = request_token
-            }
-
-            override fun onError() {
-                Toast.makeText(context, "La llamada del Request Token ha fallado", Toast.LENGTH_LONG).show()
-            }
-
-        })
-
-
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+        auth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener { task ->
 
             if (task.isComplete) {
+                saveUserInDB(password, requestToken)
 
-                val uid = FirebaseAuth.getInstance().uid ?: ""
-                val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-
-                val user = User(uid, name, password, requesToken!!, " ")
-
-                ref.setValue(user)
-                    .addOnSuccessListener {
-                        Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
-                    }
+            } else {
+                email.error = "Ya hay una cuenta registrada con este email."
             }
         }
     }
 
-    private fun getRequestToken() {
 
+
+    private fun saveUserInDB(password:String, requestToken:String?) {
+        val name = username.text.toString()
+        val uid = FirebaseAuth.getInstance().uid ?: ""
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+
+        val user = User(uid, name, password, requestToken!!, " ")
+
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
+                buttonRegisteredListener.onRegistrationConfirmPressed()
+            }
     }
 
 
