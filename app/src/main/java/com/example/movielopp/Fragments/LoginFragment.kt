@@ -9,10 +9,6 @@ import android.view.ViewGroup
 import com.example.movielopp.Model.User
 import com.example.movielopp.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
@@ -75,38 +71,19 @@ class LoginFragment : Fragment() {
         val mail = email.text.toString()
         val passwd = password.text.toString()
         if (!mail.isEmpty() || !passwd.isEmpty()) {
-
+            disableUIcomponents()
             FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, passwd).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
-                    val currentUser = FirebaseAuth.getInstance().currentUser
-                    val db = FirebaseDatabase.getInstance()
-
-                    val ref = db.getReference("/users/${currentUser?.uid}")
-
-                    ref.addValueEventListener(object: ValueEventListener {
-                        override fun onCancelled(databaseError: DatabaseError) {
-                            print("The read failed: ${databaseError.code}")
-                        }
-
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val userToChange = snapshot.value as Map<Any, Any>
-                            userToInsert = User(userToChange["uid"] as String, userToChange["userName"] as String, userToChange["password"] as String, userToChange["requestToken"] as String, userToChange["sessionID"] as String)
-
-
-
-                            loginSuccesfull.onLoginPressed()
-                        }
-
-                    })
-
-
+                    enableUIcomponents()
+                    loginSuccesfull.onLoginPressed()
 
                 } else {
+                    enableUIcomponents()
                     email.error = "Usuario o Contraseña incorrectos"
                 }
             }
         }else {
+            enableUIcomponents()
             email.error = "El mail o el Password no pueden estar vacíos"
         }
 
@@ -128,6 +105,17 @@ class LoginFragment : Fragment() {
 
     }
 
+    private fun disableUIcomponents() {
+        signIn.isEnabled = false
+        email.isEnabled = false
+        password.isEnabled = false
+    }
+
+    private fun enableUIcomponents() {
+        signIn.isEnabled = true
+        email.isEnabled = true
+        password.isEnabled = true
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

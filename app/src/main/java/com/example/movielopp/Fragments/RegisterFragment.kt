@@ -10,11 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
-import com.example.movielopp.Interfaces.OnGetRequestTokenCallback
 import com.example.movielopp.Model.User
 import com.example.movielopp.R
-import com.example.movielopp.RequestTokenRepository
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -48,8 +45,6 @@ class RegisterFragment : Fragment() {
     private lateinit var progressBar:ProgressBar
     private lateinit var database:FirebaseDatabase
     private lateinit var auth:FirebaseAuth
-    private var authCreated = false
-    var requestToken:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,19 +64,6 @@ class RegisterFragment : Fragment() {
         database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
 
-
-        val requestTokenRepository = RequestTokenRepository.instance
-        requestTokenRepository.getRequestToken(object: OnGetRequestTokenCallback {
-
-            override fun onSuccess(request_token: String) {
-                requestToken = request_token
-            }
-
-            override fun onError() {
-                Toast.makeText(context, "La llamada del Request Token ha fallado", Toast.LENGTH_LONG).show()
-            }
-
-        })
 
 
         signUp.setOnClickListener {
@@ -105,25 +87,44 @@ class RegisterFragment : Fragment() {
         val mail = email.text.toString()
         val password = password1.text.toString()
 
+        disableUIInteractions()
         auth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener { task ->
 
-            if (task.isComplete) {
-                saveUserInDB(password, requestToken)
+            if (task.isSuccessful) {
+                saveUserInDB(password)
 
             } else {
+                enableUIInteractions()
                 email.error = "Ya hay una cuenta registrada con este email."
             }
         }
     }
 
+    private fun disableUIInteractions() {
+        signUp.isEnabled = false
+        username.isEnabled = false
+        email.isEnabled = false
+        password1.isEnabled = false
+        password2.isEnabled = false
+    }
+
+    private fun enableUIInteractions() {
+        signUp.isEnabled = true
+        username.isEnabled = true
+        email.isEnabled = true
+        password1.isEnabled = true
+        password2.isEnabled = true
+    }
 
 
-    private fun saveUserInDB(password:String, requestToken:String?) {
+
+
+    private fun saveUserInDB(password:String) {
         val name = username.text.toString()
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 
-        val user = User(uid, name, password, requestToken!!, " ")
+        val user = User(uid, name, password)
 
         ref.setValue(user)
             .addOnSuccessListener {
@@ -132,11 +133,11 @@ class RegisterFragment : Fragment() {
             }
     }
 
-
     override fun onStart() {
         super.onStart()
         updateText()
     }
+
     private fun updateText() {
         val usernameToRegister = arguments!!.getSerializable("username")
         username.text = Editable.Factory.getInstance().newEditable(usernameToRegister.toString())

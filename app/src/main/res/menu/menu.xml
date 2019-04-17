@@ -16,4 +16,12 @@
             android:icon="@drawable/ic_sort_white_24dp"
             android:title="Sort"
             app:showAsAction="always" />
+    <item
+            android:id="@+id/profile"
+            android:enabled="false"
+            android:icon="@drawable/ic_person_white_24dp"
+            android:title="Profile"
+            android:visible="false"
+            app:showAsAction="always">
+    </item>
 </menu>
