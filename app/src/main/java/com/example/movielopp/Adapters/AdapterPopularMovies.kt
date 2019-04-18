@@ -9,8 +9,9 @@ import android.widget.ImageView
 import com.example.movielopp.Model.Movie
 import com.example.movielopp.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.template_grid.view.*
 
-class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.Adapter<AdapterPopularMovies.ViewHolder>() {
+class AdapterPopularMovies(mContext:Context, movies:List<Movie>, val listener: (Int) -> Unit) : RecyclerView.Adapter<AdapterPopularMovies.ViewHolder>() {
 
     private var mContext: Context
     private var movies: List<Movie> = ArrayList()
@@ -40,15 +41,20 @@ class AdapterPopularMovies(mContext:Context, movies:List<Movie>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        Picasso.get().load(IMAGE_BASE_URL + movies[position].posterPath).into(holder.filmPoster!!)
+        holder.bind(movies[position], listener)
     }
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        var filmPoster: ImageView? = null
-        init {
-            filmPoster = root.findViewById(R.id.filmPoster)
+
+
+        fun bind(movie:Movie, listener: (Int) -> Unit) = with(itemView) {
+            Picasso.get().load(IMAGE_BASE_URL + movie.posterPath).into(filmPoster)
+            setOnClickListener{
+                listener(movie.id)
+            }
         }
+
+
     }
 }
 

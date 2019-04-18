@@ -1,10 +1,12 @@
 package com.example.movielopp.Fragments
 
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import android.widget.PopupMenu
@@ -28,13 +30,17 @@ private const val ARG_PARAM2 = "param2"
  */
 class ListFilmFragment : Fragment() {
 
+    interface OnMoviesClickedListener {
+        fun onMovieClicked(iDMovie:Int)
+
+    }
     private var adapterCustom: AdapterPopularMovies? = null
 
     private var moviesRepository: MoviesRepository? = null
 
     private var sortBy = "POPULAR"
 
-    private var moviesList:List<Movie> = ArrayList()
+    lateinit var listenerList: OnMoviesClickedListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +55,13 @@ class ListFilmFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         configureList()
         getSortedMovies()
+        setToolbar()
+    }
+
+    private fun setToolbar() {
+        if(activity is AppCompatActivity){
+            (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
@@ -104,10 +117,10 @@ class ListFilmFragment : Fragment() {
         moviesRepository!!.getMovies(sortBy, object : OnGetMoviesCallBack {
 
         override fun onSuccess(movies: List<Movie>) {
-            moviesList = movies
             adapterCustom!!.setMovies(movies)
             adapterCustom!!.notifyDataSetChanged()
             listFilms_progressBar.visibility = View.GONE
+            setTitle()
         }
 
         override fun onError() {
@@ -116,12 +129,33 @@ class ListFilmFragment : Fragment() {
         })
     }
 
+    private fun setTitle() {
+        when(sortBy) {
+            MoviesRepository.POPULAR -> {
+                (activity as AppCompatActivity).supportActionBar?.title = "Popular"
+            }
+            MoviesRepository.TOP_RATED -> {
+                (activity as AppCompatActivity).supportActionBar?.title = "Mejor Valoradas"
+            }
+            MoviesRepository.UPCOMING -> {
+                (activity as AppCompatActivity).supportActionBar?.title = "Próximamente"
+            }
+        }
+    }
+
 
     private fun configureList() {
         movies_listing.setHasFixedSize(true)
         movies_listing.layoutManager = GridLayoutManager(this.context,2)
-        adapterCustom = AdapterPopularMovies(this.context!!, emptyList())
+        adapterCustom = AdapterPopularMovies(this.context!!, emptyList()) {
+            listenerList.onMovieClicked(it)
+        }
         movies_listing.adapter = adapterCustom
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        listenerList = context as OnMoviesClickedListener
     }
 
 

@@ -29,4 +29,17 @@ class Movie {
     @SerializedName("genre_ids")
     @Expose
     var genreIds: List<Int>? = null
+
+    @SerializedName("overview")
+    @Expose
+    var overview:String? = null
+
+    @SerializedName("backdrop_path")
+    @Expose
+    var backdrop:String? = null
+
+    @SerializedName("genres")
+    @Expose
+    var genres:List<Genre>? = null
+
 }

@@ -1,6 +1,8 @@
 package com.example.movielopp.Network
 
 import com.example.movielopp.BuildConfig
+import com.example.movielopp.Interfaces.OnGetGenresCallback
+import com.example.movielopp.Interfaces.OnGetMovieCallBack
 import com.example.movielopp.Interfaces.OnGetMoviesCallBack
 import com.example.movielopp.Interfaces.TMDbApi
 import com.example.movielopp.Model.Movie
@@ -9,9 +11,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit
-
-
-
 
 
 class MoviesRepository private constructor(private val api: TMDbApi) {
@@ -46,6 +45,53 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
                 .enqueue(call)
             else -> api.getPopularMovies(BuildConfig.TMBD_API,LANGUAGE, 1).enqueue(call)
         }
+    }
+
+    fun getMovie(movieId: Int, callback:OnGetMovieCallBack) {
+        api.getMovie(movieId, BuildConfig.TMBD_API, LANGUAGE).
+            enqueue(object : Callback<Movie> {
+                override fun onFailure(call: Call<Movie>, t: Throwable) {
+                    callback.onError()
+                }
+
+                override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                    if(response.isSuccessful) {
+                        val movie = response.body()
+                        if (movie != null) {
+                            callback.onSuccess(movie)
+                        }else {
+                            callback.onError()
+                        }
+                    }else {
+                        callback.onError()
+                    }
+                }
+
+            })
+    }
+
+    fun getGenres(callback: OnGetGenresCallback){
+        api.getGenres(BuildConfig.TMBD_API, LANGUAGE).
+            enqueue(object: Callback<GenresResponse> {
+                override fun onFailure(call: Call<GenresResponse>, t: Throwable) {
+                    callback.onError()
+                }
+
+                override fun onResponse(call: Call<GenresResponse>, response: Response<GenresResponse>) {
+
+                    if (response.isSuccessful) {
+                        val genresResponse = response.body()
+                        if (genresResponse != null) {
+                            callback.onSuccess(genresResponse.genres!!)
+                        }else {
+                            callback.onError()
+                        }
+                    }else {
+                        callback.onError()
+                    }
+                }
+
+            })
     }
 
     companion object {

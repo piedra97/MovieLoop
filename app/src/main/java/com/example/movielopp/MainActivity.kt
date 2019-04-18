@@ -5,11 +5,21 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.movielopp.Fragments.ListFilmFragment
 import com.example.movielopp.Fragments.LoginFragment
+import com.example.movielopp.Fragments.MovieDetailsFragment
 import com.example.movielopp.Fragments.RegisterFragment
 import com.google.firebase.auth.FirebaseAuth
 
 
-class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed{
+class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed, ListFilmFragment.OnMoviesClickedListener{
+
+    override fun onMovieClicked(iDMovie: Int) {
+        val movieDetailsFragment = MovieDetailsFragment.newInstance(iDMovie)
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container, movieDetailsFragment).
+            addToBackStack(null).
+            commit()
+    }
 
 
     override fun onLoginPressed() {
