@@ -9,7 +9,6 @@ import com.example.movielopp.Fragments.MovieDetailsFragment
 import com.example.movielopp.Fragments.RegisterFragment
 import com.google.firebase.auth.FirebaseAuth
 
-
 class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed, ListFilmFragment.OnMoviesClickedListener{
 
     override fun onMovieClicked(iDMovie: Int) {
@@ -19,6 +18,8 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
             replace(R.id.main_container, movieDetailsFragment).
             addToBackStack(null).
             commit()
+        supportFragmentManager.addOnBackStackChangedListener {
+        }
     }
 
 
@@ -62,12 +63,14 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
 
         val auth = FirebaseAuth.getInstance().signOut()
 
+
         val fragmentListFilms = ListFilmFragment()
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container, fragmentListFilms).
             commit()
     }
+
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val profileItem = menu?.findItem(R.id.profile)

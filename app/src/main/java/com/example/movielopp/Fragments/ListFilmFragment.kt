@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -55,13 +56,12 @@ class ListFilmFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         configureList()
         getSortedMovies()
-        setToolbar()
+        //setToolbar()
     }
 
     private fun setToolbar() {
-        if(activity is AppCompatActivity){
-            (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        }
+        val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
@@ -120,7 +120,7 @@ class ListFilmFragment : Fragment() {
             adapterCustom!!.setMovies(movies)
             adapterCustom!!.notifyDataSetChanged()
             listFilms_progressBar.visibility = View.GONE
-            setTitle()
+            //setTitle()
         }
 
         override fun onError() {

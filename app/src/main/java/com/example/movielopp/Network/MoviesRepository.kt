@@ -1,10 +1,7 @@
 package com.example.movielopp.Network
 
 import com.example.movielopp.BuildConfig
-import com.example.movielopp.Interfaces.OnGetGenresCallback
-import com.example.movielopp.Interfaces.OnGetMovieCallBack
-import com.example.movielopp.Interfaces.OnGetMoviesCallBack
-import com.example.movielopp.Interfaces.TMDbApi
+import com.example.movielopp.Interfaces.*
 import com.example.movielopp.Model.Movie
 import retrofit2.Call
 import retrofit2.Callback
@@ -92,6 +89,28 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
                 }
 
             })
+    }
+
+    fun getTrailers(movieId: Int, callback: OnGetTrailersCallback) {
+        api.getTrailers(movieId, BuildConfig.TMBD_API, "en-US").enqueue(object: Callback<TrailerResponse> {
+            override fun onFailure(call: Call<TrailerResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<TrailerResponse>, response: Response<TrailerResponse>) {
+                if(response.isSuccessful) {
+                    val trailerResponse = response.body()
+                    if (trailerResponse?.trailers != null) {
+                        callback.onSuccess(trailerResponse.trailers)
+                    } else {
+                        callback.onError()
+                    }
+                }else {
+                    callback.onError()
+                }
+            }
+
+        })
     }
 
     companion object {

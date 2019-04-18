@@ -1,6 +1,8 @@
 package com.example.movielopp.Fragments
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -8,11 +10,14 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import com.example.movielopp.Interfaces.OnGetGenresCallback
 import com.example.movielopp.Interfaces.OnGetMovieCallBack
+import com.example.movielopp.Interfaces.OnGetTrailersCallback
 import com.example.movielopp.Model.Genre
 import com.example.movielopp.Model.Movie
+import com.example.movielopp.Model.Trailer
 import com.example.movielopp.Network.MoviesRepository
 
 import com.example.movielopp.R
@@ -48,7 +53,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        setupToolbar()
+        //setupToolbar()
 
         getMovie()
     }
@@ -65,8 +70,8 @@ class MovieDetailsFragment : Fragment() {
                 movieDetailsTitle.text = movie.title
                 summaryLabel.visibility = View.VISIBLE
                 movieDetailsOverview.text = movie.overview
-                movieDetailsRating.visibility = View.VISIBLE
-                movieDetailsRating.rating = movie.rating
+                rating.visibility = View.VISIBLE
+                rating.text = movie.rating.toString()
                 getGenres(movie)
                 movieDetailsReleaseDate.text = movie.releaseDate
                 if (!isRemoving) {
@@ -74,13 +79,47 @@ class MovieDetailsFragment : Fragment() {
                         load(IMAGE_BASE_URL + movie.backdrop).
                         into(movieDetailsBackdrop)
                 }
+                getTrailers(movie)
             }
+
 
             override fun onError() {
                 //activity?.finish()
             }
 
         })
+    }
+
+    private fun getTrailers(movie: Movie) {
+        moviesRepository?.getTrailers(movie.id, object: OnGetTrailersCallback {
+            override fun onSuccess(trailers: List<Trailer>) {
+                if (trailers.isEmpty()) {
+                    trailersLabel.text = " "
+                }
+                trailersLabel.visibility = View.VISIBLE
+                movieTrailers.removeAllViews()
+                for (trailer in trailers) {
+                    val parent = layoutInflater.inflate(R.layout.thumbnail_trailer, movieTrailers, false)
+                    val thumbnail = parent.findViewById<ImageView>(R.id.thumbnail)
+                    thumbnail.requestLayout()
+                    thumbnail.setOnClickListener {
+                        showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
+                    }
+                    Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).into(thumbnail)
+                    movieTrailers.addView(parent)
+                }
+            }
+
+            override fun onError() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
+    }
+
+    private fun showTrailer(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     private fun getGenres(movie: Movie) {
@@ -113,7 +152,6 @@ class MovieDetailsFragment : Fragment() {
         }
 
         if((activity as AppCompatActivity).supportActionBar != null) {
-            (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         }
     }

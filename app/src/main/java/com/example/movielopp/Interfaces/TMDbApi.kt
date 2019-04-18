@@ -10,6 +10,9 @@ import retrofit2.Call
 import retrofit2.http.*
 import com.example.movielopp.Network.GenresResponse
 import retrofit2.http.GET
+import com.example.movielopp.Network.TrailerResponse
+
+
 
 
 
@@ -50,15 +53,12 @@ interface TMDbApi {
         @Query("language") language: String
     ): Call<GenresResponse>
 
-    @GET("authentication/token/new")
-    fun getRequestToken(
-        @Query("api_key") apiKey: String
-    ): Call<RequestTokenResponse>
+    @GET("movie/{movie_id}/videos")
+    fun getTrailers(
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKEy: String,
+        @Query("language") language: String
+    ): Call<TrailerResponse>
 
-    @POST("authentication/session/new")
-    fun authenticate(
-        @Query("api_key") apiKey: String,
-        @Body requestedUser: RequestUser
-    ): Call<TokenAuthenticationResponse>
 
 }
