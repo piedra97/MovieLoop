@@ -113,6 +113,28 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
         })
     }
 
+    fun getReviews(movieID:Int, callback: OnGetReviewsCallback) {
+        api.getReviews(movieID, BuildConfig.TMBD_API, "en-US").enqueue(object: Callback<ReviewResponse> {
+            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+                if(response.isSuccessful) {
+                    val reviewResponse = response.body()
+                    if (reviewResponse?.reviews != null) {
+                        callback.onSuccess(reviewResponse.reviews)
+                    }else {
+                        callback.onError()
+                    }
+                }else {
+                    callback.onError()
+                }
+            }
+
+        })
+    }
+
     companion object {
 
         private const val BASE_URL = "https://api.themoviedb.org/3/"

@@ -1,9 +1,12 @@
 package com.example.movielopp.Fragments
 
 
+import android.annotation.TargetApi
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -11,18 +14,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.example.movielopp.Interfaces.OnGetGenresCallback
 import com.example.movielopp.Interfaces.OnGetMovieCallBack
+import com.example.movielopp.Interfaces.OnGetReviewsCallback
 import com.example.movielopp.Interfaces.OnGetTrailersCallback
 import com.example.movielopp.Model.Genre
 import com.example.movielopp.Model.Movie
+import com.example.movielopp.Model.Review
 import com.example.movielopp.Model.Trailer
 import com.example.movielopp.Network.MoviesRepository
 
 import com.example.movielopp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,55 +74,132 @@ class MovieDetailsFragment : Fragment() {
         moviesRepository = MoviesRepository.instance
         moviesRepository?.getMovie(movieID, object : OnGetMovieCallBack {
             override fun onSuccess(movie: Movie) {
-                movieDetailsTitle.text = movie.title
-                summaryLabel.visibility = View.VISIBLE
-                movieDetailsOverview.text = movie.overview
-                rating.visibility = View.VISIBLE
-                rating.text = movie.rating.toString()
-                getGenres(movie)
-                movieDetailsReleaseDate.text = movie.releaseDate
-                if (!isRemoving) {
-                    Picasso.get().
-                        load(IMAGE_BASE_URL + movie.backdrop).
-                        into(movieDetailsBackdrop)
-                }
+                setUIComponents(movie)
                 getTrailers(movie)
+                getReviews(movie)
             }
 
 
             override fun onError() {
-                //activity?.finish()
+                showError()
             }
 
         })
+    }
+
+    private fun getReviews(movie: Movie) {
+        moviesRepository?.getReviews(movie.id, object: OnGetReviewsCallback {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+            override fun onSuccess(reviews: List<Review>) {
+                initializeReviewComponents()
+                setReviewComponents(reviews)
+            }
+
+            override fun onError() {
+                showError()
+            }
+
+        })
+    }
+
+    private fun initializeReviewComponents() {
+        reviewsLabel.visibility = View.VISIBLE
+        movieReviews.removeAllViews()
+    }
+
+    private fun setUIComponents(movie: Movie) {
+        movieDetailsTitle.text = movie.title
+        summaryLabel.visibility = View.VISIBLE
+        movieDetailsOverview.text = movie.overview
+        rating.visibility = View.VISIBLE
+        rating.text = movie.rating.toString()
+        getGenres(movie)
+        movieDetailsReleaseDate.text = movie.releaseDate
+        loadMovieBackdrop(movie)
+
+    }
+
+    private fun loadMovieBackdrop(movie:Movie) {
+        Picasso.get().
+            load(IMAGE_BASE_URL + movie.backdrop).
+            into(movieDetailsBackdrop)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    private fun setReviewComponents(reviews:List<Review>) {
+        for (review in reviews) {
+            val parent = layoutInflater.inflate(R.layout.review, movieReviews, false)
+            val authorReview = parent.findViewById<TextView>(R.id.reviewAuthor)
+            val contentReview = parent.findViewById<TextView>(R.id.reviewContent)
+            val btnShowMore = parent.findViewById<TextView>(R.id.showMore)
+            authorReview.text = review.author
+            contentReview.text = review.content
+            movieReviews.addView(parent)
+            contentReview.viewTreeObserver.addOnGlobalLayoutListener {
+                if (contentReview.lineCount > 3) {
+                    btnShowMore.visibility = View.VISIBLE
+                    contentReview.maxLines = 3
+
+                    contentReview.viewTreeObserver.removeOnGlobalLayoutListener {
+                        contentReview.maxLines = Integer.MAX_VALUE
+                    }
+                }
+
+            }
+
+            btnShowMore.setOnClickListener {
+                if (btnShowMore.text.toString() == "Muéstrame más...") {
+                    contentReview.maxLines = Integer.MAX_VALUE
+                    btnShowMore.text = "Muéstrame menos"
+                }
+                else {
+                    contentReview.maxLines = 3
+                    btnShowMore.text = "Muéstrame más..."
+                }
+            }
+        }
     }
 
     private fun getTrailers(movie: Movie) {
         moviesRepository?.getTrailers(movie.id, object: OnGetTrailersCallback {
             override fun onSuccess(trailers: List<Trailer>) {
-                if (trailers.isEmpty()) {
-                    trailersLabel.text = " "
-                }
-                trailersLabel.visibility = View.VISIBLE
-                movieTrailers.removeAllViews()
-                for (trailer in trailers) {
-                    val parent = layoutInflater.inflate(R.layout.thumbnail_trailer, movieTrailers, false)
-                    val thumbnail = parent.findViewById<ImageView>(R.id.thumbnail)
-                    thumbnail.requestLayout()
-                    thumbnail.setOnClickListener {
-                        showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
-                    }
-                    Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).into(thumbnail)
-                    movieTrailers.addView(parent)
-                }
+                initializeTrailerComponents(trailers)
+                setTrailerComponents(trailers)
             }
 
             override fun onError() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                showError()
             }
 
         })
     }
+
+    private fun initializeTrailerComponents(trailers:List<Trailer>) {
+        if (trailers.isEmpty()) {
+            trailersLabel.text = " "
+        }
+        trailersLabel.visibility = View.VISIBLE
+        movieTrailers.removeAllViews()
+    }
+
+    private fun setTrailerComponents(trailers:List<Trailer>) {
+        for (trailer in trailers) {
+            val parent = layoutInflater.inflate(R.layout.thumbnail_trailer, movieTrailers, false)
+            val thumbnail = parent.findViewById<ImageView>(R.id.thumbnail)
+            thumbnail.requestLayout()
+            thumbnail.setOnClickListener {
+                showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
+            }
+            loadTrailerPreview(trailer, thumbnail)
+            movieTrailers.addView(parent)
+        }
+    }
+
+    private fun loadTrailerPreview(trailer: Trailer, thumbnail:ImageView) {
+        Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).into(thumbnail)
+    }
+
 
     private fun showTrailer(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

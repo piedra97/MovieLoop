@@ -3,16 +3,12 @@ package com.example.movielopp.Interfaces
 
 import com.example.movielopp.Model.Movie
 import com.example.movielopp.Network.MoviesResponse
-import com.example.movielopp.RequestTokenResponse
-import com.example.movielopp.RequestUser
-import com.example.movielopp.TokenAuthenticationResponse
 import retrofit2.Call
 import retrofit2.http.*
 import com.example.movielopp.Network.GenresResponse
 import retrofit2.http.GET
 import com.example.movielopp.Network.TrailerResponse
-
-
+import com.example.movielopp.Network.ReviewResponse
 
 
 
@@ -59,6 +55,13 @@ interface TMDbApi {
         @Query("api_key") apiKEy: String,
         @Query("language") language: String
     ): Call<TrailerResponse>
+
+    @GET("movie/{movie_id}/reviews")
+    fun getReviews(
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKEy: String,
+        @Query("language") language: String
+    ): Call<ReviewResponse>
 
 
 }
