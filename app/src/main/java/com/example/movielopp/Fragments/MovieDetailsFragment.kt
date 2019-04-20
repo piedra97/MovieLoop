@@ -117,6 +117,7 @@ class MovieDetailsFragment : Fragment() {
         getGenres(movie)
         movieDetailsReleaseDate.text = movie.releaseDate
         loadMovieBackdrop(movie)
+        crewLabel.visibility = View.VISIBLE
 
     }
 

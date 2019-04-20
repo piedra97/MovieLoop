@@ -135,6 +135,28 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
         })
     }
 
+    fun getCredits(movieID: Int, callback: OnGetCreditsCallback) {
+        api.getCredits(movieID, BuildConfig.TMBD_API).enqueue(object: Callback<CreditResponse> {
+            override fun onFailure(call: Call<CreditResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<CreditResponse>, response: Response<CreditResponse>) {
+                if (response.isSuccessful) {
+                    val creditResponse = response.body()
+                    if (creditResponse?.cast != null && creditResponse.crew != null) {
+                        callback.onSuccess(creditResponse.cast!!, creditResponse.crew!!)
+                    } else {
+                        callback.onError()
+                    }
+                } else {
+                    callback.onError()
+                }
+            }
+
+        })
+    }
+
     companion object {
 
         private const val BASE_URL = "https://api.themoviedb.org/3/"
