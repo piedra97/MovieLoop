@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +17,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.example.movielopp.Interfaces.OnGetGenresCallback
-import com.example.movielopp.Interfaces.OnGetMovieCallBack
-import com.example.movielopp.Interfaces.OnGetReviewsCallback
-import com.example.movielopp.Interfaces.OnGetTrailersCallback
-import com.example.movielopp.Model.Genre
-import com.example.movielopp.Model.Movie
-import com.example.movielopp.Model.Review
-import com.example.movielopp.Model.Trailer
+import com.example.movielopp.Interfaces.*
+import com.example.movielopp.Model.*
 import com.example.movielopp.Network.MoviesRepository
 
 import com.example.movielopp.R
@@ -75,6 +70,7 @@ class MovieDetailsFragment : Fragment() {
         moviesRepository?.getMovie(movieID, object : OnGetMovieCallBack {
             override fun onSuccess(movie: Movie) {
                 setUIComponents(movie)
+                getCredits(movie)
                 getTrailers(movie)
                 getReviews(movie)
             }
@@ -85,6 +81,83 @@ class MovieDetailsFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun getCredits(movie: Movie) {
+        moviesRepository?.getCredits(movieID, object : OnGetCreditsCallback {
+            override fun onSuccess(cast: List<Cast>, crew: List<Crew>) {
+                initializeCrewComponents()
+                setCrewComponents(crew)
+                initializeCastComponents()
+                setCastComponents(cast)
+            }
+
+            override fun onError() {
+                showError()
+            }
+
+        })
+    }
+
+    private fun setCastComponents(cast: List<Cast>) {
+        for (castIT in cast) {
+            val parent = layoutInflater.inflate(R.layout.cast, movieReviews, false)
+            val card = parent.findViewById<CardView>(R.id.castCard)
+            val profileCast = parent.findViewById<ImageView>(R.id.castProfile)
+            val nameCharacter = parent.findViewById<TextView>(R.id.characterName)
+            val actor = parent.findViewById<TextView>(R.id.actorName)
+            card.requestLayout()
+            loadProfileCastImage(castIT, profileCast)
+            nameCharacter.text = castIT.character
+            actor.text = castIT.name
+            movieCast.addView(parent)
+        }
+    }
+
+    private fun loadProfileCastImage(castIT: Cast, profile: ImageView) {
+        Picasso.get().load(IMAGE_BASE_URL + castIT.profile_path).placeholder(R.drawable.ic_launcher_foreground).into(profile)
+    }
+
+    private fun initializeCastComponents() {
+        castLabel.visibility = View.VISIBLE
+        movieCast.removeAllViews()
+    }
+
+    private fun setCrewComponents(crew: List<Crew>) {
+        for (crewIT in crew) {
+            val parent = layoutInflater.inflate(R.layout.crew, movieCrewDetails, false)
+            val nameCrew = parent.findViewById<TextView>(R.id.crewName)
+            val jobCrew = parent.findViewById<TextView>(R.id.crewJob)
+            when (crewIT.job) {
+                "Director" -> {
+                    nameCrew.text = crewIT.name
+                    jobCrew.text = crewIT.job
+                    movieCrewDetails.addView(parent)
+                }
+                "Screenplay" -> {
+                    nameCrew.text = crewIT.name
+                    jobCrew.text = "Guión"
+                    movieCrewDetails.addView(parent)
+                }
+                "Director of Photography" -> {
+                    nameCrew.text = crewIT.name
+                    jobCrew.text = "Director de Fotografía"
+                    movieCrewDetails.addView(parent)
+                }
+                "Original Music Composer" -> {
+                    nameCrew.text = crewIT.name
+                    jobCrew.text = "Compositor Música Original"
+                    movieCrewDetails.addView(parent)
+                }
+
+            }
+
+        }
+    }
+
+    private fun initializeCrewComponents() {
+        crewLabel.visibility = View.VISIBLE
+        movieCrewDetails.removeAllViews()
     }
 
     private fun getReviews(movie: Movie) {
@@ -117,8 +190,6 @@ class MovieDetailsFragment : Fragment() {
         getGenres(movie)
         movieDetailsReleaseDate.text = movie.releaseDate
         loadMovieBackdrop(movie)
-        crewLabel.visibility = View.VISIBLE
-
     }
 
     private fun loadMovieBackdrop(movie:Movie) {
@@ -198,7 +269,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun loadTrailerPreview(trailer: Trailer, thumbnail:ImageView) {
-        Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).into(thumbnail)
+        Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).placeholder(R.drawable.ic_launcher_foreground).into(thumbnail)
     }
 
 
