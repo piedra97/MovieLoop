@@ -24,7 +24,7 @@ import com.example.movielopp.Network.MoviesRepository
 import com.example.movielopp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import org.w3c.dom.Text
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +37,6 @@ private const val ARG_PARAM2 = "param2"
  */
 class MovieDetailsFragment : Fragment() {
 
-    val MOVIE_ID = "movie_id"
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
     private val YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s"
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
@@ -84,7 +83,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun getCredits(movie: Movie) {
-        moviesRepository?.getCredits(movieID, object : OnGetCreditsCallback {
+        moviesRepository?.getCredits(movie.id, object : OnGetCreditsCallback {
             override fun onSuccess(cast: List<Cast>, crew: List<Crew>) {
                 initializeCrewComponents()
                 setCrewComponents(crew)
@@ -165,7 +164,7 @@ class MovieDetailsFragment : Fragment() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun onSuccess(reviews: List<Review>) {
-                initializeReviewComponents()
+                initializeReviewComponents(reviews)
                 setReviewComponents(reviews)
             }
 
@@ -176,7 +175,10 @@ class MovieDetailsFragment : Fragment() {
         })
     }
 
-    private fun initializeReviewComponents() {
+    private fun initializeReviewComponents(reviews:List<Review>) {
+        if (reviews.isEmpty()) {
+            reviewsLabel.text = " "
+        }
         reviewsLabel.visibility = View.VISIBLE
         movieReviews.removeAllViews()
     }
@@ -190,6 +192,16 @@ class MovieDetailsFragment : Fragment() {
         getGenres(movie)
         movieDetailsReleaseDate.text = movie.releaseDate
         loadMovieBackdrop(movie)
+        aditionalInformationLabel.visibility = View.VISIBLE
+        statusText.text = movie.status
+        loText.text = movie.originalLanguage
+        toText.text = movie.originalTitle
+        val runtime = """${movie.runtime.toString()}min"""
+        runtimeText.text = runtime
+        val budget = """${movie.budget.toString()} $"""
+        budgetText.text = budget
+        val revenue = """${movie.revenue.toString()} $"""
+        revenueText.text = revenue
     }
 
     private fun loadMovieBackdrop(movie:Movie) {
@@ -249,7 +261,7 @@ class MovieDetailsFragment : Fragment() {
 
     private fun initializeTrailerComponents(trailers:List<Trailer>) {
         if (trailers.isEmpty()) {
-            trailersLabel.text = " "
+            trailersLabel.visibility = View.GONE
         }
         trailersLabel.visibility = View.VISIBLE
         movieTrailers.removeAllViews()

@@ -158,7 +158,7 @@
                     android:orientation="vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crewLabel" />
+                    app:layout_constraintTop_toBottomOf="@+id/crewLabel"/>
 
             <TextView
                     android:id="@+id/castLabel"
@@ -194,6 +194,111 @@
                         android:orientation="horizontal" />
 
             </HorizontalScrollView>
+
+            <TextView
+                    android:id="@+id/aditionalInformationLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="32dp"
+                    android:text="Infromación adicional"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/movieCastContainer"/>
+
+            <LinearLayout
+                    android:id="@+id/movieAdditionalInformation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/aditionalInformationLabel">
+
+                <TextView
+                        android:id="@+id/filmStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Estado"
+                        android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/statusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+                <TextView
+                        android:id="@+id/filmOriginalLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Lenguaje Original"
+                        android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/loText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+
+                <TextView
+                        android:id="@+id/filmOriginalTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Título Original"
+                        android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/toText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+
+                <TextView
+                        android:id="@+id/filmRuntime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Duración"
+                        android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/runtimeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+
+                <TextView
+                        android:id="@+id/filmBudget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Presupuesto"
+                        android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/budgetText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+
+                <TextView
+                        android:id="@+id/filmRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Recaudación"
+                        android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/revenueText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+
+            </LinearLayout>
 
             <TextView
                     android:id="@+id/movieDetailsReleaseDate"
@@ -240,7 +345,7 @@
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieCastContainer" />
+                    app:layout_constraintTop_toBottomOf="@+id/movieAdditionalInformation" />
 
             <TextView
                     android:id="@+id/reviewsLabel"
@@ -263,6 +368,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="32dp"
                     android:orientation="vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"

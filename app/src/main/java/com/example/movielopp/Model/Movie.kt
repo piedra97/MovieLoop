@@ -42,4 +42,28 @@ class Movie {
     @Expose
     var genres:List<Genre>? = null
 
+    @SerializedName("budget")
+    @Expose
+    var budget:Int?= null
+
+    @SerializedName("original_language")
+    @Expose
+    var originalLanguage:String?= null
+
+    @SerializedName("original_title")
+    @Expose
+    var originalTitle:String?= null
+
+    @SerializedName("revenue")
+    @Expose
+    var revenue:Int?= null
+
+    @SerializedName("runtime")
+    @Expose
+    var runtime:Int?= null
+
+    @SerializedName("status")
+    @Expose
+    var status:String?= null
+
 }
