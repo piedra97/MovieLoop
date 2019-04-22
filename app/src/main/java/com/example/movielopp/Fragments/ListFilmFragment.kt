@@ -50,6 +50,7 @@ class ListFilmFragment : Fragment() {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_list_film, container, false)
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -145,7 +146,7 @@ class ListFilmFragment : Fragment() {
 
 
     private fun configureList() {
-        movies_listing.setHasFixedSize(true)
+        movies_listing.setHasFixedSize(false)
         movies_listing.layoutManager = GridLayoutManager(this.context,2)
         adapterCustom = AdapterPopularMovies(this.context!!, emptyList()) {
             listenerList.onMovieClicked(it)
