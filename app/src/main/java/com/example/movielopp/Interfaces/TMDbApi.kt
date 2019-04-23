@@ -64,5 +64,12 @@ interface TMDbApi {
         @Query("api_key") apiKEy: String
     ): Call<CreditResponse>
 
+    @GET("tv/popular")
+    fun getPopularTVShows(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): Call<TVShowsResponse>
+
 
 }

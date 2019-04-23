@@ -1,15 +1,11 @@
 package com.example.movielopp.Network
 
-import com.example.movielopp.Model.Movie
+import com.example.movielopp.Model.TVShow
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-
-class MoviesResponse {
-
-
+class TVShowsResponse {
     @SerializedName("results")
     @Expose
-    var movies: List<Movie>? = null
-
+    var tvShows: List<TVShow>? = null
 }

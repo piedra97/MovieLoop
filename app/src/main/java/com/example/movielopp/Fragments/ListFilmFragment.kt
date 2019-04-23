@@ -118,8 +118,12 @@ class ListFilmFragment : Fragment() {
         moviesRepository!!.getMovies(sortBy, object : OnGetMoviesCallBack {
 
         override fun onSuccess(movies: List<Movie>) {
-            adapterCustom!!.setMovies(movies)
-            adapterCustom!!.notifyDataSetChanged()
+            adapterCustom = AdapterPopularMovies(context!!, movies) {
+                listenerList.onMovieClicked(it)
+            }
+            movies_listing.adapter = adapterCustom
+            //adapterCustom!!.setMovies(movies)
+            //adapterCustom!!.notifyDataSetChanged()
             listFilms_progressBar.visibility = View.GONE
             //setTitle()
         }
@@ -146,12 +150,8 @@ class ListFilmFragment : Fragment() {
 
 
     private fun configureList() {
-        movies_listing.setHasFixedSize(false)
+        movies_listing.setHasFixedSize(true)
         movies_listing.layoutManager = GridLayoutManager(this.context,2)
-        adapterCustom = AdapterPopularMovies(this.context!!, emptyList()) {
-            listenerList.onMovieClicked(it)
-        }
-        movies_listing.adapter = adapterCustom
     }
 
     override fun onAttach(context: Context?) {
