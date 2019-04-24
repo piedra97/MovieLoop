@@ -256,7 +256,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         statusText.text = movie.status
         loText.text = movie.originalLanguage
         toText.text = movie.originalTitle
-        val runtime = """${movie.runtime.toString()}min"""
+        val runtime = """${movie.runtime.toString()} min"""
         runtimeText.text = runtime
         val budget = movie.budget.toString()
         setparsedBudget(budget)
@@ -269,16 +269,15 @@ class MovieDetailsActivity : AppCompatActivity() {
         var parsedRevenue = ""
         var count = 0
         for (number in revenue.reversed()) {
-            if (count == 2) {
+            if (count == 3) {
                 count = 0
-                parsedRevenue += "$number."
-            } else {
-                parsedRevenue += number
-                count += 1
+                parsedRevenue += "."
             }
+            parsedRevenue += number
+            count += 1
         }
         parsedRevenue = parsedRevenue.reversed()
-        parsedRevenue.replaceFirst(".", "", false)
+        //parsedRevenue.replaceRange(0, 1, "")
 
         revenueText.text = "$parsedRevenue $"
 
@@ -288,16 +287,16 @@ class MovieDetailsActivity : AppCompatActivity() {
         var parsedBudget = ""
         var count = 0
         for (number in budget.reversed()) {
-            if (count == 2) {
+            if (count == 3) {
                 count = 0
-                parsedBudget += "$number."
-            } else {
-                parsedBudget += number
-                count += 1
+                parsedBudget += "."
             }
+            parsedBudget += number
+            count += 1
         }
+
         parsedBudget = parsedBudget.reversed()
-        parsedBudget.replaceFirst(".", "", false)
+        parsedBudget.replaceRange(0,1, "")
         budgetText.text = "$parsedBudget $"
     }
 
