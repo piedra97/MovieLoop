@@ -2,6 +2,7 @@ package com.example.movielopp.interfaces
 
 
 import com.example.movielopp.model.Movie
+import com.example.movielopp.model.TVShow
 import com.example.movielopp.network.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -70,6 +71,39 @@ interface TMDbApi {
         @Query("language") language: String,
         @Query("page") page: Int
     ): Call<TVShowsResponse>
+
+    @GET("tv/top_rated")
+    fun getTopRatedTVShows(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): Call<TVShowsResponse>
+
+    @GET("tv/airing_today")
+    fun getNextTVShows(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): Call<TVShowsResponse>
+
+    @GET("tv/{tv_id}")
+    fun getTVShow(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKEy: String,
+        @Query("language") language: String
+    ): Call<TVShow>
+
+
+    @GET("tv/{tv_id}/videos")
+    fun getVideos(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKEy: String,
+        @Query("language") language: String
+    ): Call<TrailerResponse>
+
+
+
+
 
 
 }

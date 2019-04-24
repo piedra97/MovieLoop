@@ -79,20 +79,9 @@ class MovieDetailsActivity : AppCompatActivity() {
             val contentReview = parent.findViewById<TextView>(R.id.reviewContent)
             val btnShowMore = parent.findViewById<TextView>(R.id.showMore)
             authorReview.text = review.author
+            contentReview.maxLines = 3
             contentReview.text = review.content
             movieReviews.addView(parent)
-            contentReview.viewTreeObserver.addOnGlobalLayoutListener {
-                if (contentReview.lineCount > 3) {
-                    btnShowMore.visibility = View.VISIBLE
-                    contentReview.maxLines = 3
-
-                    contentReview.viewTreeObserver.removeOnGlobalLayoutListener {
-                        contentReview.maxLines = Integer.MAX_VALUE
-                    }
-                }
-
-            }
-
             btnShowMore.setOnClickListener {
                 if (btnShowMore.text.toString() == "Muéstrame más...") {
                     contentReview.maxLines = Integer.MAX_VALUE
@@ -153,9 +142,8 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun initializeTrailerComponents(trailers: List<Trailer>) {
         if (trailers.isEmpty()) {
-            trailersLabel.visibility = View.GONE
+            trailersLabel.text = ""
         }
-        trailersLabel.visibility = View.VISIBLE
         movieTrailers.removeAllViews()
     }
 
@@ -277,7 +265,6 @@ class MovieDetailsActivity : AppCompatActivity() {
             count += 1
         }
         parsedRevenue = parsedRevenue.reversed()
-        //parsedRevenue.replaceRange(0, 1, "")
 
         revenueText.text = "$parsedRevenue $"
 

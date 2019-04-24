@@ -1,10 +1,13 @@
 package com.example.movielopp.fragments
 
 
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 import com.example.movielopp.adapters.AdapterPopularTVShows
 import com.example.movielopp.interfaces.OnGetTVShowsCallback
@@ -12,6 +15,7 @@ import com.example.movielopp.model.TVShow
 import com.example.movielopp.network.TVShowsRepository
 
 import com.example.movielopp.R
+import com.example.movielopp.network.MoviesRepository
 import kotlinx.android.synthetic.main.fragment_tvshows_fragment_list.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +29,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class TVShowsFragmentList : Fragment() {
 
+    private var sortBy = "POPULAR"
     var tvShowsRepository:TVShowsRepository? = null
     var adapterCustom:AdapterPopularTVShows? = null
 
@@ -33,11 +38,11 @@ class TVShowsFragmentList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_tvshows_fragment_list, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
+        menu?.clear()
         inflater.inflate(R.menu.menu, menu)
     }
 
@@ -45,12 +50,17 @@ class TVShowsFragmentList : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         configureList()
-        getSortedMovies()
+        getSortedTVShows()
     }
 
-    private fun getSortedMovies() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    private fun getSortedTVShows() {
         tvShowsRepository = TVShowsRepository.instance
-        tvShowsRepository!!.getTVShow(object : OnGetTVShowsCallback {
+        tvShowsRepository!!.getTVShows(sortBy, object : OnGetTVShowsCallback {
             override fun onSuccess(tvshows: List<TVShow>) {
                 adapterCustom = AdapterPopularTVShows(context!!, tvshows)
                 tvShows_listing.adapter = adapterCustom
@@ -64,6 +74,51 @@ class TVShowsFragmentList : Fragment() {
 
         })
     }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            R.id.sort -> {
+                showSortMenu()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun showSortMenu() {
+        val sortMenu = PopupMenu(context, view, Gravity.END)
+        sortMenu.setOnMenuItemClickListener(object: PopupMenu.OnMenuItemClickListener {
+            override fun onMenuItemClick(item: MenuItem?): Boolean {
+                when (item!!.itemId) {
+                    R.id.popular -> {
+                        sortBy = TVShowsRepository.POPULAR
+                        getSortedTVShows()
+                        return true
+                    }
+                    R.id.top_rated -> {
+                        sortBy = TVShowsRepository.TOP_RATED
+                        getSortedTVShows()
+                        return true
+                    }
+                    R.id.upcoming -> {
+                        sortBy = TVShowsRepository.UPCOMING
+                        getSortedTVShows()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+
+        })
+        sortMenu.inflate(R.menu.menu_movies_sort)
+        sortMenu.show()
+    }
+
 
     private fun configureList() {
         tvShows_listing.setHasFixedSize(true)

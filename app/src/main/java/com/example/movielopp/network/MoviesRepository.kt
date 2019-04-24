@@ -161,9 +161,9 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
 
         private const val BASE_URL = "https://api.themoviedb.org/3/"
         private const val LANGUAGE = "es-ES"
-        val POPULAR = "popular"
-        val TOP_RATED = "top_rated"
-        val UPCOMING = "upcoming"
+        const val POPULAR = "popular"
+        const val TOP_RATED = "top_rated"
+        const val UPCOMING = "upcoming"
 
         private var repository: MoviesRepository? = null
 

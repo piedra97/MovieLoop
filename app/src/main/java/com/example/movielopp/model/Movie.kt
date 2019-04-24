@@ -26,10 +26,6 @@ class Movie {
     @Expose
     var rating: Float = 0.toFloat()
 
-    @SerializedName("genre_ids")
-    @Expose
-    var genreIds: List<Int>? = null
-
     @SerializedName("overview")
     @Expose
     var overview:String? = null

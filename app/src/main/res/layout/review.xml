@@ -24,7 +24,6 @@
             android:id="@+id/showMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:textColor="@color/blue"
             android:text="Muéstrame más..."
             android:clickable="true"

@@ -48,7 +48,6 @@ class ListFilmFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_list_film, container, false)
 
     }
@@ -60,12 +59,18 @@ class ListFilmFragment : Fragment() {
         //setToolbar()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     private fun setToolbar() {
         val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
+        menu?.clear()
         inflater.inflate(R.menu.menu, menu)
     }
 
@@ -81,6 +86,11 @@ class ListFilmFragment : Fragment() {
             }
         }
 
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        getSortedMovies()
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

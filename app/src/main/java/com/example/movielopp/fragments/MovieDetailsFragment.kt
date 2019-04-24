@@ -54,6 +54,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        fragmentDetailsLayout.bringToFront()
         //setupToolbar()
 
         getMovie()
@@ -154,6 +155,7 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+
     private fun initializeCrewComponents() {
         crewLabel.visibility = View.VISIBLE
         movieCrewDetails.removeAllViews()
@@ -183,6 +185,39 @@ class MovieDetailsFragment : Fragment() {
         movieReviews.removeAllViews()
     }
 
+    private fun setParsedRevenue(revenue: String) {
+        var parsedRevenue = ""
+        var count = 0
+        for (number in revenue.reversed()) {
+            if (count == 3) {
+                count = 0
+                parsedRevenue += "."
+            }
+            parsedRevenue += number
+            count += 1
+        }
+        parsedRevenue = parsedRevenue.reversed()
+
+        revenueText.text = "$parsedRevenue $"
+    }
+
+    private fun setparsedBudget(budget:String) {
+        var parsedBudget = ""
+        var count = 0
+        for (number in budget.reversed()) {
+            if (count == 3) {
+                count = 0
+                parsedBudget += "."
+            }
+            parsedBudget += number
+            count += 1
+        }
+
+        parsedBudget = parsedBudget.reversed()
+        parsedBudget.replaceRange(0,1, "")
+        budgetText.text = "$parsedBudget $"
+    }
+
     private fun setUIComponents(movie: Movie) {
         movieDetailsTitle.text = movie.title
         summaryLabel.visibility = View.VISIBLE
@@ -196,12 +231,12 @@ class MovieDetailsFragment : Fragment() {
         statusText.text = movie.status
         loText.text = movie.originalLanguage
         toText.text = movie.originalTitle
-        val runtime = """${movie.runtime.toString()}min"""
+        val runtime = """${movie.runtime.toString()} min"""
         runtimeText.text = runtime
-        val budget = """${movie.budget.toString()} $"""
-        budgetText.text = budget
-        val revenue = """${movie.revenue.toString()} $"""
-        revenueText.text = revenue
+        val budget = movie.budget.toString()
+        setparsedBudget(budget)
+        val revenue = movie.revenue.toString()
+        setParsedRevenue(revenue)
     }
 
     private fun loadMovieBackdrop(movie:Movie) {
@@ -219,20 +254,10 @@ class MovieDetailsFragment : Fragment() {
             val btnShowMore = parent.findViewById<TextView>(R.id.showMore)
             authorReview.text = review.author
             contentReview.text = review.content
+            contentReview.maxLines = 3
             movieReviews.addView(parent)
-            contentReview.viewTreeObserver.addOnGlobalLayoutListener {
-                if (contentReview.lineCount > 3) {
-                    btnShowMore.visibility = View.VISIBLE
-                    contentReview.maxLines = 3
-
-                    contentReview.viewTreeObserver.removeOnGlobalLayoutListener {
-                        contentReview.maxLines = Integer.MAX_VALUE
-                    }
-                }
-
-            }
-
             btnShowMore.setOnClickListener {
+
                 if (btnShowMore.text.toString() == "Muéstrame más...") {
                     contentReview.maxLines = Integer.MAX_VALUE
                     btnShowMore.text = "Muéstrame menos"
