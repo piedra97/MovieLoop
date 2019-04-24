@@ -1,4 +1,5 @@
 package com.example.movielopp.activities
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -12,12 +13,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed, ListFilmFragment.OnMoviesClickedListener{
 
     override fun onMovieClicked(iDMovie: Int) {
-        val movieDetailsFragment = MovieDetailsFragment.newInstance(iDMovie)
-        supportFragmentManager.
-            beginTransaction().
-            replace(R.id.main_container, movieDetailsFragment).
-            addToBackStack(null).
-            commit()
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        intent.putExtra("idMovie", iDMovie)
+        startActivity(intent)
     }
 
 

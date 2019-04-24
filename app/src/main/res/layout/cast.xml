@@ -22,6 +22,7 @@
 
         <TextView
                 android:id="@+id/actorName"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -31,6 +32,7 @@
 
         <TextView
                 android:id="@+id/characterName"
+                android:textColor="@color/black"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

@@ -8,12 +8,14 @@
 
     <TextView
             android:id="@+id/crewJob"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"/>
 
     <TextView
             android:id="@+id/crewName"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.7"/>
