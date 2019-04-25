@@ -1,6 +1,5 @@
 package com.example.movielopp.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -57,7 +56,7 @@ class TVShow {
 
     @SerializedName("episode_run_time")
     @Expose
-    var runtime:Int?= null
+    var runtime:List<Int>?= null
 
     @SerializedName("status")
     @Expose

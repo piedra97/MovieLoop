@@ -1,6 +1,7 @@
 package com.example.movielopp.fragments
 
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -15,7 +16,6 @@ import com.example.movielopp.model.TVShow
 import com.example.movielopp.network.TVShowsRepository
 
 import com.example.movielopp.R
-import com.example.movielopp.network.MoviesRepository
 import kotlinx.android.synthetic.main.fragment_tvshows_fragment_list.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,9 +29,17 @@ private const val ARG_PARAM2 = "param2"
  */
 class TVShowsFragmentList : Fragment() {
 
+    interface OnTVShowsClickedListener {
+        fun onTVShowsClicked(iDTVShow:Int)
+    }
+
     private var sortBy = "POPULAR"
+
     var tvShowsRepository:TVShowsRepository? = null
+
     var adapterCustom:AdapterPopularTVShows? = null
+
+    lateinit var listenerList: OnTVShowsClickedListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +70,9 @@ class TVShowsFragmentList : Fragment() {
         tvShowsRepository = TVShowsRepository.instance
         tvShowsRepository!!.getTVShows(sortBy, object : OnGetTVShowsCallback {
             override fun onSuccess(tvshows: List<TVShow>) {
-                adapterCustom = AdapterPopularTVShows(context!!, tvshows)
+                adapterCustom = AdapterPopularTVShows(context!!, tvshows) {
+                    listenerList.onTVShowsClicked(it)
+                }
                 tvShows_listing.adapter = adapterCustom
                 listTVShows_progressBar.visibility = View.GONE
             }
@@ -123,6 +133,11 @@ class TVShowsFragmentList : Fragment() {
     private fun configureList() {
         tvShows_listing.setHasFixedSize(true)
         tvShows_listing.layoutManager = GridLayoutManager(this.context,2)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        listenerList = context as OnTVShowsClickedListener
     }
 
 

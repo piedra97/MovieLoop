@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">MovieLopp</string>
+    <string name="app_name">MovieLoop</string>
 
     <string name="popular">Popular</string>
     <string name="top_rated">Mejor Valoradas</string>
     <string name="upcoming">Próximamente</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

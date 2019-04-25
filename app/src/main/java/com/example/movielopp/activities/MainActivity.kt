@@ -1,21 +1,36 @@
 package com.example.movielopp.activities
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.example.movielopp.R
 import com.example.movielopp.adapters.MyPagerAdapter
 import com.example.movielopp.fragments.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed, ListFilmFragment.OnMoviesClickedListener{
+class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed, ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener{
+
+    var movieClicked = false
+
+    var tvShowCliked = false
+
+    override fun onTVShowsClicked(iDTVShow: Int) {
+        tvShowCliked = true
+        val tvShowDetails = TVShowDetailsFragment.newInstance(iDTVShow)
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container, tvShowDetails).
+            addToBackStack(null).
+            commit()
+    }
+
 
     override fun onMovieClicked(iDMovie: Int) {
-        /*val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("idMovie", iDMovie)
-        startActivity(intent)*/
+
+        movieClicked = true
         val movieDetails = MovieDetailsFragment.newInstance(iDMovie)
         supportFragmentManager.
             beginTransaction().
@@ -59,13 +74,23 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
             commit()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        movieClicked = false
+        tvShowCliked = false
+    }
 
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setStatePageAdapter()
 
+
+        //val toolbarToWork = findViewById<Toolbar>(R.id.toolbar)
+        //setSupportActionBar(toolbarToWork)
 
         /*val fragmentListFilms = ListFilmFragment()
         supportFragmentManager.
@@ -88,7 +113,13 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
         val authUser = FirebaseAuth.getInstance().signOut()
         val profileItem = menu?.findItem(R.id.profile)
         val signInItem = menu?.findItem(R.id.signInButton)
+        val sortItem = menu?.findItem(R.id.sort)
         val auth = FirebaseAuth.getInstance()
+        if (movieClicked || tvShowCliked) {
+            profileItem?.isVisible = false
+            signInItem?.isVisible = false
+            sortItem?.isVisible = false
+        }
         if (auth.currentUser != null) {
             profileItem?.isVisible = true
             signInItem?.isVisible = false

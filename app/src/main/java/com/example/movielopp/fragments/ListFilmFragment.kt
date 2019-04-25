@@ -135,7 +135,7 @@ class ListFilmFragment : Fragment() {
             //adapterCustom!!.setMovies(movies)
             //adapterCustom!!.notifyDataSetChanged()
             listFilms_progressBar.visibility = View.GONE
-            //setTitle()
+            setTitle()
         }
 
         override fun onError() {

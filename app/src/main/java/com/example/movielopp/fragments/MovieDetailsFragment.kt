@@ -11,9 +11,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -54,7 +52,6 @@ class MovieDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        fragmentDetailsLayout.bringToFront()
         //setupToolbar()
 
         getMovie()
@@ -62,8 +59,14 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         movieID = arguments!!.getInt("IDMovie")
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
 
     private fun getMovie() {
         moviesRepository = MoviesRepository.instance
@@ -101,7 +104,7 @@ class MovieDetailsFragment : Fragment() {
 
     private fun setCastComponents(cast: List<Cast>) {
         for (castIT in cast) {
-            val parent = layoutInflater.inflate(R.layout.cast, movieReviews, false)
+            val parent = layoutInflater.inflate(R.layout.cast, movieCast, false)
             val card = parent.findViewById<CardView>(R.id.castCard)
             val profileCast = parent.findViewById<ImageView>(R.id.castProfile)
             val nameCharacter = parent.findViewById<TextView>(R.id.characterName)

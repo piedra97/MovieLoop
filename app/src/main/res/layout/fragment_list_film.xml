@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
 
+
     <ProgressBar
             android:id="@+id/listFilms_progressBar"
             android:layout_width="100dp"
@@ -22,6 +23,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/movies_listing"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
+
+
 
 
 </LinearLayout>

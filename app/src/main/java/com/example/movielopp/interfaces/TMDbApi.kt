@@ -102,6 +102,21 @@ interface TMDbApi {
     ): Call<TrailerResponse>
 
 
+    @GET("tv/{tv_id}/reviews")
+    fun getTVReviews(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKEy: String,
+        @Query("language") language: String
+    ): Call<ReviewResponse>
+
+
+    @GET("tv/{tv_id}/credits")
+    fun getTVShowCredits(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKEy: String
+    ): Call<CreditResponse>
+
+
 
 
 

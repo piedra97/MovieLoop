@@ -1,10 +1,7 @@
 package com.example.movielopp.network
 
 import com.example.movielopp.BuildConfig
-import com.example.movielopp.interfaces.OnGetTVShowCallback
-import com.example.movielopp.interfaces.OnGetTVShowsCallback
-import com.example.movielopp.interfaces.OnGetTrailersCallback
-import com.example.movielopp.interfaces.TMDbApi
+import com.example.movielopp.interfaces.*
 import com.example.movielopp.model.TVShow
 import retrofit2.Call
 import retrofit2.Callback
@@ -84,6 +81,50 @@ class TVShowsRepository private constructor(private val api: TMDbApi){
                         callback.onError()
                     }
                 }else {
+                    callback.onError()
+                }
+            }
+
+        })
+    }
+
+    fun getReviews(tvshowID:Int, callback: OnGetReviewsCallback) {
+        api.getTVReviews(tvshowID, BuildConfig.TMBD_API, "en-US").enqueue(object: Callback<ReviewResponse> {
+            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+                if(response.isSuccessful) {
+                    val reviewResponse = response.body()
+                    if (reviewResponse?.reviews != null) {
+                        callback.onSuccess(reviewResponse.reviews)
+                    }else {
+                        callback.onError()
+                    }
+                }else {
+                    callback.onError()
+                }
+            }
+
+        })
+    }
+
+    fun getCredits(tvID: Int, callback: OnGetTVShowCreditsCallback) {
+        api.getTVShowCredits(tvID, BuildConfig.TMBD_API).enqueue(object: Callback<CreditResponse> {
+            override fun onFailure(call: Call<CreditResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<CreditResponse>, response: Response<CreditResponse>) {
+                if (response.isSuccessful) {
+                    val creditResponse = response.body()
+                    if (creditResponse?.cast != null) {
+                        callback.onSuccess(creditResponse.cast!!)
+                    } else {
+                        callback.onError()
+                    }
+                } else {
                     callback.onError()
                 }
             }
