@@ -2,6 +2,7 @@ package com.example.movielopp.network
 
 import com.example.movielopp.BuildConfig
 import com.example.movielopp.interfaces.*
+import com.example.movielopp.model.Movie
 import com.example.movielopp.model.TVShow
 import retrofit2.Call
 import retrofit2.Callback
@@ -121,6 +122,28 @@ class TVShowsRepository private constructor(private val api: TMDbApi){
                     val creditResponse = response.body()
                     if (creditResponse?.cast != null) {
                         callback.onSuccess(creditResponse.cast!!)
+                    } else {
+                        callback.onError()
+                    }
+                } else {
+                    callback.onError()
+                }
+            }
+
+        })
+    }
+
+    fun getSearchedTVShow(query:String, callback:OnGetSearchedTV) {
+        api.searchTVShow(BuildConfig.TMBD_API, TVShowsRepository.LANGUAGE, query, 1).enqueue(object : Callback<TVShowsResponse> {
+            override fun onFailure(call: Call<TVShowsResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<TVShowsResponse>, response: Response<TVShowsResponse>) {
+                if (response.isSuccessful) {
+                    val searchedTV = response.body()
+                    if (searchedTV?.tvShows != null) {
+                        callback.onSuccess(searchedTV.tvShows as ArrayList<TVShow>)
                     } else {
                         callback.onError()
                     }

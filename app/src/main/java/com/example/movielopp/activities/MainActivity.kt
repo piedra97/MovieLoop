@@ -1,8 +1,10 @@
 package com.example.movielopp.activities
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import com.example.movielopp.R
@@ -127,6 +129,7 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
         return true
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.signInButton -> {
@@ -137,6 +140,29 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
                     commit()
 
                 true
+
+            }
+            R.id.searchItem -> {
+                val searchView = item.actionView as SearchView
+
+                searchView.queryHint = "Introduce tu búsqueda..."
+
+                searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                    override fun onQueryTextChange(p0: String?): Boolean {
+                        return true
+                    }
+
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        val intent = Intent(this@MainActivity, SearchActivity::class.java)
+                        intent.putExtra("query",query)
+                        startActivity(intent)
+                        return true
+                    }
+
+                })
+
+                true
+
 
             }
             else -> {

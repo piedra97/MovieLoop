@@ -116,6 +116,25 @@ interface TMDbApi {
         @Query("api_key") apiKEy: String
     ): Call<CreditResponse>
 
+    @GET("search/movie")
+    fun searchMovie(
+        @Query("api_key") apiKEy: String,
+        @Query("language") language:String,
+        @Query("query") query:String,
+        @Query("page") page:Int
+    ): Call<MoviesResponse>
+
+    @GET("search/tv")
+    fun searchTVShow(
+        @Query("api_key") apiKEy: String,
+        @Query("language") language:String,
+        @Query("query") query:String,
+        @Query("page") page:Int
+    ): Call<TVShowsResponse>
+
+
+
+
 
 
 

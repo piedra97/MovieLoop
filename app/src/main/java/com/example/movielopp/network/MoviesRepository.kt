@@ -157,6 +157,28 @@ class MoviesRepository private constructor(private val api: TMDbApi) {
         })
     }
 
+    fun getSearchedMovie(query:String, callback:OnGetSearchedMovies) {
+        api.searchMovie(BuildConfig.TMBD_API, LANGUAGE, query, 1).enqueue(object : Callback<MoviesResponse> {
+            override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                callback.onError()
+            }
+
+            override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
+                if (response.isSuccessful) {
+                    val searchedMovies = response.body()
+                    if (searchedMovies?.movies != null) {
+                        callback.onSuccess(searchedMovies.movies as ArrayList<Movie>)
+                    } else {
+                        callback.onError()
+                    }
+                } else {
+                    callback.onError()
+                }
+            }
+
+        })
+    }
+
     companion object {
 
         private const val BASE_URL = "https://api.themoviedb.org/3/"
