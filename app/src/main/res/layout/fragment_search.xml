@@ -6,21 +6,6 @@
         android:layout_height="match_parent"
         tools:context=".fragments.SearchFragment">
 
-    <ProgressBar
-            android:id="@+id/itemsSearched_progressBar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
@@ -48,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:gravity="center"
+                    android:textAlignment="center"
                     android:text="Resultado de Películas"
                     android:visibility="visible"/>
 
@@ -56,6 +42,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"/>
+
+            <TextView
+                    android:id="@+id/noResultFilm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No se han econtrado resultados"
+                    android:visibility="gone"
+                    android:textAlignment="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:alpha="0.5"/>
 
             <TextView
                     android:layout_width="match_parent"
@@ -67,6 +64,17 @@
                     android:id="@+id/searched_tvshows_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/noResultTV"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No se han econtrado resultados"
+                    android:visibility="gone"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:alpha="0.5"/>
         </LinearLayout>
     </ScrollView>
 

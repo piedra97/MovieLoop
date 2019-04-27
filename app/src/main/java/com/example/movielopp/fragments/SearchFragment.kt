@@ -4,7 +4,6 @@ package com.example.movielopp.fragments
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -67,11 +66,15 @@ class SearchFragment : Fragment() {
         val tvshowsRepository = TVShowsRepository.instance
         tvshowsRepository.getSearchedTVShow(query, object : OnGetSearchedTV {
             override fun onSuccess(tvShows: List<TVShow>) {
-                val adapterCustomTVShow = AdapterSearchedTVShows(context!!, tvShows) {
-                    listenerTVShowList.onTVShowSearchedClicked(it)
+                if (tvShows.isEmpty()) {
+                    noResultTV.visibility = View.VISIBLE
+                } else {
+                    val adapterCustomTVShow = AdapterSearchedTVShows(context!!, tvShows) {
+                        listenerTVShowList.onTVShowSearchedClicked(it)
+                    }
+                    searched_tvshows_list.adapter = adapterCustomTVShow
                 }
 
-                searched_tvshows_list.adapter = adapterCustomTVShow
             }
 
             override fun onError() {
@@ -85,12 +88,14 @@ class SearchFragment : Fragment() {
         val moviesRepository = MoviesRepository.instance
         moviesRepository.getSearchedMovie(query, object : OnGetSearchedMovies {
             override fun onSuccess(movies: List<Movie>) {
-                val adapterCustomMovies = AdapterSearchedMovies(context!!, movies) {
-                    listenerMoviesList.onMovieSearchedClicked(it)
+                if (movies.isEmpty()) {
+                    noResultFilm.visibility = View.VISIBLE
+                }else {
+                    val adapterCustomMovies = AdapterSearchedMovies(context!!, movies) {
+                        listenerMoviesList.onMovieSearchedClicked(it)
+                    }
+                    searched_movies_list.adapter = adapterCustomMovies
                 }
-
-                searched_movies_list.adapter = adapterCustomMovies
-                itemsSearched_progressBar.visibility = View.GONE
             }
 
             override fun onError() {
