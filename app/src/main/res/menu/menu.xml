@@ -18,7 +18,6 @@
             android:id="@+id/signInButton"/>
     <item
             android:id="@+id/profile"
-            android:enabled="false"
             android:icon="@drawable/ic_person_white_24dp"
             android:title="Profile"
             android:visible="false"

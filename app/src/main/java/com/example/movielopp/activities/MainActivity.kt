@@ -128,6 +128,11 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
 
             }
+            R.id.profile -> {
+                val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }

@@ -38,7 +38,6 @@ class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedCli
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container_search, searchFragment).
-            addToBackStack(null).
             commit()
 
     }
