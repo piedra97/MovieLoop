@@ -17,7 +17,6 @@ import com.example.movielopp.adapters.AdapterPopularMovies
 import com.example.movielopp.interfaces.OnGetMoviesCallBack
 import com.example.movielopp.model.Movie
 import com.example.movielopp.network.MoviesRepository
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_list_film.*
 
 

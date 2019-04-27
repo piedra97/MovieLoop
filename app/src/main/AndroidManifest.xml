@@ -11,12 +11,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".activities.SearchActivity">
-        </activity>
-        <activity android:name=".activities.TVShowDetails">
+        <activity
+                android:name=".activities.LoginActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-                android:name=".activities.MovieDetailsActivity"
+                android:name=".activities.SearchActivity"
                 android:screenOrientation="portrait">
         </activity>
         <activity

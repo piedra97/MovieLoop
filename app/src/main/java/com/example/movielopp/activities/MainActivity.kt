@@ -13,7 +13,7 @@ import com.example.movielopp.fragments.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListener, LoginFragment.OnTextRegistredPressedListener, RegisterFragment.OnGoToLoginPressed, RegisterFragment.OnRegistrationConfirmPressed, ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener{
+class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener{
 
     var movieClicked = false
 
@@ -42,39 +42,7 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
     }
 
 
-    override fun onLoginPressed() {
-        val listFragmenfilm = ListFilmFragment()
-        supportFragmentManager.
-            beginTransaction().
-            replace(R.id.main_container, listFragmenfilm).
-            commit()
-    }
 
-    override fun onRegistrationConfirmPressed() {
-        val loginFragment = LoginFragment()
-        supportFragmentManager.
-            beginTransaction().
-            replace(R.id.main_container, loginFragment).
-            commit()
-
-    }
-
-    override fun onGoToLoginPressed() {
-        val loginFragment = LoginFragment()
-        supportFragmentManager.
-            beginTransaction().
-            replace(R.id.main_container, loginFragment).
-            commit()
-    }
-
-
-    override fun onRegisteredPressed(username: String) {
-        val fragmentRegister = RegisterFragment.newInstance(username)
-        supportFragmentManager.
-            beginTransaction().
-            replace(R.id.main_container, fragmentRegister).
-            commit()
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -112,7 +80,6 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
 
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val authUser = FirebaseAuth.getInstance().signOut()
         val profileItem = menu?.findItem(R.id.profile)
         val signInItem = menu?.findItem(R.id.signInButton)
         val sortItem = menu?.findItem(R.id.sort)
@@ -133,12 +100,8 @@ class MainActivity : AppCompatActivity(),LoginFragment.OnButtonLoginPressedListe
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.signInButton -> {
-                val signInFragment = LoginFragment()
-                supportFragmentManager.
-                    beginTransaction().
-                    replace(R.id.main_container, signInFragment).
-                    commit()
-
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
                 true
 
             }
