@@ -101,7 +101,10 @@ class TVShowsFragmentList : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun showSortMenu() {
-        val sortMenu = PopupMenu(context, view, Gravity.END)
+        val menuItem = activity?.findViewById<View>(R.id.sort)
+        val sortMenu = PopupMenu(context, menuItem, Gravity.END)
+        sortMenu.inflate(R.menu.menu_movies_sort)
+        sortMenu.show()
         sortMenu.setOnMenuItemClickListener(object: PopupMenu.OnMenuItemClickListener {
             override fun onMenuItemClick(item: MenuItem?): Boolean {
                 when (item!!.itemId) {
@@ -125,8 +128,6 @@ class TVShowsFragmentList : Fragment() {
             }
 
         })
-        sortMenu.inflate(R.menu.menu_movies_sort)
-        sortMenu.show()
     }
 
 

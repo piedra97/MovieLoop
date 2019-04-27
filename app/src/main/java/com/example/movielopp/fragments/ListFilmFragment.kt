@@ -17,6 +17,7 @@ import com.example.movielopp.adapters.AdapterPopularMovies
 import com.example.movielopp.interfaces.OnGetMoviesCallBack
 import com.example.movielopp.model.Movie
 import com.example.movielopp.network.MoviesRepository
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_list_film.*
 
 
@@ -69,6 +70,7 @@ class ListFilmFragment : Fragment() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
         menu?.clear()
         inflater.inflate(R.menu.menu, menu)
@@ -95,7 +97,10 @@ class ListFilmFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun showSortMenu() {
-        val sortMenu = PopupMenu(context, view, Gravity.END)
+        val menuItem = activity?.findViewById<View>(R.id.sort)
+        val sortMenu = PopupMenu(context, menuItem, Gravity.END)
+        sortMenu.inflate(R.menu.menu_movies_sort)
+        sortMenu.show()
         sortMenu.setOnMenuItemClickListener(object: PopupMenu.OnMenuItemClickListener {
             override fun onMenuItemClick(item: MenuItem?): Boolean {
                 when (item!!.itemId) {
@@ -119,8 +124,6 @@ class ListFilmFragment : Fragment() {
             }
 
         })
-        sortMenu.inflate(R.menu.menu_movies_sort)
-        sortMenu.show()
     }
 
     private fun getSortedMovies() {
