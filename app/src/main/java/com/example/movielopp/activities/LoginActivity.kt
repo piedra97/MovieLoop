@@ -37,6 +37,7 @@ class LoginActivity : AppCompatActivity(), RegisterFragment.OnRegistrationConfir
     override fun onLoginPressed() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 

@@ -11,15 +11,16 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.example.movielopp.interfaces.*
 import com.example.movielopp.model.*
 import com.example.movielopp.network.MoviesRepository
 
 import com.example.movielopp.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
@@ -40,6 +41,12 @@ class MovieDetailsFragment : Fragment() {
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
     private var moviesRepository:MoviesRepository? = null
     private var movieID = 0
+    private lateinit var mDatabase:DatabaseReference
+    private var userHasVoted = false
+    private lateinit var auth:FirebaseAuth
+    private var spinnerAdapter:Adapter? = null
+    private var check = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,13 +61,89 @@ class MovieDetailsFragment : Fragment() {
 
         //setupToolbar()
 
+         mDatabase = FirebaseDatabase.getInstance().reference
+        setSpinnerRating()
+        setUserInteractionsComponents()
+        handleSpinnerClik()
         getMovie()
+    }
+
+    private fun handleSpinnerClik() {
+
+        spinnerRating.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                spinnerRating.error = "Escoja una opción."
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                check += 1
+
+                if (check > 1) {
+                    val userRatingSelected = spinnerRating.getItemAtPosition(position).toString()
+
+                    val uid = FirebaseAuth.getInstance().uid ?: ""
+                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uid")
+
+                    val userRating = UserMovieRating(auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
+
+                    ref.setValue(userRating)
+                        .addOnSuccessListener {
+                            Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
+                        }
+
+                }
+            }
+
+        }
+    }
+
+    private fun setSpinnerRating() {
+        val items = ArrayList<Int> ()
+        setItems(items)
+        spinnerAdapter = ArrayAdapter<Int>(context!!, android.R.layout.simple_spinner_dropdown_item, items)
+        (spinnerAdapter as ArrayAdapter<*>).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerRating.adapter = spinnerAdapter as ArrayAdapter<*>
+    }
+
+    private fun setUserInteractionsComponents() {
+        if (!userHasVoted) {
+            spinnerRating.visibility = View.VISIBLE
+        }
+
+        else {
+            spinnerRating.visibility = View.GONE
+        }
+    }
+
+    private fun checkIfUserHasVoted(currentUserUID: String) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("RatingMovie/$currentUserUID")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                userHasVoted = true
+            }
+
+        })
+    }
+
+    private fun setItems(items: ArrayList<Int>) {
+        for (i in 1..10) {
+            items.add(i)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        auth = FirebaseAuth.getInstance()
         movieID = arguments!!.getInt("IDMovie")
+        checkIfUserHasVoted(auth.currentUser!!.uid)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

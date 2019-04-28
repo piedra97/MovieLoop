@@ -1,6 +1,7 @@
 package com.example.movielopp.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -15,8 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_profile.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import kotlin.math.sign
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +29,11 @@ private const val ARG_PARAM2 = "param2"
  */
 class ProfileFragment : Fragment() {
 
+    interface OnSignOutClicked {
+        fun onSignOutClicked()
+    }
+
+    lateinit var signOutClickedListener: OnSignOutClicked
     var userName:String ? = null
     var userEmail:String ? = null
 
@@ -40,16 +45,16 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setUserInformation()
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUserInformation()
 
         email.text = userEmail
+
+        signOut.setOnClickListener {
+            signOutClickedListener.onSignOutClicked()
+        }
     }
 
 
@@ -81,6 +86,11 @@ class ProfileFragment : Fragment() {
         }
         setUserName(user)
 
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        signOutClickedListener = context as OnSignOutClicked
     }
 
 

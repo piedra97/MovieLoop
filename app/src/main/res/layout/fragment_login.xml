@@ -94,11 +94,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:padding="12dp"
                 android:text="Inicia Sesión"
                 android:textAlignment="center"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:focusable="true"/>
     </RelativeLayout>
 
     <TextView

@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'org.jetbrains.anko:anko-common:0.9'
+    implementation 'com.github.ganfra:material-spinner:1.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

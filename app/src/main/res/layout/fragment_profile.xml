@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<android.support.constraint.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/profile_container"
         android:visibility="gone"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,10 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/layout">
+            android:id="@+id/layout"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp">
 
 
         <ImageView
@@ -23,7 +28,7 @@
                 android:scaleType="centerCrop"
 
                 android:src="@drawable/nav_menu_header_bg"
-                app:srcCompat="@drawable/nav_menu_header_bg" />
+                app:srcCompat="@drawable/nav_menu_header_bg"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -41,7 +46,7 @@
                 android:elevation="5dp"
                 android:padding="20dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/man" />
+                android:src="@drawable/man"/>
 
         <RelativeLayout
                 android:id="@+id/profile_layout"
@@ -61,7 +66,7 @@
                     android:layout_marginTop="70dp"
                     android:textColor="#fff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             <TextView
                     android:id="@+id/email"
@@ -71,8 +76,28 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:textColor="#fff"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
         </RelativeLayout>
+
     </RelativeLayout>
-</ScrollView>
+
+    <TextView
+            android:text="Cerrar Sesión"
+            android:clickable="true"
+            android:layout_width="111dp"
+            android:layout_height="39dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:background="#ebca0707"
+            android:id="@+id/signOut"
+            android:textSize="16sp"
+            android:layout_marginBottom="264dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="148dp"
+            android:layout_marginRight="148dp"/>
+
+
+
+</android.support.constraint.ConstraintLayout>

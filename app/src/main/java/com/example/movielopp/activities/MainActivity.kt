@@ -42,12 +42,11 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     }
 
 
-
-
     override fun onBackPressed() {
         super.onBackPressed()
         movieClicked = false
         tvShowCliked = false
+
     }
 
 
