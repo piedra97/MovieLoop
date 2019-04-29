@@ -71,33 +71,6 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/spinnerRating"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:ms_arrowColor="#0000FF"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="#A9A9A9"
-                    app:ms_floatingLabelText="Haga su votación"
-                    app:ms_hint="Escoja una opción"
-                    app:ms_hintColor="@color/black"
-                    app:ms_multiline="true"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/movieDetailsOverview"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/movieDetailsGenres"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    app:layout_constraintHorizontal_bias="0.559"
-                    app:layout_constraintVertical_bias="0.303">
-
-
-            </fr.ganfra.materialspinner.MaterialSpinner>
 
             <TextView
                     android:id="@+id/rating"
@@ -127,11 +100,9 @@
 
             <TextView
                     android:id="@+id/movieDetailsOverview"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:alpha="0.7"
@@ -406,6 +377,54 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/reviewsLabel"/>
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="170dp"
+                    android:layout_height="115dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/movieDetailsGenres"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/movieDetailsOverview"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="0.862"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:id="@+id/userIterations">
+
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spinnerRating"
+                        android:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ms_arrowColor="#0000FF"
+                        app:ms_arrowSize="16dp"
+                        app:ms_floatingLabelColor="#A9A9A9"
+                        app:ms_floatingLabelText="Haga su votación"
+                        app:ms_hint="Votación"
+                        app:ms_hintColor="@color/black"
+                        app:ms_multiline="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintVertical_bias="1.0">
+
+
+                </fr.ganfra.materialspinner.MaterialSpinner>
+
+
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

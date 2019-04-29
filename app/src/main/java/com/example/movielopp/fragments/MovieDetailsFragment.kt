@@ -2,6 +2,7 @@ package com.example.movielopp.fragments
 
 
 import android.annotation.TargetApi
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -11,7 +12,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.widget.*
 import com.example.movielopp.interfaces.*
@@ -44,10 +44,11 @@ class MovieDetailsFragment : Fragment() {
     private var movieID = 0
     private lateinit var mDatabase:DatabaseReference
     private lateinit var auth:FirebaseAuth
-    private var spinnerAdapter:Adapter? = null
+    private lateinit var spinnerAdapter:ArrayAdapter<Int>
     private var userHasVoted = false
     private var userRatingVoted:Int ? = null
     private var currentUserRating: UserMovieRating? = null
+    private var mContext:Context ? = null
     private var check = 0
 
 
@@ -64,11 +65,12 @@ class MovieDetailsFragment : Fragment() {
 
         //setupToolbar()
 
-         mDatabase = FirebaseDatabase.getInstance().reference
-        setSpinnerRating()
+        mDatabase = FirebaseDatabase.getInstance().reference
+
         if (auth.currentUser != null) {
             checkIfUserHasVoted(auth.currentUser!!.uid)
         }
+
         handleSpinnerClik()
         getMovie()
     }
@@ -77,7 +79,7 @@ class MovieDetailsFragment : Fragment() {
 
         spinnerRating.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                spinnerRating.error = "Escoja una opción."
+                spinnerRating.error = "Realice su votación."
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -89,27 +91,22 @@ class MovieDetailsFragment : Fragment() {
                 if (check > 1 && !userHasVoted) {
                     val userRatingSelected = spinnerRating.getItemAtPosition(position).toString()
 
-                    if (userRatingSelected != "Escoja una opción") {
+                    if (userRatingSelected != "Realice su votación.") {
 
                         val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
 
                         val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
-
                         ref.setValue(userRating)
-                            .addOnSuccessListener {
-                                Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
-                            }
 
                     }
+
                 } else if (check > 1){
                     val uidToUpdate = currentUserRating?.uidRating
                     val userRatingToUpdate = spinnerRating.getItemAtPosition(position).toString()
                     currentUserRating?.rating = userRatingToUpdate
                     val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidToUpdate")
 
-                    ref.setValue(currentUserRating).addOnSuccessListener {
-                        Log.d("DetailsFragment", "Rating Value Updated")
-                    }
+                    ref.setValue(currentUserRating)
                 }
             }
 
@@ -119,20 +116,27 @@ class MovieDetailsFragment : Fragment() {
     private fun setSpinnerRating() {
         val items = ArrayList<Int> ()
         setItems(items)
-        spinnerAdapter = ArrayAdapter<Int>(context!!, android.R.layout.simple_spinner_dropdown_item, items)
+        spinnerAdapter = ArrayAdapter(mContext!!, android.R.layout.simple_spinner_dropdown_item, items)
         (spinnerAdapter as ArrayAdapter<*>).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerRating.adapter = spinnerAdapter as ArrayAdapter<*>
+        val spinner = activity?.findViewById<Spinner>(R.id.spinnerRating)
+        spinner?.adapter = spinnerAdapter
     }
 
     private fun setUserInteractionsComponents() {
+        setSpinnerRating()
+        val spinner = activity?.findViewById<Spinner>(R.id.spinnerRating)
         if (!userHasVoted) {
-            spinnerRating.visibility = View.VISIBLE
+            spinner?.visibility = View.VISIBLE
         }
 
         else {
-            setSpinnerRating()
-            val pos = spinnerAdapter?.getItem(userRatingVoted!!) as Int
-            spinnerRating.setSelection(pos - 1)
+            spinner?.visibility = View.VISIBLE
+            val pos = spinnerAdapter.getItem(userRatingVoted!!) as Int
+            if (userRatingVoted == 10) {
+                spinner?.setSelection(10)
+            }else {
+                spinner?.setSelection(pos - 1)
+            }
         }
     }
 
@@ -165,7 +169,9 @@ class MovieDetailsFragment : Fragment() {
 
         })
 
-        setUserInteractionsComponents()
+        if (!userHasVoted) {
+            setUserInteractionsComponents()
+        }
 
     }
 
@@ -184,6 +190,11 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mContext = context
     }
 
 

@@ -22,18 +22,12 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-       val fragmentProfile = ProfileFragment()
+        val fragmentProfile = ProfileFragment()
 
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container_profile, fragmentProfile).
             commit()
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    }
 }
+

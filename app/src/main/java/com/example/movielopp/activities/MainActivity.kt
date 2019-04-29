@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
             R.id.signInButton -> {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
                 true
 
             }
@@ -138,4 +139,5 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
         }
 
     }
+
 }
