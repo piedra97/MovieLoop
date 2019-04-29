@@ -11,7 +11,6 @@
         android:layout_height="match_parent">
 
 
-
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -92,12 +91,42 @@
             android:background="#ebca0707"
             android:id="@+id/signOut"
             android:textSize="16sp"
-            android:layout_marginBottom="264dp"
+            android:layout_marginBottom="156dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="148dp"
-            android:layout_marginRight="148dp"/>
+            android:layout_marginRight="148dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/userVotes"
+            app:layout_constraintVertical_bias="0.75"/>
 
+    <TextView
+            android:text="Tus Votaciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userVoteText"
+            app:layout_constraintTop_toBottomOf="@+id/userVotes"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="44dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_gavel_black_24dp"
+            android:id="@+id/userVotes"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="44dp"
+            android:layout_marginStart="44dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="356dp"
+            app:layout_constraintTop_toTopOf="@+id/layout"
+            android:clickable="true"
+            android:contentDescription="User Votes"/>
 
 
 </android.support.constraint.ConstraintLayout>

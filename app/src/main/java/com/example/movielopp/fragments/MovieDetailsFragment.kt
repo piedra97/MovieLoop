@@ -17,7 +17,6 @@ import android.widget.*
 import com.example.movielopp.interfaces.*
 import com.example.movielopp.model.*
 import com.example.movielopp.network.MoviesRepository
-
 import com.example.movielopp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
