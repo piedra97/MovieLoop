@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import java.util.UUID.randomUUID
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,9 +43,11 @@ class MovieDetailsFragment : Fragment() {
     private var moviesRepository:MoviesRepository? = null
     private var movieID = 0
     private lateinit var mDatabase:DatabaseReference
-    private var userHasVoted = false
     private lateinit var auth:FirebaseAuth
     private var spinnerAdapter:Adapter? = null
+    private var userHasVoted = false
+    private var usersRating:ArrayList<UserMovieRating> = ArrayList()
+    private var userRatingVoted:Int ? = null
     private var check = 0
 
 
@@ -63,7 +66,10 @@ class MovieDetailsFragment : Fragment() {
 
          mDatabase = FirebaseDatabase.getInstance().reference
         setSpinnerRating()
-        setUserInteractionsComponents()
+        if (auth.currentUser != null) {
+            fragmentDetailsLayout.visibility = View.GONE
+            checkIfUserHasVoted(auth.currentUser!!.uid)
+        }
         handleSpinnerClik()
         getMovie()
     }
@@ -82,8 +88,8 @@ class MovieDetailsFragment : Fragment() {
                 if (check > 1) {
                     val userRatingSelected = spinnerRating.getItemAtPosition(position).toString()
 
-                    val uid = FirebaseAuth.getInstance().uid ?: ""
-                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uid")
+                    val uidRating = randomUUID().toString()
+                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
 
                     val userRating = UserMovieRating(auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
 
@@ -112,13 +118,16 @@ class MovieDetailsFragment : Fragment() {
         }
 
         else {
-            spinnerRating.visibility = View.GONE
+            spinnerRating.visibility = View.VISIBLE
+            setSpinnerRating()
+            val pos = spinnerAdapter?.getItem(userRatingVoted!!) as Int
+            spinnerRating.setSelection(pos - 1)
         }
     }
 
     private fun checkIfUserHasVoted(currentUserUID: String) {
         val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("RatingMovie/$currentUserUID")
+        val ref = database.getReference("RatingMovie")
 
         ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -126,7 +135,20 @@ class MovieDetailsFragment : Fragment() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                userHasVoted = true
+                if (p0.exists()) {
+                    usersRating.clear()
+                    for (it in p0.children) {
+                        val userRatingIT = it.getValue(UserMovieRating::class.java)
+                        if (userRatingIT != null) {
+                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieID.toString()) {
+                                userRatingVoted = Integer.parseInt(userRatingIT.rating)
+                                    userHasVoted = true
+                                }
+                        }
+                    }
+                }
+                fragmentDetailsLayout.visibility = View.VISIBLE
+                setUserInteractionsComponents()
             }
 
         })
@@ -143,7 +165,6 @@ class MovieDetailsFragment : Fragment() {
         setHasOptionsMenu(true)
         auth = FirebaseAuth.getInstance()
         movieID = arguments!!.getInt("IDMovie")
-        checkIfUserHasVoted(auth.currentUser!!.uid)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
