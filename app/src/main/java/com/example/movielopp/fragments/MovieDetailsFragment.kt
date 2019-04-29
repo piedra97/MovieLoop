@@ -46,8 +46,8 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var auth:FirebaseAuth
     private var spinnerAdapter:Adapter? = null
     private var userHasVoted = false
-    private var usersRating:ArrayList<UserMovieRating> = ArrayList()
     private var userRatingVoted:Int ? = null
+    private var currentUserRating: UserMovieRating? = null
     private var check = 0
 
 
@@ -67,7 +67,6 @@ class MovieDetailsFragment : Fragment() {
          mDatabase = FirebaseDatabase.getInstance().reference
         setSpinnerRating()
         if (auth.currentUser != null) {
-            fragmentDetailsLayout.visibility = View.GONE
             checkIfUserHasVoted(auth.currentUser!!.uid)
         }
         handleSpinnerClik()
@@ -85,19 +84,32 @@ class MovieDetailsFragment : Fragment() {
 
                 check += 1
 
-                if (check > 1) {
+                val uidRating = randomUUID().toString()
+
+                if (check > 1 && !userHasVoted) {
                     val userRatingSelected = spinnerRating.getItemAtPosition(position).toString()
 
-                    val uidRating = randomUUID().toString()
-                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
+                    if (userRatingSelected != "Escoja una opción") {
 
-                    val userRating = UserMovieRating(auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
+                        val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
 
-                    ref.setValue(userRating)
-                        .addOnSuccessListener {
-                            Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
-                        }
+                        val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
 
+                        ref.setValue(userRating)
+                            .addOnSuccessListener {
+                                Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
+                            }
+
+                    }
+                } else if (check > 1){
+                    val uidToUpdate = currentUserRating?.uidRating
+                    val userRatingToUpdate = spinnerRating.getItemAtPosition(position).toString()
+                    currentUserRating?.rating = userRatingToUpdate
+                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidToUpdate")
+
+                    ref.setValue(currentUserRating).addOnSuccessListener {
+                        Log.d("DetailsFragment", "Rating Value Updated")
+                    }
                 }
             }
 
@@ -118,7 +130,6 @@ class MovieDetailsFragment : Fragment() {
         }
 
         else {
-            spinnerRating.visibility = View.VISIBLE
             setSpinnerRating()
             val pos = spinnerAdapter?.getItem(userRatingVoted!!) as Int
             spinnerRating.setSelection(pos - 1)
@@ -136,22 +147,26 @@ class MovieDetailsFragment : Fragment() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
-                    usersRating.clear()
                     for (it in p0.children) {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         if (userRatingIT != null) {
                             if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieID.toString()) {
                                 userRatingVoted = Integer.parseInt(userRatingIT.rating)
-                                    userHasVoted = true
+                                currentUserRating = userRatingIT
+                                userHasVoted = true
+                                setUserInteractionsComponents()
                                 }
                         }
                     }
+
                 }
-                fragmentDetailsLayout.visibility = View.VISIBLE
-                setUserInteractionsComponents()
+
             }
 
         })
+
+        setUserInteractionsComponents()
+
     }
 
     private fun setItems(items: ArrayList<Int>) {

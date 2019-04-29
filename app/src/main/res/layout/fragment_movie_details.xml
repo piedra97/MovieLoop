@@ -73,7 +73,7 @@
 
             <fr.ganfra.materialspinner.MaterialSpinner
                     android:id="@+id/spinnerRating"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ms_arrowColor="#0000FF"
@@ -102,17 +102,16 @@
             <TextView
                     android:id="@+id/rating"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="27dp"
                     android:ems="10"
                     android:textColor="@color/white"
                     android:background="@drawable/button_back"
-                    android:layout_marginTop="8dp"
                     android:visibility="gone"
                     android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/movieDetailsTitle"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/spinnerRating"
-                    android:layout_marginRight="8dp"/>
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"/>
 
             <TextView
                     android:id="@+id/movieDetailsGenres"
