@@ -88,7 +88,7 @@ class VotesUserListFragment : Fragment() {
                 if (p0.exists()) {
                     for (it in p0.children) {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
-                        if (userRatingIT != null) {
+                        userRatingIT?.let {
                             if (userRatingIT.userUID == currentUserUID) {
                                 val urlImage = getFilm(Integer.parseInt(userRatingIT.movieID))
                                 listVotes.add(ModelListRatings(urlImage, userRatingIT.rating))

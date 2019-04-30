@@ -10,15 +10,17 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked{
 
+    var ratingsClicked = false
+
     override fun onRatingsClicked() {
         val fragmentRatings = VotesUserListFragment()
 
+        ratingsClicked = true
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container_profile, fragmentRatings).
             addToBackStack(null).
             commit()
-        finish()
     }
 
     override fun onSignOutClicked() {
@@ -28,6 +30,16 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (!ratingsClicked) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        ratingsClicked = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

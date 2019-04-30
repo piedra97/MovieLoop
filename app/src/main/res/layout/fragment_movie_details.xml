@@ -389,7 +389,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/movieDetailsOverview"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintTop_toTopOf="@+id/movieDetailsTitle"
                     app:layout_constraintHorizontal_bias="0.862"
                     app:layout_constraintVertical_bias="0.0"
