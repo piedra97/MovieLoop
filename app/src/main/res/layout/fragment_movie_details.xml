@@ -390,7 +390,7 @@
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/movieDetailsOverview"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/movieDetailsTitle"
                     app:layout_constraintHorizontal_bias="0.862"
                     app:layout_constraintVertical_bias="0.0"
                     android:id="@+id/userIterations">
@@ -404,7 +404,6 @@
                         app:ms_arrowColor="#0000FF"
                         app:ms_arrowSize="16dp"
                         app:ms_floatingLabelColor="#A9A9A9"
-                        app:ms_floatingLabelText="Haga su votación"
                         app:ms_hint="Votación"
                         app:ms_hintColor="@color/black"
                         app:ms_multiline="true"

@@ -5,9 +5,20 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.example.movielopp.R
 import com.example.movielopp.fragments.ProfileFragment
+import com.example.movielopp.fragments.VotesUserListFragment
 import com.google.firebase.auth.FirebaseAuth
 
-class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked {
+class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked{
+
+    override fun onRatingsClicked() {
+        val fragmentRatings = VotesUserListFragment()
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentRatings).
+            addToBackStack(null).
+            commit()
+    }
 
     override fun onSignOutClicked() {
         val auth = FirebaseAuth.getInstance()

@@ -129,11 +129,13 @@ class MovieDetailsFragment : Fragment() {
         }
 
         else {
+            val pos: Int
             spinner?.visibility = View.VISIBLE
-            val pos = spinnerAdapter.getItem(userRatingVoted!!) as Int
             if (userRatingVoted == 10) {
                 spinner?.setSelection(10)
-            }else {
+            }
+            else {
+                pos = spinnerAdapter.getItem(userRatingVoted!!) as Int
                 spinner?.setSelection(pos - 1)
             }
         }
@@ -154,9 +156,9 @@ class MovieDetailsFragment : Fragment() {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         if (userRatingIT != null) {
                             if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieID.toString()) {
+                                userHasVoted = true
                                 userRatingVoted = Integer.parseInt(userRatingIT.rating)
                                 currentUserRating = userRatingIT
-                                userHasVoted = true
                                 setUserInteractionsComponents()
                                 }
                         }
@@ -189,6 +191,17 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
+        if (auth.currentUser != null) {
+            val profile = menu?.findItem(R.id.profile)
+            profile?.isVisible = false
+        }else {
+            val signIn = menu?.findItem(R.id.signIn)
+            signIn?.isVisible = false
+        }
+        val sort = menu?.findItem(R.id.sort)
+        sort?.isVisible = false
+        val search = menu?.findItem((R.id.searchItem))
+        search?.isVisible = false
     }
 
     override fun onAttach(context: Context?) {

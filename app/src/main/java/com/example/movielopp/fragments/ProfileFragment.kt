@@ -33,9 +33,14 @@ class ProfileFragment : Fragment() {
         fun onSignOutClicked()
     }
 
-    lateinit var signOutClickedListener: OnSignOutClicked
-    var userName:String ? = null
-    var userEmail:String ? = null
+    interface OnRatingsClicked {
+        fun onRatingsClicked()
+    }
+
+    private lateinit var signOutClickedListener: OnSignOutClicked
+    private lateinit var votesClicked: OnRatingsClicked
+    private var userName:String ? = null
+    private var userEmail:String ? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +59,10 @@ class ProfileFragment : Fragment() {
 
         signOut.setOnClickListener {
             signOutClickedListener.onSignOutClicked()
+        }
+
+        userVotes.setOnClickListener {
+            votesClicked.onRatingsClicked()
         }
     }
 
@@ -91,6 +100,7 @@ class ProfileFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         signOutClickedListener = context as OnSignOutClicked
+        votesClicked = context as OnRatingsClicked
     }
 
 
