@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 
 import com.example.movielopp.R
 import com.example.movielopp.adapters.AdapterUserRating
@@ -14,14 +15,11 @@ import com.example.movielopp.model.ModelListRatings
 import com.example.movielopp.model.Movie
 import com.example.movielopp.model.UserMovieRating
 import com.example.movielopp.network.MoviesRepository
-import com.example.movielopp.network.TVShowsRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.android.synthetic.main.fragment_votes_user_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -109,7 +107,8 @@ class VotesUserListFragment : Fragment() {
 
     private fun configureList() {
         val adapterRating = AdapterUserRating(context, listVotes, IMAGE_BASE_URL)
-        votesUser_list.adapter = adapterRating
+        val listRatings = activity?.findViewById<ListView>(R.id.votesUser_list)
+        listRatings?.adapter = adapterRating
         adapterRating.notifyDataSetChanged()
     }
 

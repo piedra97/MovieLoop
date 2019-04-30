@@ -87,19 +87,18 @@ class MovieDetailsFragment : Fragment() {
 
                 val uidRating = randomUUID().toString()
 
-                if (check > 1 && !userHasVoted) {
-                    val userRatingSelected = spinnerRating.getItemAtPosition(position).toString()
+                val userRatingSelected = spinnerRating.getItemAtPosition(position).toString()
 
-                    if (userRatingSelected != "Realice su votación.") {
+                if (check > 1 && !userHasVoted && userRatingSelected != "Votación") {
 
-                        val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
+                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
 
-                        val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
-                        ref.setValue(userRating)
+                    val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
+                    ref.setValue(userRating)
 
-                    }
 
-                } else if (check > 1){
+
+                } else if (check > 1 && userRatingSelected != "Votación"){
                     val uidToUpdate = currentUserRating?.uidRating
                     val userRatingToUpdate = spinnerRating.getItemAtPosition(position).toString()
                     currentUserRating?.rating = userRatingToUpdate
@@ -107,9 +106,19 @@ class MovieDetailsFragment : Fragment() {
 
                     ref.setValue(currentUserRating)
                 }
+                else if (check > 1) {
+                    val uidToDelete = currentUserRating?.uidRating
+                    deleteRating(uidToDelete)
+                }
             }
 
         }
+    }
+
+    private fun deleteRating(uidToDelete: String?) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("RatingMovie").child(uidToDelete!!)
+        ref.removeValue()
     }
 
     private fun setSpinnerRating() {
@@ -155,7 +164,7 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         if (userRatingIT != null) {
-                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieID.toString()) {
+                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieID.toString() && userRatingIT.rating != "Votación") {
                                 userHasVoted = true
                                 userRatingVoted = Integer.parseInt(userRatingIT.rating)
                                 currentUserRating = userRatingIT

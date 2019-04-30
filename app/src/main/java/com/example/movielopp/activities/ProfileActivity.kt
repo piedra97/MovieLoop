@@ -18,6 +18,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
             replace(R.id.main_container_profile, fragmentRatings).
             addToBackStack(null).
             commit()
+        finish()
     }
 
     override fun onSignOutClicked() {
