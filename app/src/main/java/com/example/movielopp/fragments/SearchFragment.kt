@@ -33,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
 class SearchFragment : Fragment() {
 
     interface OnGetMovieSearchedClicked {
-        fun onMovieSearchedClicked(movieID:Int)
+        fun onMovieSearchedClicked(movie:Movie)
     }
 
     interface OnGetTVShowSearchedClicked {

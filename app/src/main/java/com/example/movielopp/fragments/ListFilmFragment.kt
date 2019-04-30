@@ -8,7 +8,6 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -32,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
 class ListFilmFragment : Fragment() {
 
     interface OnMoviesClickedListener {
-        fun onMovieClicked(iDMovie:Int)
+        fun onMovieClicked(movie:Movie)
 
     }
     private var adapterCustom: AdapterPopularMovies? = null
@@ -56,17 +55,11 @@ class ListFilmFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         configureList()
         getSortedMovies()
-        //setToolbar()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    private fun setToolbar() {
-        val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
     }
 
 
@@ -134,8 +127,6 @@ class ListFilmFragment : Fragment() {
                 listenerList.onMovieClicked(it)
             }
             movies_listing.adapter = adapterCustom
-            //adapterCustom!!.setMovies(movies)
-            //adapterCustom!!.notifyDataSetChanged()
             listFilms_progressBar.visibility = View.GONE
             setTitle()
         }

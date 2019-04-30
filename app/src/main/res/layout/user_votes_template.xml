@@ -11,16 +11,17 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
                 android:id="@+id/imageMovie"
-                android:layout_weight="1"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="0dp"/>
         <TextView
                 android:text="Rating Number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ratingNumber"
-                android:layout_marginEnd="50dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="40dp"/>
 

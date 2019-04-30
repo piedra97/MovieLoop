@@ -40,7 +40,7 @@ class MovieDetailsFragment : Fragment() {
     private val YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s"
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
     private var moviesRepository:MoviesRepository? = null
-    private var movieID = 0
+    private var movieToWork:Movie? = null
     private lateinit var mDatabase:DatabaseReference
     private lateinit var auth:FirebaseAuth
     private lateinit var spinnerAdapter:ArrayAdapter<Int>
@@ -93,7 +93,7 @@ class MovieDetailsFragment : Fragment() {
 
                     val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
 
-                    val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieID.toString(), userRatingSelected)
+                    val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieToWork!!.id.toString(), userRatingSelected, movieToWork!!.posterPath)
                     ref.setValue(userRating)
 
 
@@ -164,7 +164,7 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         if (userRatingIT != null) {
-                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieID.toString() && userRatingIT.rating != "Votación") {
+                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieToWork!!.id.toString() && userRatingIT.rating != "Votación") {
                                 userHasVoted = true
                                 userRatingVoted = Integer.parseInt(userRatingIT.rating)
                                 currentUserRating = userRatingIT
@@ -195,7 +195,7 @@ class MovieDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         auth = FirebaseAuth.getInstance()
-        movieID = arguments!!.getInt("IDMovie")
+        movieToWork = arguments!!.getParcelable("movie")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -221,7 +221,7 @@ class MovieDetailsFragment : Fragment() {
 
     private fun getMovie() {
         moviesRepository = MoviesRepository.instance
-        moviesRepository?.getMovie(movieID, object : OnGetMovieCallBack {
+        moviesRepository?.getMovie(movieToWork!!.id, object : OnGetMovieCallBack {
             override fun onSuccess(movie: Movie) {
                 setUIComponents(movie)
                 getCredits(movie)
@@ -504,11 +504,11 @@ class MovieDetailsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(idMovie: Int): MovieDetailsFragment{
+        fun newInstance(movie: Movie): MovieDetailsFragment{
             val fragmentMovieDetail = MovieDetailsFragment()
             val args = Bundle()
 
-            args.putInt("IDMovie", idMovie)
+            args.putParcelable("movie", movie)
             fragmentMovieDetail.arguments = args
 
             return fragmentMovieDetail

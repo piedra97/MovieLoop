@@ -36,6 +36,8 @@ class VotesUserListFragment : Fragment() {
 
     private var listVotes:ArrayList<ModelListRatings> = ArrayList()
 
+    private var adapterRating:AdapterUserRating? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +50,13 @@ class VotesUserListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         //getTVShows()
         getUserVotes()
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        adapterRating?.setMovieListRatings(listVotes)
+        adapterRating?.notifyDataSetChanged()
     }
 
     private fun getTVShows() {
@@ -55,23 +64,6 @@ class VotesUserListFragment : Fragment() {
     }
 
 
-    private fun getFilm(filmID:Int) : String?{
-        val moviesRepository = MoviesRepository.instance
-        var urlMovieImage:String? = null
-        moviesRepository.getMovie(filmID, object : OnGetMovieCallBack {
-            override fun onSuccess(movie: Movie) {
-                urlMovieImage = movie.posterPath
-            }
-
-            override fun onError() {
-
-            }
-
-        })
-
-        return urlMovieImage
-
-    }
 
     private fun getUserVotes() {
         val auth = FirebaseAuth.getInstance()
@@ -90,8 +82,7 @@ class VotesUserListFragment : Fragment() {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         userRatingIT?.let {
                             if (userRatingIT.userUID == currentUserUID) {
-                                val urlImage = getFilm(Integer.parseInt(userRatingIT.movieID))
-                                listVotes.add(ModelListRatings(urlImage, userRatingIT.rating))
+                                listVotes.add(ModelListRatings(userRatingIT.posterPath, userRatingIT.rating))
                             }
                         }
                     }
@@ -106,10 +97,9 @@ class VotesUserListFragment : Fragment() {
 
 
     private fun configureList() {
-        val adapterRating = AdapterUserRating(context, listVotes, IMAGE_BASE_URL)
+        adapterRating = AdapterUserRating(context, listVotes, IMAGE_BASE_URL)
         val listRatings = activity?.findViewById<ListView>(R.id.votesUser_list)
         listRatings?.adapter = adapterRating
-        adapterRating.notifyDataSetChanged()
     }
 
 

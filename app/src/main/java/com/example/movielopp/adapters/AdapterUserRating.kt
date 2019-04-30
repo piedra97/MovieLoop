@@ -47,6 +47,11 @@ class AdapterUserRating(var context: Context?, items:ArrayList<ModelListRatings>
         return vista!!
     }
 
+     fun setMovieListRatings(items: ArrayList<ModelListRatings>) {
+        this.items = items
+
+    }
+
     override fun getItem(position: Int): Any {
         return items?.get(position)!!
     }

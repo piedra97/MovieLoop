@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.example.movielopp.R
 import com.example.movielopp.adapters.MyPagerAdapter
 import com.example.movielopp.fragments.*
+import com.example.movielopp.model.Movie
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -30,10 +31,10 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     }
 
 
-    override fun onMovieClicked(iDMovie: Int) {
+    override fun onMovieClicked(movie:Movie) {
 
         movieClicked = true
-        val movieDetails = MovieDetailsFragment.newInstance(iDMovie)
+        val movieDetails = MovieDetailsFragment.newInstance(movie)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container, movieDetails).

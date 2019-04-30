@@ -6,11 +6,12 @@ import com.example.movielopp.R
 import com.example.movielopp.fragments.MovieDetailsFragment
 import com.example.movielopp.fragments.SearchFragment
 import com.example.movielopp.fragments.TVShowDetailsFragment
+import com.example.movielopp.model.Movie
 
 class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedClicked, SearchFragment.OnGetTVShowSearchedClicked{
 
-    override fun onMovieSearchedClicked(movieID: Int) {
-        val movieDetails = MovieDetailsFragment.newInstance(movieID)
+    override fun onMovieSearchedClicked(movie: Movie) {
+        val movieDetails = MovieDetailsFragment.newInstance(movie)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container_search, movieDetails).
