@@ -1,15 +1,32 @@
 package com.example.movielopp.activities
 
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.movielopp.R
 import com.example.movielopp.model.Movie
-import kotlinx.android.synthetic.main.fragment_review.*
+import kotlinx.android.synthetic.main.activity_review.*
+import com.example.movielopp.R
 
-class ReviewActivity : AppCompatActivity() {
+
+class ReviewActivity : AppCompatActivity() /*, View.OnClickListener*/{
+
+    /*override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.submitReviewTextView -> {
+                if (!reviewText.text.isEmpty() && !reviewConditionsOk) {
+                    Log.d("Test", "Button Clicked")
+                    Toast.makeText(applicationContext,
+                        "La crítica no a de estar vacía y tiene que tener un mínimo de 5 líneas.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+        }
+    }*/
 
     private var movieToWork: Movie? = null
 
@@ -22,11 +39,10 @@ class ReviewActivity : AppCompatActivity() {
         movieToWork = intent.getParcelableExtra("movie")
 
         checkMandatoryReviewConditions()
-        submitButton.bringToFront()
-        submitButton.setOnClickListener {
+         submitReviewTextView.setOnClickListener {
             if (!reviewText.text.isEmpty() && !reviewConditionsOk) {
-                Log.d("button", "Button Clicked")
-                Toast.makeText(this,
+                Log.d("Test", "Button Clicked")
+                Toast.makeText(applicationContext,
                     "La crítica no a de estar vacía y tiene que tener un mínimo de 5 líneas.",
                     Toast.LENGTH_LONG
                 ).show()

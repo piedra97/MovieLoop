@@ -11,8 +11,12 @@
 
 
     <style name="fragmentsRootElementStyle">
-        <item name="android:onClick">true</item>
         <item name="android:background">#ffffff</item>
+    </style>
+
+    <style name="fragment2RootElemenStyle">
+        <item name="android:onClick">true</item>
+        <item name= "android:background">#ffffff</item>
     </style>
 
 

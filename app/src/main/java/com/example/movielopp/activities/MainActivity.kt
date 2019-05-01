@@ -23,12 +23,18 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     var tvShowCliked = false
 
     override fun onReviewFilmClicked(movie: Movie) {
-        val reviewMovieFragment = ReviewMovieFragment.newInstance(movie)
+
+        val intent = Intent(this, ReviewActivity::class.java)
+        intent.putExtra("movie", movie)
+        startActivity(intent)
+        finish()
+
+        /*val reviewMovieFragment = ReviewMovieFragment.newInstance(movie)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container, reviewMovieFragment).
             addToBackStack(null).
-            commit()
+            commit()*/
     }
 
     override fun onTVShowsClicked(iDTVShow: Int) {

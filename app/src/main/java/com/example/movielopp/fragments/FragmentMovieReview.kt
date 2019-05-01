@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import com.example.movielopp.R
 import com.example.movielopp.model.Movie
@@ -35,10 +36,12 @@ class ReviewMovieFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        checkMandatoryReviewConditions()
-        submitButton.bringToFront()
-        submitButton.setOnClickListener {
-            if (!reviewText.text.isEmpty() && !reviewConditionsOk) {
+
+
+        val button = activity?.findViewById<Button>(R.id.submitButton)
+        button?.setOnClickListener {
+            checkMandatoryReviewConditions()
+            if (!reviewTextFragment.text.isEmpty() && !reviewConditionsOk) {
                 Log.d("button", "Button Clicked")
                 Toast.makeText(
                     context!!,
@@ -51,10 +54,10 @@ class ReviewMovieFragment : Fragment() {
 
 
     private fun checkMandatoryReviewConditions() {
-        reviewText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-           if (hasFocus) {
-               reviewConditionsOk = reviewText.text.toString().trim().length < 5
-           }
+        reviewTextFragment.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                reviewConditionsOk = reviewTextFragment.text.toString().trim().length < 5
+            }
         }
     }
 

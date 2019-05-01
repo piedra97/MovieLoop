@@ -4,11 +4,11 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        style="@style/fragmentsRootElementStyle">
+        android:background="@color/white">
 
 
     <EditText
-            android:id="@+id/reviewText"
+            android:id="@+id/reviewTextFragment"
             android:layout_width="match_parent"
             android:layout_height="600dp"
             android:textAlignment="textStart"
@@ -23,7 +23,6 @@
             android:background="@drawable/button_back"
             android:layout_marginTop="20dp"
             android:layout_marginStart="290dp"
-            android:layout_marginLeft="290dp"
-            android:enabled="true"/>
+            android:layout_marginLeft="290dp"/>
 
 </LinearLayout>
