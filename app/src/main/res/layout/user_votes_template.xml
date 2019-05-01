@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:id="@+id/imageMovie"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="0dp"/>
-        <TextView
-                android:text="Rating Number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingNumber"
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="40dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:id="@+id/imageMovie"
+            app:layout_constraintEnd_toStartOf="@+id/ratingNumber"
+            android:layout_marginEnd="128dp"
+            android:layout_marginRight="128dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.28"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
-    </LinearLayout>
-</LinearLayout>
+    <TextView
+            android:text="Rating Number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="72dp"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+</android.support.constraint.ConstraintLayout>
+

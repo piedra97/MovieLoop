@@ -14,11 +14,22 @@ import com.example.movielopp.model.Movie
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener{
+class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener, MovieDetailsFragment.OnReviewFilmClicked{
+
+
 
     var movieClicked = false
 
     var tvShowCliked = false
+
+    override fun onReviewFilmClicked(movie: Movie) {
+        val reviewMovieFragment = ReviewMovieFragment.newInstance(movie)
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container, reviewMovieFragment).
+            addToBackStack(null).
+            commit()
+    }
 
     override fun onTVShowsClicked(iDTVShow: Int) {
         tvShowCliked = true

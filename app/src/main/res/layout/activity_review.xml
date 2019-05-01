@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        style="@style/fragmentsRootElementStyle">
+
+
+    <EditText
+            android:id="@+id/reviewText"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:textAlignment="textStart"
+            android:inputType="textMultiLine"
+            android:gravity="start"/>
+    <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="Enviar Crítica"
+            android:background="@drawable/button_back"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="290dp"
+            android:layout_marginLeft="290dp"/>
+
+</LinearLayout>

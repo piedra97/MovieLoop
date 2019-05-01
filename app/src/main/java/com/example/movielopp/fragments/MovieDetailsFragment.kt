@@ -36,6 +36,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class MovieDetailsFragment : Fragment() {
 
+    interface OnReviewFilmClicked {
+        fun onReviewFilmClicked(movie:Movie)
+    }
+
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
     private val YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s"
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
@@ -44,7 +48,9 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var mDatabase:DatabaseReference
     private lateinit var auth:FirebaseAuth
     private lateinit var spinnerAdapter:ArrayAdapter<Int>
+    private lateinit var listenerReview:OnReviewFilmClicked
     private var userHasVoted = false
+    private var userHasReviewed = false
     private var userRatingVoted:Int ? = null
     private var currentUserRating: UserMovieRating? = null
     private var mContext:Context ? = null
@@ -68,11 +74,61 @@ class MovieDetailsFragment : Fragment() {
 
         if (auth.currentUser != null) {
             checkIfUserHasVoted(auth.currentUser!!.uid)
+            checkIfUserHasReviewed(auth.currentUser!!.uid)
         }
 
         handleSpinnerClik()
+        reviewButton.setOnClickListener {
+            listenerReview.onReviewFilmClicked(movieToWork!!)
+        }
         getMovie()
     }
+
+    private fun checkIfUserHasReviewed(uid: String) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("ReviewMovie")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (it in p0.children) {
+                        val userRatingIT = it.getValue(UserMovieReview::class.java)
+                        if (userRatingIT != null) {
+                            if (userRatingIT.userUID == uid && userRatingIT.movieID == movieToWork!!.id.toString()) {
+                                userHasReviewed = true
+                                setUserReviewInteractionsComponents()
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+        })
+
+        if (!userHasReviewed) {
+            setUserReviewInteractionsComponents()
+        }
+
+    }
+
+    private fun setUserReviewInteractionsComponents() {
+        if (!userHasReviewed) {
+            reviewButton.visibility = View.VISIBLE
+        }
+
+        else {
+            reviewButton.visibility = View.VISIBLE
+            reviewButton.text = "Película criticada"
+            reviewButton.isEnabled = false
+        }
+    }
+
 
     private fun handleSpinnerClik() {
 
@@ -91,20 +147,13 @@ class MovieDetailsFragment : Fragment() {
 
                 if (check > 1 && !userHasVoted && userRatingSelected != "Votación") {
 
-                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
-
-                    val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieToWork!!.id.toString(), userRatingSelected, movieToWork!!.posterPath)
-                    ref.setValue(userRating)
-
+                    insertRating(uidRating, userRatingSelected)
 
 
                 } else if (check > 1 && userRatingSelected != "Votación"){
                     val uidToUpdate = currentUserRating?.uidRating
-                    val userRatingToUpdate = spinnerRating.getItemAtPosition(position).toString()
-                    currentUserRating?.rating = userRatingToUpdate
-                    val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidToUpdate")
+                    updateRating(uidToUpdate, position)
 
-                    ref.setValue(currentUserRating)
                 }
                 else if (check > 1) {
                     val uidToDelete = currentUserRating?.uidRating
@@ -113,6 +162,21 @@ class MovieDetailsFragment : Fragment() {
             }
 
         }
+    }
+
+    private fun insertRating(uidRating: String, userRatingSelected: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
+
+        val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieToWork!!.id.toString(), userRatingSelected, movieToWork!!.posterPath)
+        ref.setValue(userRating)
+    }
+
+    private fun updateRating(uidToUpdate: String?, position:Int) {
+        val userRatingToUpdate = spinnerRating.getItemAtPosition(position).toString()
+        currentUserRating?.rating = userRatingToUpdate
+        val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidToUpdate")
+
+        ref.setValue(currentUserRating)
     }
 
     private fun deleteRating(uidToDelete: String?) {
@@ -130,7 +194,7 @@ class MovieDetailsFragment : Fragment() {
         spinner?.adapter = spinnerAdapter
     }
 
-    private fun setUserInteractionsComponents() {
+    private fun setUserRatingInteractionsComponents() {
         setSpinnerRating()
         val spinner = activity?.findViewById<Spinner>(R.id.spinnerRating)
         if (!userHasVoted) {
@@ -168,7 +232,7 @@ class MovieDetailsFragment : Fragment() {
                                 userHasVoted = true
                                 userRatingVoted = Integer.parseInt(userRatingIT.rating)
                                 currentUserRating = userRatingIT
-                                setUserInteractionsComponents()
+                                setUserRatingInteractionsComponents()
                                 }
                         }
                     }
@@ -180,7 +244,7 @@ class MovieDetailsFragment : Fragment() {
         })
 
         if (!userHasVoted) {
-            setUserInteractionsComponents()
+            setUserRatingInteractionsComponents()
         }
 
     }
@@ -199,14 +263,31 @@ class MovieDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
         super.onCreateOptionsMenu(menu, inflater)
         if (auth.currentUser != null) {
-            val profile = menu?.findItem(R.id.profile)
-            profile?.isVisible = false
+            hideProfileComponent(menu)
+
+
         }else {
-            val signIn = menu?.findItem(R.id.signIn)
-            signIn?.isVisible = false
+            hidSignInComponent(menu)
+
         }
+        hideSortAndSearchComponents(menu)
+
+    }
+
+    private fun hideProfileComponent(menu: Menu?) {
+        val profile = menu?.findItem(R.id.profile)
+        profile?.isVisible = false
+    }
+
+    private fun hidSignInComponent(menu:Menu?) {
+        val signIn = menu?.findItem(R.id.signIn)
+        signIn?.isVisible = false
+    }
+
+    private fun hideSortAndSearchComponents(menu:Menu?) {
         val sort = menu?.findItem(R.id.sort)
         sort?.isVisible = false
         val search = menu?.findItem((R.id.searchItem))
@@ -216,6 +297,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mContext = context
+        listenerReview = context as OnReviewFilmClicked
     }
 
 
