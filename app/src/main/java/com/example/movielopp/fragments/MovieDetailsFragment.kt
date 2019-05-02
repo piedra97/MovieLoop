@@ -80,13 +80,40 @@ class MovieDetailsFragment : Fragment() {
             checkIfUserHasReviewed(auth.currentUser!!.uid)
         }
         else {
-            getMovie()
+            getFireBaseReviews()
         }
 
         handleSpinnerClik()
         reviewButton.setOnClickListener {
             listenerReview.onReviewFilmClicked(movieToWork!!)
         }
+    }
+
+    private fun getFireBaseReviews() {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("ReviewMovie")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (it in p0.children) {
+                        val userReviewIT = it.getValue(UserMovieReview::class.java)
+                        if (userReviewIT != null) {
+                            val review = Review(userReviewIT.userName, userReviewIT.review)
+                            userReviews.add(review)
+                            }
+                        }
+                    }
+
+                getMovie()
+
+            }
+
+        })
     }
 
     private fun checkIfUserHasReviewed(uid: String) {
@@ -105,8 +132,6 @@ class MovieDetailsFragment : Fragment() {
                         if (userReviewIT != null) {
                             if (userReviewIT.userUID == uid && userReviewIT.movieID == movieToWork!!.id.toString()) {
                                 userHasReviewed = true
-                                val review = Review(userReviewIT.userName, userReviewIT.review)
-                                userReviews.add(review)
                                 setUserReviewInteractionsComponents()
                             }
                         }
