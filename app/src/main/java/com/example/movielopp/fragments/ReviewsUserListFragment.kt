@@ -95,7 +95,7 @@ class ReviewsUserListFragment : Fragment() {
                     }
                     val listViewReviews = activity?.findViewById<ListView>(R.id.reviewsUser_list)
                     configureList(listViewReviews)
-                    //setListener()
+                    setListener()
                 }
 
             }

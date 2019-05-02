@@ -78,6 +78,7 @@ class MovieDetailsFragment : Fragment() {
         if (auth.currentUser != null) {
             checkIfUserHasVoted(auth.currentUser!!.uid)
             checkIfUserHasReviewed(auth.currentUser!!.uid)
+            addButton.visibility = View.VISIBLE
         }
         else {
             getFireBaseReviews()
