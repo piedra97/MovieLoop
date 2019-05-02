@@ -10,10 +10,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.movielopp.R
 import com.example.movielopp.model.ModelListReviews
+import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 
 class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>, var BASE_URL:String): BaseAdapter(){
     var items:ArrayList<ModelListReviews>? = null
+
+    private var success = false
 
     init {
         this.items = items
@@ -45,8 +48,12 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
             into(holder?.image)
 
         holder?.deleteTextView?.setOnClickListener{
-            items!!.removeAt(position)
-            this.notifyDataSetChanged()
+            deleteReview(items!![position].reviewuid)
+            if (success) {
+                items!!.removeAt(position)
+                this.notifyDataSetChanged()
+            }
+
         }
 
 
@@ -55,6 +62,18 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
 
     fun setMovieListReviews(items: ArrayList<ModelListReviews>) {
         this.items = items
+
+    }
+
+    private fun deleteReview(uidToDelete:String) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("ReviewMovie").child(uidToDelete)
+        ref.removeValue().addOnSuccessListener {
+            success = true
+        }
+
+
+
 
     }
 

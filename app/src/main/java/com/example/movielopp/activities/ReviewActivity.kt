@@ -5,7 +5,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.example.movielopp.model.Movie
 import kotlinx.android.synthetic.main.activity_review.*
@@ -17,12 +16,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.*
 
 
 class ReviewActivity : AppCompatActivity() {
-
 
     private var movieToWork: Movie? = null
 
@@ -31,6 +28,8 @@ class ReviewActivity : AppCompatActivity() {
     private var userName:String? = null
 
     private var auth:FirebaseAuth? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
