@@ -131,15 +131,18 @@ class MovieDetailsFragment : Fragment() {
                         val userReviewIT = it.getValue(UserMovieReview::class.java)
                         if (userReviewIT != null) {
                             if (userReviewIT.userUID == uid && userReviewIT.movieID == movieToWork!!.id.toString()) {
+                                val review = Review(userReviewIT.userName, userReviewIT.review)
                                 userHasReviewed = true
+                                userReviews.add(review)
                                 setUserReviewInteractionsComponents()
                             }
                         }
                     }
 
                 }
-
                 getMovie()
+
+
 
             }
 

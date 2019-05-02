@@ -90,14 +90,12 @@
             android:background="#ebca0707"
             android:id="@+id/signOut"
             android:textSize="16sp"
-            android:layout_marginBottom="156dp"
+            android:layout_marginBottom="160dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="148dp"
             android:layout_marginRight="148dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/userVotes"
-            app:layout_constraintVertical_bias="0.75"/>
+            android:focusable="true"/>
 
     <TextView
             android:text="Tus Votaciones"
@@ -126,6 +124,37 @@
             app:layout_constraintTop_toTopOf="@+id/layout"
             android:clickable="true"
             android:contentDescription="User Votes"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_border_color_black_24dp"
+            android:id="@+id/userReviews"
+            android:clickable="true"
+            app:layout_constraintStart_toEndOf="@+id/userVotes"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="356dp"
+            app:layout_constraintTop_toTopOf="@+id/layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintHorizontal_bias="0.099"
+            android:focusable="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userReviewsText"
+            android:text="Tus críticas"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toTopOf="@+id/signOut"
+            app:layout_constraintStart_toEndOf="@+id/userVoteText"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/userReviews"
+            app:layout_constraintVertical_bias="0.8"/>
 
 
 </android.support.constraint.ConstraintLayout>

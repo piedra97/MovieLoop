@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlin.math.sign
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,8 +37,13 @@ class ProfileFragment : Fragment() {
         fun onRatingsClicked()
     }
 
+    interface OnReviewsClicked {
+        fun onReviewsClicked()
+    }
+
     private lateinit var signOutClickedListener: OnSignOutClicked
     private lateinit var votesClicked: OnRatingsClicked
+    private lateinit var listenerReviewsClicked: OnReviewsClicked
     private var userName:String ? = null
     private var userEmail:String ? = null
 
@@ -63,6 +68,10 @@ class ProfileFragment : Fragment() {
 
         userVotes.setOnClickListener {
             votesClicked.onRatingsClicked()
+        }
+
+        userReviews.setOnClickListener {
+            listenerReviewsClicked.onReviewsClicked()
         }
     }
 
@@ -101,6 +110,7 @@ class ProfileFragment : Fragment() {
         super.onAttach(context)
         signOutClickedListener = context as OnSignOutClicked
         votesClicked = context as OnRatingsClicked
+        listenerReviewsClicked = context as OnReviewsClicked
     }
 
 

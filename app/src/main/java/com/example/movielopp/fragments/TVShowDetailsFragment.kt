@@ -20,7 +20,6 @@ import com.example.movielopp.interfaces.*
 import com.example.movielopp.model.*
 import com.example.movielopp.network.TVShowsRepository
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_tvshow_details.*
 
 // TODO: Rename parameter arguments, choose names that match
