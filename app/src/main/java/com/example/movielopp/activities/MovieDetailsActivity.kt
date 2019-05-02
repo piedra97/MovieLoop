@@ -58,7 +58,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         moviesRepository?.getReviews(movie.id, object: OnGetReviewsCallback {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-            override fun onSuccess(reviews: List<Review>) {
+            override fun onSuccess(reviews: ArrayList<Review>) {
                 initializeReviewComponents(reviews)
                 setReviewComponents(reviews)
             }

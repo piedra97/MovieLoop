@@ -3,6 +3,7 @@ package com.example.movielopp.network
 import com.example.movielopp.BuildConfig
 import com.example.movielopp.interfaces.*
 import com.example.movielopp.model.Movie
+import com.example.movielopp.model.Review
 import com.example.movielopp.model.TVShow
 import retrofit2.Call
 import retrofit2.Callback
@@ -99,7 +100,7 @@ class TVShowsRepository private constructor(private val api: TMDbApi){
                 if(response.isSuccessful) {
                     val reviewResponse = response.body()
                     if (reviewResponse?.reviews != null) {
-                        callback.onSuccess(reviewResponse.reviews)
+                        callback.onSuccess(reviewResponse.reviews as ArrayList<Review>)
                     }else {
                         callback.onError()
                     }

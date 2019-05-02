@@ -41,10 +41,13 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
+
     private val YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s"
+
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
     private var moviesRepository:MoviesRepository? = null
     private var movieToWork:Movie? = null
+    private var userReviews:ArrayList<Review> = ArrayList()
     private lateinit var mDatabase:DatabaseReference
     private lateinit var auth:FirebaseAuth
     private lateinit var spinnerAdapter:ArrayAdapter<Int>
@@ -76,12 +79,14 @@ class MovieDetailsFragment : Fragment() {
             checkIfUserHasVoted(auth.currentUser!!.uid)
             checkIfUserHasReviewed(auth.currentUser!!.uid)
         }
+        else {
+            getMovie()
+        }
 
         handleSpinnerClik()
         reviewButton.setOnClickListener {
             listenerReview.onReviewFilmClicked(movieToWork!!)
         }
-        getMovie()
     }
 
     private fun checkIfUserHasReviewed(uid: String) {
@@ -96,16 +101,20 @@ class MovieDetailsFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
                     for (it in p0.children) {
-                        val userRatingIT = it.getValue(UserMovieReview::class.java)
-                        if (userRatingIT != null) {
-                            if (userRatingIT.userUID == uid && userRatingIT.movieID == movieToWork!!.id.toString()) {
+                        val userReviewIT = it.getValue(UserMovieReview::class.java)
+                        if (userReviewIT != null) {
+                            if (userReviewIT.userUID == uid && userReviewIT.movieID == movieToWork!!.id.toString()) {
                                 userHasReviewed = true
+                                val review = Review(userReviewIT.userName, userReviewIT.review)
+                                userReviews.add(review)
                                 setUserReviewInteractionsComponents()
                             }
                         }
                     }
 
                 }
+
+                getMovie()
 
             }
 
@@ -401,7 +410,8 @@ class MovieDetailsFragment : Fragment() {
         moviesRepository?.getReviews(movie.id, object: OnGetReviewsCallback {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-            override fun onSuccess(reviews: List<Review>) {
+            override fun onSuccess(reviews: ArrayList<Review>) {
+                reviews.addAll(userReviews)
                 initializeReviewComponents(reviews)
                 setReviewComponents(reviews)
             }

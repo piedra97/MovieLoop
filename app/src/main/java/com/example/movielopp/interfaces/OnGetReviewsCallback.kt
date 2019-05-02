@@ -5,7 +5,7 @@ import com.example.movielopp.model.Review
 
 
 interface OnGetReviewsCallback {
-    fun onSuccess(reviews: List<Review>)
+    fun onSuccess(reviews: ArrayList<Review>)
 
     fun onError()
 }
