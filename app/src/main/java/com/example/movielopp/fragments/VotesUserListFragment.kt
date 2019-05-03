@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 
 import com.example.movielopp.R
 import com.example.movielopp.adapters.AdapterUserRating
@@ -17,6 +18,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.fragment_reviews_user_list.*
+import kotlinx.android.synthetic.main.fragment_votes_user_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,6 +55,7 @@ class VotesUserListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         adapterRating?.setMovieListRatings(listVotes)
         adapterRating?.notifyDataSetChanged()
     }
@@ -83,12 +87,20 @@ class VotesUserListFragment : Fragment() {
                             }
                         }
                     }
-                    configureList()
+                    if(listVotes.isEmpty()) {
+                        val noDataTextView = activity?.findViewById<TextView>(R.id.noVotesFoundText)
+                        noDataTextView?.visibility = View.VISIBLE
+                    } else {
+                        configureList()
+                    }
+                } else {
+                    val noDataTextView = activity?.findViewById<TextView>(R.id.noVotesFoundText)
+                    noDataTextView?.visibility = View.VISIBLE
                 }
-
             }
 
         })
+
 
     }
 

@@ -70,8 +70,8 @@ class AdapterUserRating(var context: Context?, items:ArrayList<ModelListRatings>
         var ratingText: TextView? = null
 
         init {
-            image = myView.findViewById(R.id.imageMovie)
-            ratingText = myView.findViewById(R.id.ratingNumber)
+            image = myView.findViewById(R.id.item_movie_poster)
+            ratingText = myView.findViewById(R.id.item_movie_rating)
         }
     }
 

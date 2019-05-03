@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.TextView
 
 import com.example.movielopp.R
 import com.example.movielopp.adapters.AdapterUserReview
@@ -20,6 +22,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_reviews_user_list.*
+import kotlinx.android.synthetic.main.fragment_votes_user_list.*
+import org.jetbrains.anko.find
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +65,7 @@ class ReviewsUserListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         adapterReview?.setMovieListReviews(listReviews)
         adapterReview?.notifyDataSetChanged()
 
@@ -93,14 +98,25 @@ class ReviewsUserListFragment : Fragment() {
                             }
                         }
                     }
-                    val listViewReviews = activity?.findViewById<ListView>(R.id.reviewsUser_list)
-                    configureList(listViewReviews)
-                    setListener()
+                    if(listReviews.size == 0) {
+                        val noDataTextView = activity?.findViewById<TextView>(R.id.noReviewsText)
+                        noDataTextView?.visibility = View.VISIBLE
+                    } else {
+                       // val listViewReviews = activity?.findViewById<ListView>(R.id.reviewsUser_list)
+                        configureList(/*listViewReview*/)
+                        val layout = activity?.findViewById<LinearLayout>(R.id.layoutReviewFragment)
+                        layout?.visibility = View.VISIBLE
+                    }
+                    //setListener()
                 }
-
+                else {
+                    val noDataTextView = activity?.findViewById<TextView>(R.id.noReviewsText)
+                    noDataTextView?.visibility = View.VISIBLE
+                }
             }
 
         })
+
 
     }
 
@@ -111,10 +127,10 @@ class ReviewsUserListFragment : Fragment() {
     }
 
 
-    private fun configureList(listViewReviews: ListView?) {
+    private fun configureList(/*listViewReviews: ListView?*/) {
         adapterReview = AdapterUserReview(context, listReviews, IMAGE_BASE_URL)
 
-        listViewReviews?.adapter = adapterReview
+        reviewsUser_list.adapter = adapterReview
 
     }
 
