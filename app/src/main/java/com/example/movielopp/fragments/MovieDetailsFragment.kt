@@ -9,10 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.text.TextUtils
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
 import android.widget.*
 import com.example.movielopp.interfaces.*
 import com.example.movielopp.model.*
@@ -41,9 +45,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
-
     private val YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s"
-
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
     private var moviesRepository:MoviesRepository? = null
     private var movieToWork:Movie? = null
@@ -79,6 +81,9 @@ class MovieDetailsFragment : Fragment() {
             checkIfUserHasVoted(auth.currentUser!!.uid)
             checkIfUserHasReviewed(auth.currentUser!!.uid)
             addButton.visibility = View.VISIBLE
+            addButton.setOnClickListener {
+                showAlertDialog()
+            }
         }
         else {
             getFireBaseReviews()
@@ -88,6 +93,61 @@ class MovieDetailsFragment : Fragment() {
         reviewButton.setOnClickListener {
             listenerReview.onReviewFilmClicked(movieToWork!!)
         }
+    }
+
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(context!!)
+        val mView = layoutInflater.inflate(R.layout.add_to_list_alert_dialog, null)
+        builder.setView(mView)
+        val dialog = builder.create()
+        dialog.show()
+        setAnimations(mView)
+
+    }
+
+    private fun setAnimations(mView:View) {
+        val favoriteButton = mView.findViewById<ToggleButton>(R.id.buttonFavorite)
+        val watchedButton = mView.findViewById<ToggleButton>(R.id.buttonWatched)
+        val watchListButton = mView.findViewById<ToggleButton>(R.id.buttonWatchList)
+
+        val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
+        scaleAnimation.duration = 500
+        val bounceInterpolator = BounceInterpolator()
+        scaleAnimation.interpolator = bounceInterpolator
+
+
+
+        favoriteButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                p0?.startAnimation(scaleAnimation)
+            }
+
+            override fun onClick(p0: View?) {
+
+            }
+        })
+
+
+        watchedButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                p0?.startAnimation(scaleAnimation)
+            }
+
+            override fun onClick(p0: View?) {
+
+            }
+        })
+
+
+        watchListButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                p0?.startAnimation(scaleAnimation)
+            }
+
+            override fun onClick(p0: View?) {
+
+            }
+        })
     }
 
     private fun getFireBaseReviews() {
