@@ -101,11 +101,11 @@ class MovieDetailsFragment : Fragment() {
         builder.setView(mView)
         val dialog = builder.create()
         dialog.show()
-        setAnimations(mView)
+        setCompoundButtons(mView)
 
     }
 
-    private fun setAnimations(mView:View) {
+    private fun setCompoundButtons(mView:View) {
         val favoriteButton = mView.findViewById<ToggleButton>(R.id.buttonFavorite)
         val watchedButton = mView.findViewById<ToggleButton>(R.id.buttonWatched)
         val watchListButton = mView.findViewById<ToggleButton>(R.id.buttonWatchList)
@@ -116,17 +116,15 @@ class MovieDetailsFragment : Fragment() {
         scaleAnimation.interpolator = bounceInterpolator
 
 
+        val randomUID = randomUUID().toString()
 
-        favoriteButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                p0?.startAnimation(scaleAnimation)
+        favoriteButton.setOnCheckedChangeListener { compoundButton, isChecked ->
+            compoundButton.startAnimation(scaleAnimation)
+            if (isChecked) {
+                insertMovieInList("FavoriteMovie", randomUID)
             }
 
-            override fun onClick(p0: View?) {
-
-            }
-        })
-
+        }
 
         watchedButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
@@ -148,6 +146,13 @@ class MovieDetailsFragment : Fragment() {
 
             }
         })
+    }
+
+    private fun insertMovieInList(listType: String, uidList: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("/$listType/$uidList")
+
+        val favoriteMovie = FavoriteMovie(uidList, auth.currentUser!!.uid, movieToWork!!.id.toString(), movieToWork!!.posterPath!!)
+        ref.setValue(favoriteMovie)
     }
 
     private fun getFireBaseReviews() {
@@ -368,7 +373,7 @@ class MovieDetailsFragment : Fragment() {
 
 
         }else {
-            hidSignInComponent(menu)
+            hideSignInComponent(menu)
 
         }
         hideSortAndSearchComponents(menu)
@@ -380,7 +385,7 @@ class MovieDetailsFragment : Fragment() {
         profile?.isVisible = false
     }
 
-    private fun hidSignInComponent(menu:Menu?) {
+    private fun hideSignInComponent(menu:Menu?) {
         val signIn = menu?.findItem(R.id.signIn)
         signIn?.isVisible = false
     }
