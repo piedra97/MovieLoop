@@ -61,6 +61,7 @@ class MovieDetailsFragment : Fragment() {
     private var currentUserRating: UserMovieRating? = null
     private var mContext:Context ? = null
     private var check = 0
+    private var currentMovieInListToWork:MovieToList ? = null
     private var movieIsFav = false
 
 
@@ -107,6 +108,8 @@ class MovieDetailsFragment : Fragment() {
         val dialog = builder.create()
         if (movieIsFav) {
             favoriteButton.isChecked = true
+        }else {
+            favoriteButton.isChecked = false
         }
         dialog.show()
         setCompoundButtons(favoriteButton, watchedButton, watchListButton)
@@ -128,6 +131,8 @@ class MovieDetailsFragment : Fragment() {
             compoundButton.startAnimation(scaleAnimation)
             if (isChecked) {
                 insertMovieInList("FavoriteMovie", randomUID)
+            }else {
+                deleteMovieFromList(currentMovieInListToWork?.uidList)
             }
 
         }
@@ -154,6 +159,13 @@ class MovieDetailsFragment : Fragment() {
         })
     }
 
+    private fun deleteMovieFromList(uidList: String?) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("FavoriteMovie").child(uidList!!)
+        ref.removeValue()
+        movieIsFav = false
+    }
+
     private fun checkIfMovieIsFav(uid:String) {
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("FavoriteMovie")
@@ -166,10 +178,10 @@ class MovieDetailsFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
                     for (it in p0.children) {
-                        val userFavoriteMovieIT = it.getValue(FavoriteMovie::class.java)
+                        val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
                         if (userFavoriteMovieIT != null) {
                             if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
-
+                                currentMovieInListToWork = userFavoriteMovieIT
                                 movieIsFav = true
                             }
                         }
@@ -183,7 +195,7 @@ class MovieDetailsFragment : Fragment() {
     private fun insertMovieInList(listType: String, uidList: String) {
         val ref = FirebaseDatabase.getInstance().getReference("/$listType/$uidList")
 
-        val favoriteMovie = FavoriteMovie(uidList, auth.currentUser!!.uid, movieToWork!!.id.toString(), movieToWork!!.posterPath!!)
+         val favoriteMovie = MovieToList(uidList, auth.currentUser!!.uid, movieToWork!!.id.toString(), movieToWork!!.posterPath!!)
         ref.setValue(favoriteMovie)
     }
 
