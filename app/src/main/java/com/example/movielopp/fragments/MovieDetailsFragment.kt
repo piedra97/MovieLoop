@@ -11,7 +11,6 @@ import android.support.annotation.RequiresApi
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.text.TextUtils
 import android.view.*
@@ -61,8 +60,12 @@ class MovieDetailsFragment : Fragment() {
     private var currentUserRating: UserMovieRating? = null
     private var mContext:Context ? = null
     private var check = 0
-    private var currentMovieInListToWork:MovieToList ? = null
+    private var currentMovieFavoriteToWork:MovieToList ? = null
+    private var currentMovieWatchedToWork:MovieToList ? = null
+    private var currentMovieInWatchListToWork:MovieToList ? = null
     private var movieIsFav = false
+    private var movieIsWatched = false
+    private var movieIsWatchList = false
 
 
     override fun onCreateView(
@@ -106,11 +109,9 @@ class MovieDetailsFragment : Fragment() {
         val watchListButton = mView.findViewById<ToggleButton>(R.id.buttonWatchList)
         builder.setView(mView)
         val dialog = builder.create()
-        if (movieIsFav) {
-            favoriteButton.isChecked = true
-        }else {
-            favoriteButton.isChecked = false
-        }
+        favoriteButton.isChecked = movieIsFav
+        watchedButton.isChecked = movieIsWatched
+        watchListButton.isChecked = movieIsWatchList
         dialog.show()
         setCompoundButtons(favoriteButton, watchedButton, watchListButton)
 
@@ -132,38 +133,38 @@ class MovieDetailsFragment : Fragment() {
             if (isChecked) {
                 insertMovieInList("FavoriteMovie", randomUID)
             }else {
-                deleteMovieFromList(currentMovieInListToWork?.uidList)
+                deleteMovieFromList("FavoriteMovie", currentMovieFavoriteToWork?.uidList)
+                movieIsFav = false
             }
 
         }
 
-        watchedButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                p0?.startAnimation(scaleAnimation)
+        watchedButton.setOnCheckedChangeListener { compoundButton, isChecked ->
+            compoundButton.startAnimation(scaleAnimation)
+            if (isChecked) {
+                insertMovieInList("WatchedMovieList", randomUID)
+            } else {
+                deleteMovieFromList("WatchedMovieList", currentMovieWatchedToWork?.uidList)
+                movieIsWatched = false
+            }
+        }
+
+        watchListButton.setOnCheckedChangeListener { compoundButton, isChecked ->
+            compoundButton.startAnimation(scaleAnimation)
+            if (isChecked) {
+                insertMovieInList("WatchList", randomUID)
+            } else {
+                deleteMovieFromList("WatchList", currentMovieInWatchListToWork?.uidList)
+                movieIsWatchList = false
             }
 
-            override fun onClick(p0: View?) {
-
-            }
-        })
-
-
-        watchListButton.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                p0?.startAnimation(scaleAnimation)
-            }
-
-            override fun onClick(p0: View?) {
-
-            }
-        })
+        }
     }
 
-    private fun deleteMovieFromList(uidList: String?) {
+    private fun deleteMovieFromList(listType: String, uidList: String?) {
         val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("FavoriteMovie").child(uidList!!)
+        val ref = database.getReference(listType).child(uidList!!)
         ref.removeValue()
-        movieIsFav = false
     }
 
     private fun checkIfMovieIsFav(uid:String) {
@@ -181,7 +182,7 @@ class MovieDetailsFragment : Fragment() {
                         val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
                         if (userFavoriteMovieIT != null) {
                             if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
-                                currentMovieInListToWork = userFavoriteMovieIT
+                                currentMovieFavoriteToWork = userFavoriteMovieIT
                                 movieIsFav = true
                             }
                         }
@@ -409,7 +410,61 @@ class MovieDetailsFragment : Fragment() {
         movieToWork = arguments!!.getParcelable("movie")
         if (auth.currentUser!= null) {
             checkIfMovieIsFav(auth.currentUser!!.uid)
+            checkIfMovieIsWatched(auth.currentUser!!.uid)
+            checkIfMovieIsInWatchList(auth.currentUser!!.uid)
         }
+    }
+
+    private fun checkIfMovieIsInWatchList(uid: String) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("WatchList")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (it in p0.children) {
+                        val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
+                        if (userFavoriteMovieIT != null) {
+                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
+                                currentMovieInWatchListToWork = userFavoriteMovieIT
+                                movieIsWatchList = true
+                            }
+                        }
+                    }
+
+                }
+            }
+        })
+    }
+
+    private fun checkIfMovieIsWatched(uid: String) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("WatchedMovieList")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (it in p0.children) {
+                        val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
+                        if (userFavoriteMovieIT != null) {
+                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
+                                currentMovieWatchedToWork = userFavoriteMovieIT
+                                movieIsWatched = true
+                            }
+                        }
+                    }
+
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

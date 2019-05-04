@@ -128,7 +128,6 @@ class ListFilmFragment : Fragment() {
             }
             movies_listing.adapter = adapterCustom
             progressLayout.visibility = View.GONE
-            setTitle()
         }
 
         override fun onError() {
@@ -137,19 +136,6 @@ class ListFilmFragment : Fragment() {
         })
     }
 
-    private fun setTitle() {
-        when(sortBy) {
-            MoviesRepository.POPULAR -> {
-                (activity as AppCompatActivity).supportActionBar?.title = "Popular"
-            }
-            MoviesRepository.TOP_RATED -> {
-                (activity as AppCompatActivity).supportActionBar?.title = "Mejor Valoradas"
-            }
-            MoviesRepository.UPCOMING -> {
-                (activity as AppCompatActivity).supportActionBar?.title = "Próximamente"
-            }
-        }
-    }
 
 
     private fun configureList() {
