@@ -27,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import org.w3c.dom.Text
 import java.util.UUID.randomUUID
 
 
@@ -62,6 +61,7 @@ class MovieDetailsFragment : Fragment() {
     private var currentUserRating: UserMovieRating? = null
     private var mContext:Context ? = null
     private var check = 0
+    private var movieIsFav = false
 
 
     override fun onCreateView(
@@ -100,17 +100,20 @@ class MovieDetailsFragment : Fragment() {
     private fun showAlertDialog() {
         val builder = AlertDialog.Builder(context!!)
         val mView = layoutInflater.inflate(R.layout.add_to_list_alert_dialog, null)
-        builder.setView(mView)
-        val dialog = builder.create()
-        dialog.show()
-        setCompoundButtons(mView)
-
-    }
-
-    private fun setCompoundButtons(mView:View) {
         val favoriteButton = mView.findViewById<ToggleButton>(R.id.buttonFavorite)
         val watchedButton = mView.findViewById<ToggleButton>(R.id.buttonWatched)
         val watchListButton = mView.findViewById<ToggleButton>(R.id.buttonWatchList)
+        builder.setView(mView)
+        val dialog = builder.create()
+        if (movieIsFav) {
+            favoriteButton.isChecked = true
+        }
+        dialog.show()
+        setCompoundButtons(favoriteButton, watchedButton, watchListButton)
+
+    }
+
+    private fun setCompoundButtons(favoriteButton:ToggleButton, watchedButton:ToggleButton, watchListButton: ToggleButton) {
 
         val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
         scaleAnimation.duration = 500
@@ -119,6 +122,7 @@ class MovieDetailsFragment : Fragment() {
 
 
         val randomUID = randomUUID().toString()
+
 
         favoriteButton.setOnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(scaleAnimation)
@@ -146,6 +150,32 @@ class MovieDetailsFragment : Fragment() {
 
             override fun onClick(p0: View?) {
 
+            }
+        })
+    }
+
+    private fun checkIfMovieIsFav(uid:String) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("FavoriteMovie")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (it in p0.children) {
+                        val userFavoriteMovieIT = it.getValue(FavoriteMovie::class.java)
+                        if (userFavoriteMovieIT != null) {
+                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
+
+                                movieIsFav = true
+                            }
+                        }
+                    }
+
+                }
             }
         })
     }
@@ -365,6 +395,9 @@ class MovieDetailsFragment : Fragment() {
         setHasOptionsMenu(true)
         auth = FirebaseAuth.getInstance()
         movieToWork = arguments!!.getParcelable("movie")
+        if (auth.currentUser!= null) {
+            checkIfMovieIsFav(auth.currentUser!!.uid)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
