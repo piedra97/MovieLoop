@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import org.w3c.dom.Text
 import java.util.UUID.randomUUID
 
 
@@ -412,6 +414,8 @@ class MovieDetailsFragment : Fragment() {
                 getCredits(movie)
                 getTrailers(movie)
                 getReviews(movie)
+                val fragmentLayout = activity?.findViewById<CoordinatorLayout>(R.id.fragmentDetailsLayout)
+                fragmentLayout?.visibility = View.VISIBLE
             }
 
 
@@ -439,6 +443,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun setCastComponents(cast: List<Cast>) {
+        val movieCastLayout = activity?.findViewById<LinearLayout>(R.id.movieCast)
         for (castIT in cast) {
             val parent = layoutInflater.inflate(R.layout.cast, movieCast, false)
             val card = parent.findViewById<CardView>(R.id.castCard)
@@ -449,7 +454,7 @@ class MovieDetailsFragment : Fragment() {
             loadProfileCastImage(castIT, profileCast)
             nameCharacter.text = castIT.character
             actor.text = castIT.name
-            movieCast.addView(parent)
+            movieCastLayout?.addView(parent)
         }
     }
 
@@ -458,11 +463,15 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun initializeCastComponents() {
-        castLabel.visibility = View.VISIBLE
-        movieCast.removeAllViews()
+        val movieCastText = activity?.findViewById<TextView>(R.id.castLabel)
+        val movieCastLayout = activity?.findViewById<LinearLayout>(R.id.movieCast)
+        movieCastText?.visibility = View.VISIBLE
+        movieCastLayout?.removeAllViews()
     }
 
     private fun setCrewComponents(crew: List<Crew>) {
+        val movieCrew = activity?.findViewById<LinearLayout>(R.id.movieCrewDetails)
+
         for (crewIT in crew) {
             val parent = layoutInflater.inflate(R.layout.crew, movieCrewDetails, false)
             val nameCrew = parent.findViewById<TextView>(R.id.crewName)
@@ -471,22 +480,22 @@ class MovieDetailsFragment : Fragment() {
                 "Director" -> {
                     nameCrew.text = crewIT.name
                     jobCrew.text = crewIT.job
-                    movieCrewDetails.addView(parent)
+                    movieCrew?.addView(parent)
                 }
                 "Screenplay" -> {
                     nameCrew.text = crewIT.name
                     jobCrew.text = "Guión"
-                    movieCrewDetails.addView(parent)
+                    movieCrew?.addView(parent)
                 }
                 "Director of Photography" -> {
                     nameCrew.text = crewIT.name
                     jobCrew.text = "Director de Fotografía"
-                    movieCrewDetails.addView(parent)
+                    movieCrew?.addView(parent)
                 }
                 "Original Music Composer" -> {
                     nameCrew.text = crewIT.name
                     jobCrew.text = "Compositor Música Original"
-                    movieCrewDetails.addView(parent)
+                    movieCrew?.addView(parent)
                 }
 
             }
@@ -496,8 +505,10 @@ class MovieDetailsFragment : Fragment() {
 
 
     private fun initializeCrewComponents() {
-        crewLabel.visibility = View.VISIBLE
-        movieCrewDetails.removeAllViews()
+        val movieCrewLabel = activity?.findViewById<TextView>(R.id.crewLabel)
+        val movieCrew = activity?.findViewById<LinearLayout>(R.id.movieCrewDetails)
+        movieCrewLabel?.visibility = View.VISIBLE
+        movieCrew?.removeAllViews()
     }
 
     private fun getReviews(movie: Movie) {
@@ -518,11 +529,13 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun initializeReviewComponents(reviews:List<Review>) {
+        val reviewsText = activity?.findViewById<TextView>(R.id.reviewsLabel)
+        val movieReviewsLayout = activity?.findViewById<LinearLayout>(R.id.movieReviews)
         if (reviews.isEmpty()) {
-            reviewsLabel.text = " "
+            reviewsText?.text = " "
         }
-        reviewsLabel.visibility = View.VISIBLE
-        movieReviews.removeAllViews()
+        reviewsText?.visibility = View.VISIBLE
+        movieReviewsLayout?.removeAllViews()
     }
 
     private fun setParsedRevenue(revenue: String) {
@@ -538,7 +551,8 @@ class MovieDetailsFragment : Fragment() {
         }
         parsedRevenue = parsedRevenue.reversed()
 
-        revenueText.text = "$parsedRevenue $"
+        val movieRevenue = activity?.findViewById<TextView>(R.id.revenueText)
+        movieRevenue?.text = "$parsedRevenue $"
     }
 
     private fun setparsedBudget(budget:String) {
@@ -555,24 +569,35 @@ class MovieDetailsFragment : Fragment() {
 
         parsedBudget = parsedBudget.reversed()
         parsedBudget.replaceRange(0,1, "")
-        budgetText.text = "$parsedBudget $"
+        val movieBudget = activity?.findViewById<TextView>(R.id.budgetText)
+        movieBudget?.text = "$parsedBudget $"
     }
 
     private fun setUIComponents(movie: Movie) {
-        movieDetailsTitle.text = movie.title
-        summaryLabel.visibility = View.VISIBLE
-        movieDetailsOverview.text = movie.overview
-        rating.visibility = View.VISIBLE
-        rating.text = movie.rating.toString()
+        val movieTitle = activity?.findViewById<TextView>(R.id.movieDetailsTitle)
+        movieTitle?.text = movie.title
+        val summaryText = activity?.findViewById<TextView>(R.id.summaryLabel)
+        summaryText?.visibility = View.VISIBLE
+        val movieOverview = activity?.findViewById<TextView>(R.id.movieDetailsOverview)
+        movieOverview?.text = movie.overview
+        val movieRating = activity?.findViewById<TextView>(R.id.rating)
+        movieRating?.visibility = View.VISIBLE
+        movieRating?.text = movie.rating.toString()
         getGenres(movie)
-        movieDetailsReleaseDate.text = movie.releaseDate
+        val movieReleaseDate = activity?.findViewById<TextView>(R.id.movieDetailsReleaseDate)
+        movieReleaseDate?.text = movie.releaseDate
         loadMovieBackdrop(movie)
-        aditionalInformationLabel.visibility = View.VISIBLE
-        statusText.text = movie.status
-        loText.text = movie.originalLanguage
-        toText.text = movie.originalTitle
+        val movieAditionalInformationLabel = activity?.findViewById<TextView>(R.id.aditionalInformationLabel)
+        movieAditionalInformationLabel?.visibility = View.VISIBLE
+        val movieStatus = activity?.findViewById<TextView>(R.id.statusText)
+        movieStatus?.text = movie.status
+        val movieOriginalLanguage = activity?.findViewById<TextView>(R.id.loText)
+        movieOriginalLanguage?.text = movie.originalLanguage
+        val movieOriginalTitle = activity?.findViewById<TextView>(R.id.toText)
+        movieOriginalTitle?.text = movie.originalTitle
         val runtime = """${movie.runtime.toString()} min"""
-        runtimeText.text = runtime
+        val movieRunTime = activity?.findViewById<TextView>(R.id.runtimeText)
+        movieRunTime?.text = runtime
         val budget = movie.budget.toString()
         setparsedBudget(budget)
         val revenue = movie.revenue.toString()
@@ -580,13 +605,15 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun loadMovieBackdrop(movie:Movie) {
+        val movieBackdrop = activity?.findViewById<ImageView>(R.id.movieDetailsBackdrop)
         Picasso.get().
             load(IMAGE_BASE_URL + movie.backdrop).
-            into(movieDetailsBackdrop)
+            into(movieBackdrop)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun setReviewComponents(reviews:List<Review>) {
+        val movieReviewsLayout = activity?.findViewById<LinearLayout>(R.id.movieReviews)
         for (review in reviews) {
             val parent = layoutInflater.inflate(R.layout.review, movieReviews, false)
             val authorReview = parent.findViewById<TextView>(R.id.reviewAuthor)
@@ -595,7 +622,7 @@ class MovieDetailsFragment : Fragment() {
             authorReview.text = review.author
             contentReview.text = review.content
             contentReview.maxLines = 3
-            movieReviews.addView(parent)
+            movieReviewsLayout?.addView(parent)
             btnShowMore.setOnClickListener {
 
                 if (btnShowMore.text.toString() == "Muéstrame más...") {
@@ -625,11 +652,13 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun initializeTrailerComponents(trailers:List<Trailer>) {
+        val trailersTextLabel = activity?.findViewById<TextView>(R.id.trailersLabel)
         if (trailers.isEmpty()) {
-            trailersLabel.visibility = View.GONE
+            trailersTextLabel?.text = ""
         }
-        trailersLabel.visibility = View.VISIBLE
-        movieTrailers.removeAllViews()
+        trailersTextLabel?.visibility = View.VISIBLE
+        val movieTrailersLayout = activity?.findViewById<LinearLayout>(R.id.movieTrailers)
+        movieTrailersLayout?.removeAllViews()
     }
 
     private fun setTrailerComponents(trailers:List<Trailer>) {
@@ -641,7 +670,8 @@ class MovieDetailsFragment : Fragment() {
                 showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
             }
             loadTrailerPreview(trailer, thumbnail)
-            movieTrailers.addView(parent)
+            val movieTrailersLayout = activity?.findViewById<LinearLayout>(R.id.movieTrailers)
+            movieTrailersLayout?.addView(parent)
         }
     }
 
@@ -663,7 +693,8 @@ class MovieDetailsFragment : Fragment() {
                     for (genre in movie.genres!!) {
                         currentGenres.add(genre.name!!)
                     }
-                    movieDetailsGenres.text = TextUtils.join(", ", currentGenres)
+                    val movieGenres = activity?.findViewById<TextView>(R.id.movieDetailsGenres)
+                    movieGenres?.text = TextUtils.join(", ", currentGenres)
                 }
             }
 
@@ -679,7 +710,7 @@ class MovieDetailsFragment : Fragment() {
         Toast.makeText(context, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
     }
 
-    private fun setupToolbar() {
+   /* private fun setupToolbar() {
         if(activity is AppCompatActivity){
             (activity as AppCompatActivity).setSupportActionBar(toolbar)
         }
@@ -687,7 +718,7 @@ class MovieDetailsFragment : Fragment() {
         if((activity as AppCompatActivity).supportActionBar != null) {
             (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         }
-    }
+    }*/
 
     companion object {
         fun newInstance(movie: Movie): MovieDetailsFragment{

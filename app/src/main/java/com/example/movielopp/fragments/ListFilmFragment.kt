@@ -127,7 +127,7 @@ class ListFilmFragment : Fragment() {
                 listenerList.onMovieClicked(it)
             }
             movies_listing.adapter = adapterCustom
-            listFilms_progressBar.visibility = View.GONE
+            progressLayout.visibility = View.GONE
             setTitle()
         }
 

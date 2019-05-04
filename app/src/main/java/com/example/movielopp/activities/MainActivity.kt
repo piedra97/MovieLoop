@@ -7,12 +7,15 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
 import com.example.movielopp.R
 import com.example.movielopp.adapters.MyPagerAdapter
 import com.example.movielopp.fragments.*
 import com.example.movielopp.model.Movie
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_list_film.*
 
 class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener, MovieDetailsFragment.OnReviewFilmClicked{
 
@@ -51,6 +54,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     override fun onMovieClicked(movie:Movie) {
 
         movieClicked = true
+        progressLayout.visibility = View.VISIBLE
         val movieDetails = MovieDetailsFragment.newInstance(movie)
         supportFragmentManager.
             beginTransaction().
@@ -62,6 +66,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
     override fun onBackPressed() {
         super.onBackPressed()
+        progressLayout.visibility = View.GONE
         movieClicked = false
         tvShowCliked = false
 

@@ -10,12 +10,18 @@
 
 
 
-    <ProgressBar
-            android:id="@+id/listFilms_progressBar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="300dp"/>
+    <LinearLayout
+            android:id="@+id/progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="300dp"/>
+    </LinearLayout>
 
 
         <android.support.v7.widget.RecyclerView
@@ -23,8 +29,5 @@
                 android:layout_height="match_parent"
                 android:id="@+id/movies_listing"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
-
-
-
 
 </LinearLayout>
