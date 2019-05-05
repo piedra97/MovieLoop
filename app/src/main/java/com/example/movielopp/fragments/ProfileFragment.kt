@@ -41,9 +41,14 @@ class ProfileFragment : Fragment() {
         fun onReviewsClicked()
     }
 
+    interface OnListsClicked {
+        fun onListsClicked()
+    }
+
     private lateinit var signOutClickedListener: OnSignOutClicked
     private lateinit var votesClicked: OnRatingsClicked
     private lateinit var listenerReviewsClicked: OnReviewsClicked
+    private lateinit var listenerListsClicked: OnListsClicked
     private var userName:String ? = null
     private var userEmail:String ? = null
 
@@ -72,6 +77,10 @@ class ProfileFragment : Fragment() {
 
         userReviews.setOnClickListener {
             listenerReviewsClicked.onReviewsClicked()
+        }
+
+        userLists.setOnClickListener {
+            listenerListsClicked.onListsClicked()
         }
     }
 
@@ -111,6 +120,7 @@ class ProfileFragment : Fragment() {
         signOutClickedListener = context as OnSignOutClicked
         votesClicked = context as OnRatingsClicked
         listenerReviewsClicked = context as OnReviewsClicked
+        listenerListsClicked = context as OnListsClicked
     }
 
 

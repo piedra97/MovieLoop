@@ -84,10 +84,11 @@ class MovieDetailsFragment : Fragment() {
         mDatabase = FirebaseDatabase.getInstance().reference
 
         if (auth.currentUser != null) {
+            val addMovieButton = activity?.findViewById<TextView>(R.id.addButton)
             checkIfUserHasVoted(auth.currentUser!!.uid)
             checkIfUserHasReviewed(auth.currentUser!!.uid)
-            addButton.visibility = View.VISIBLE
-            addButton.setOnClickListener {
+            addMovieButton?.visibility = View.VISIBLE
+            addMovieButton?.setOnClickListener {
                 showAlertDialog()
             }
         }
@@ -266,14 +267,15 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun setUserReviewInteractionsComponents() {
+        val reviewMovieButton = activity?.findViewById<TextView>(R.id.reviewButton)
         if (!userHasReviewed) {
-            reviewButton.visibility = View.VISIBLE
+            reviewMovieButton?.visibility = View.VISIBLE
         }
 
         else {
-            reviewButton.visibility = View.VISIBLE
-            reviewButton.text = "Película criticada"
-            reviewButton.isEnabled = false
+            reviewMovieButton?.visibility = View.VISIBLE
+            reviewMovieButton?.text = "Película criticada"
+            reviewMovieButton?.isEnabled = false
         }
     }
 

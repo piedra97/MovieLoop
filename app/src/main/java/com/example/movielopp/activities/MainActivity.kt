@@ -8,7 +8,6 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import com.example.movielopp.R
 import com.example.movielopp.adapters.MyPagerAdapter
 import com.example.movielopp.fragments.*

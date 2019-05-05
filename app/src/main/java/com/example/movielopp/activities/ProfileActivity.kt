@@ -4,17 +4,22 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.example.movielopp.R
-import com.example.movielopp.fragments.ProfileFragment
-import com.example.movielopp.fragments.ReviewDetailsFragment
-import com.example.movielopp.fragments.ReviewsUserListFragment
-import com.example.movielopp.fragments.VotesUserListFragment
+import com.example.movielopp.fragments.*
 import com.example.movielopp.model.ModelListReviews
 import com.google.firebase.auth.FirebaseAuth
 
-class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked{
-
+class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked, ProfileFragment.OnListsClicked{
 
     private var movedInFragment = false
+
+    override fun onListsClicked() {
+        val fragmentLists = FragmentUserListContainer()
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentLists).
+            addToBackStack(null).
+            commit()
+    }
 
     override fun onReviewItemListClicked(reviewClicked: ModelListReviews) {
         val fragmentReviewDetails = ReviewDetailsFragment.newInstance(reviewClicked.movieURL!!, reviewClicked.reviewValue)
