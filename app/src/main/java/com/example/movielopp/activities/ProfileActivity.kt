@@ -11,23 +11,25 @@ import com.example.movielopp.model.Movie
 import com.google.firebase.auth.FirebaseAuth
 
 
-class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked{
+class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener{
 
-    private var fragmentMovieFav: FragmentUsersFilm? = null
-
-    private var fragmentMovieWatched: FragmentUsersFilm? = null
-
-    private var fragmentMovieWatchList: FragmentUsersFilm? = null
 
     private var fragmentMovieDetails: MovieDetailsFragment? = null
 
-    private var listFavClicked = false
-
-    private var listWatchedClicked = false
-
-    private var listWatchListClicked = false
-
     private var ratingClicked = false
+
+    private var movieClicked = false
+
+    override fun onMovieClicked(movie: Movie) {
+        movieClicked = true
+
+        fragmentMovieDetails = MovieDetailsFragment.newInstance(movie)
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentMovieDetails!!).
+            commit()
+    }
 
     override fun onReviewFilmClicked(movie: Movie) {
         val intent = Intent(this, ReviewActivity::class.java)
@@ -67,13 +69,12 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onListMoviesFavsClciked() {
-        listFavClicked = true
 
-        fragmentMovieFav = FragmentUsersFilm.newInstance("FavoriteMovie")
+        val fragmentMovieFav = FragmentUsersFilm.newInstance("FavoriteMovie")
 
         supportFragmentManager.
             beginTransaction().
-            replace(R.id.main_container_profile, fragmentMovieFav!!).
+            replace(R.id.main_container_profile, fragmentMovieFav).
             addToBackStack(null).
             commit()
 
@@ -81,26 +82,24 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onListMoviesWatchedClicked() {
-        listWatchListClicked = true
 
-        fragmentMovieWatched = FragmentUsersFilm.newInstance("WatchedMovieList")
+        val fragmentMovieWatched = FragmentUsersFilm.newInstance("WatchedMovieList")
 
         supportFragmentManager.
             beginTransaction().
-            replace(R.id.main_container_profile, fragmentMovieWatched!!).
+            replace(R.id.main_container_profile, fragmentMovieWatched).
             addToBackStack(null).
             commit()
 
     }
 
     override fun onWatchListMovieClicked() {
-        listWatchedClicked = true
 
-        fragmentMovieWatchList = FragmentUsersFilm.newInstance("WatchListMovie")
+        val fragmentMovieWatchList = FragmentUsersFilm.newInstance("WatchListMovie")
 
         supportFragmentManager.
             beginTransaction().
-            replace(R.id.main_container_profile, fragmentMovieWatchList!!).
+            replace(R.id.main_container_profile, fragmentMovieWatchList).
             addToBackStack(null).
             commit()
 
@@ -149,28 +148,19 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
         val count = supportFragmentManager.backStackEntryCount
 
         if (ratingClicked) {
-           // val layoutDetails = findViewById<CoordinatorLayout>(R.id.fragmentDetailsLayout)
-            //layoutDetails.visibility = View.GONE
             supportFragmentManager.beginTransaction().remove(fragmentMovieDetails!!).commit()
             ratingClicked = false
         }
 
+        if (movieClicked) {
+            supportFragmentManager.beginTransaction().remove(fragmentMovieDetails!!).commit()
+            movieClicked = false
+        }
+
         if (count == 0) {
             super.onBackPressed()
-
             goToMainActivity()
         } else {
-
-           /* if (listFavClicked) {
-                supportFragmentManager.beginTransaction().remove(fragmentMovieFav!!).commit()
-                listFavClicked = false
-            } else if(listWatchListClicked) {
-                supportFragmentManager.beginTransaction().remove(fragmentMovieWatchList!!).commit()
-                listWatchListClicked = false
-            } else if(listWatchedClicked) {
-                supportFragmentManager.beginTransaction().remove(fragmentMovieWatched!!).commit()
-                listWatchedClicked = false
-            }*/
             supportFragmentManager.popBackStack()
 
         }

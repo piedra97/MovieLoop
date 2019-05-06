@@ -13,6 +13,7 @@ import android.widget.TextView
 
 import com.example.movielopp.R
 import com.example.movielopp.adapters.AdapterMovieInList
+import com.example.movielopp.model.Movie
 import com.example.movielopp.model.MovieToList
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -32,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
 class FragmentUsersFilm : Fragment() {
 
     interface OnMoviesClickedListener {
-        fun onMovieClicked(idMovie: Int)
+        fun onMovieClicked(movie: Movie)
 
     }
 
@@ -111,14 +112,14 @@ class FragmentUsersFilm : Fragment() {
 
         listType = arguments!!.getString("listType")
 
-        //listenerMovieClicked = context as OnMoviesClickedListener
+        listenerMovieClicked = context as OnMoviesClickedListener
     }
 
 
     private fun configureList() {
-        adapterMovieInList = AdapterMovieInList(activity?.applicationContext!!, listUserFilm) /*{
+        adapterMovieInList = AdapterMovieInList(activity?.applicationContext!!, listUserFilm) {
             listenerMovieClicked.onMovieClicked(it)
-        }*/
+        }
         val listMovies = activity?.findViewById<RecyclerView>(R.id.movies_userListing)
         listMovies?.setHasFixedSize(true)
         listMovies?.layoutManager = GridLayoutManager(this.context,2)

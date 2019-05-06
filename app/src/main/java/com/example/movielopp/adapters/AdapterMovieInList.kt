@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.movielopp.R
+import com.example.movielopp.model.Movie
 import com.example.movielopp.model.MovieToList
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.template_grid.view.*
 
-class AdapterMovieInList(mContext: Context, moviesInList:List<MovieToList>/*, val listener: (Int) -> Unit*/) : RecyclerView.Adapter<AdapterMovieInList.ViewHolder>() {
+class AdapterMovieInList(mContext: Context, moviesInList:List<MovieToList>, val listener: (Movie) -> Unit) : RecyclerView.Adapter<AdapterMovieInList.ViewHolder>() {
 
     private var mContext: Context
     private var moviesInList: List<MovieToList> = ArrayList()
@@ -40,17 +41,17 @@ class AdapterMovieInList(mContext: Context, moviesInList:List<MovieToList>/*, va
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(moviesInList[position]/*, listener*/)
+        holder.bind(moviesInList[position], listener)
     }
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
 
 
-        fun bind(movieInList: MovieToList/*, listener: (Int) -> Unit*/) = with(itemView) {
+        fun bind(movieInList: MovieToList, listener: (Movie) -> Unit) = with(itemView) {
             Picasso.get().load(IMAGE_BASE_URL + movieInList.movie?.posterPath).into(filmPoster)
-            /*setOnClickListener{
-                listener(Integer.parseInt(movieInList.movieID))
-            }*/
+            setOnClickListener{
+                listener(movieInList.movie!!)
+            }
         }
 
 
