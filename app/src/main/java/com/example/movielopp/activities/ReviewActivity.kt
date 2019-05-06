@@ -80,11 +80,10 @@ class ReviewActivity : AppCompatActivity() {
         val uidReview = UUID.randomUUID().toString()
         val ref = FirebaseDatabase.getInstance().getReference("/ReviewMovie/$uidReview")
 
-        val userRating = UserMovieReview(uidReview, auth!!.currentUser!!.uid, userName!!, movieToWork!!.id.toString(), reviewTextActivity.text.toString(), movieToWork!!.title!!)
-        ref.setValue(userRating)
+        val userReview = UserMovieReview(uidReview, auth!!.currentUser!!.uid, userName!!, movieToWork!!, reviewTextActivity.text.toString())
+        ref.setValue(userReview)
 
         val intent = Intent(this, MainActivity::class.java)
-        Log.d("FireBase", "Review inserted")
         startActivity(intent)
         finish()
     }

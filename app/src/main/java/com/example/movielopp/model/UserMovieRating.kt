@@ -1,3 +1,3 @@
 package com.example.movielopp.model
 
-class UserMovieRating(val uidRating:String = "", val userUID:String = "", val movieID: String = "", var rating:String = "" , var posterPath:String? = null)
+class UserMovieRating(val uidRating:String = "", val userUID:String = "", val movie:Movie? = null, var rating:String = "" )

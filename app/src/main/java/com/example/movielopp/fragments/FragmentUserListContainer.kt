@@ -22,17 +22,17 @@ private const val ARG_PARAM2 = "param2"
  */
 class FragmentUserListContainer : Fragment() {
 
-    /*interface OnListMoviesUsersClicked {
-        fun onListMoviesUsersClciked()
+    interface OnListMoviesUsersClicked {
+        fun onListMoviesUsersClicked()
     }
 
-    interface OnListTVShowsusersClciked {
+    /*interface OnListTVShowsusersClciked {
         fun onListTVShowsUsersClicked()
-    }
+    }*/
 
     private lateinit var listenerMoviesUserList: OnListMoviesUsersClicked
 
-    private lateinit var listenerTVShowsUserlIST: OnListTVShowsusersClciked*/
+   // private lateinit var listenerTVShowsUserlIST: OnListTVShowsusersClciked
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +46,7 @@ class FragmentUserListContainer : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         moviesUser.setOnClickListener {
-            //listenerMoviesUserList.onListMoviesUsersClciked()
+            listenerMoviesUserList.onListMoviesUsersClicked()
         }
 
         tvShowsUser.setOnClickListener {
@@ -58,7 +58,7 @@ class FragmentUserListContainer : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        //listenerMoviesUserList = context as OnListMoviesUsersClicked
+        listenerMoviesUserList = context as OnListMoviesUsersClicked
         //listenerTVShowsUserlIST = context as OnListTVShowsusersClciked
     }
 

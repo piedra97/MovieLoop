@@ -87,6 +87,9 @@ class MovieDetailsFragment : Fragment() {
             val addMovieButton = activity?.findViewById<TextView>(R.id.addButton)
             checkIfUserHasVoted(auth.currentUser!!.uid)
             checkIfUserHasReviewed(auth.currentUser!!.uid)
+            reviewButton?.setOnClickListener {
+                listenerReview.onReviewFilmClicked(movieToWork!!)
+            }
             addMovieButton?.visibility = View.VISIBLE
             addMovieButton?.setOnClickListener {
                 showAlertDialog()
@@ -97,9 +100,7 @@ class MovieDetailsFragment : Fragment() {
         }
 
         handleSpinnerClik()
-        reviewButton.setOnClickListener {
-            listenerReview.onReviewFilmClicked(movieToWork!!)
-        }
+
     }
 
     private fun showAlertDialog() {
@@ -153,9 +154,9 @@ class MovieDetailsFragment : Fragment() {
         watchListButton.setOnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(scaleAnimation)
             if (isChecked) {
-                insertMovieInList("WatchList", randomUID)
+                insertMovieInList("WatchListMovie", randomUID)
             } else {
-                deleteMovieFromList("WatchList", currentMovieInWatchListToWork?.uidList)
+                deleteMovieFromList("WatchListMovie", currentMovieInWatchListToWork?.uidList)
                 movieIsWatchList = false
             }
 
@@ -182,7 +183,7 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
                         if (userFavoriteMovieIT != null) {
-                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
+                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movie?.id == movieToWork!!.id) {
                                 currentMovieFavoriteToWork = userFavoriteMovieIT
                                 movieIsFav = true
                             }
@@ -197,7 +198,7 @@ class MovieDetailsFragment : Fragment() {
     private fun insertMovieInList(listType: String, uidList: String) {
         val ref = FirebaseDatabase.getInstance().getReference("/$listType/$uidList")
 
-         val favoriteMovie = MovieToList(uidList, auth.currentUser!!.uid, movieToWork!!.id.toString(), movieToWork!!.posterPath!!)
+         val favoriteMovie = MovieToList(uidList, auth.currentUser!!.uid, movieToWork!!)
         ref.setValue(favoriteMovie)
     }
 
@@ -221,11 +222,11 @@ class MovieDetailsFragment : Fragment() {
                         }
                     }
 
-                getMovie()
-
             }
 
         })
+
+        getMovie()
     }
 
     private fun checkIfUserHasReviewed(uid: String) {
@@ -242,7 +243,7 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userReviewIT = it.getValue(UserMovieReview::class.java)
                         if (userReviewIT != null) {
-                            if (userReviewIT.userUID == uid && userReviewIT.movieID == movieToWork!!.id.toString()) {
+                            if (userReviewIT.userUID == uid && userReviewIT.movie?.id == movieToWork!!.id) {
                                 val review = Review(userReviewIT.userName, userReviewIT.review)
                                 userHasReviewed = true
                                 userReviews.add(review)
@@ -252,13 +253,11 @@ class MovieDetailsFragment : Fragment() {
                     }
 
                 }
-                getMovie()
-
-
 
             }
 
         })
+        getMovie()
 
         if (!userHasReviewed) {
             setUserReviewInteractionsComponents()
@@ -317,7 +316,7 @@ class MovieDetailsFragment : Fragment() {
     private fun insertRating(uidRating: String, userRatingSelected: String) {
         val ref = FirebaseDatabase.getInstance().getReference("/RatingMovie/$uidRating")
 
-        val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieToWork!!.id.toString(), userRatingSelected, movieToWork!!.posterPath)
+        val userRating = UserMovieRating(uidRating, auth.currentUser!!.uid, movieToWork!!, userRatingSelected)
         ref.setValue(userRating)
     }
 
@@ -378,9 +377,11 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         if (userRatingIT != null) {
-                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movieID == movieToWork!!.id.toString() && userRatingIT.rating != "Votación") {
+                            if (userRatingIT.userUID == currentUserUID && userRatingIT.movie?.id == movieToWork!!.id && userRatingIT.rating != "Votación") {
                                 userHasVoted = true
-                                userRatingVoted = Integer.parseInt(userRatingIT.rating)
+                                if (userRatingIT.rating != "") {
+                                    userRatingVoted = Integer.parseInt(userRatingIT.rating)
+                                }
                                 currentUserRating = userRatingIT
                                 setUserRatingInteractionsComponents()
                                 }
@@ -419,7 +420,7 @@ class MovieDetailsFragment : Fragment() {
 
     private fun checkIfMovieIsInWatchList(uid: String) {
         val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("WatchList")
+        val ref = database.getReference("WatchListMovie")
 
         ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -431,7 +432,7 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
                         if (userFavoriteMovieIT != null) {
-                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
+                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movie?.id == movieToWork?.id) {
                                 currentMovieInWatchListToWork = userFavoriteMovieIT
                                 movieIsWatchList = true
                             }
@@ -457,7 +458,7 @@ class MovieDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userFavoriteMovieIT = it.getValue(MovieToList::class.java)
                         if (userFavoriteMovieIT != null) {
-                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movieID == movieToWork!!.id.toString()) {
+                            if (userFavoriteMovieIT.userUID == uid && userFavoriteMovieIT.movie?.id == movieToWork!!.id) {
                                 currentMovieWatchedToWork = userFavoriteMovieIT
                                 movieIsWatched = true
                             }
@@ -512,6 +513,7 @@ class MovieDetailsFragment : Fragment() {
         moviesRepository = MoviesRepository.instance
         moviesRepository?.getMovie(movieToWork!!.id, object : OnGetMovieCallBack {
             override fun onSuccess(movie: Movie) {
+                val reviewMovie = activity?.findViewById<TextView>(R.id.reviewButton)
                 setUIComponents(movie)
                 getCredits(movie)
                 getTrailers(movie)
@@ -707,7 +709,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun loadMovieBackdrop(movie:Movie) {
-        val movieBackdrop = activity?.findViewById<ImageView>(R.id.movieDetailsBackdrop)
+        val movieBackdrop = activity?.findViewById<ImageView>(R.id.movieDetailsBackdropFragment)
         Picasso.get().
             load(IMAGE_BASE_URL + movie.backdrop).
             into(movieBackdrop)

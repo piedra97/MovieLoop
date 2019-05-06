@@ -290,7 +290,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     private fun loadMovieBackdrop(movie: Movie) {
         Picasso.get().
             load(IMAGE_BASE_URL + movie.backdrop).
-            into(movieDetailsBackdrop)
+            into(movieDetailsBackdropFragment)
     }
 
     private fun getGenres(movie: Movie) {

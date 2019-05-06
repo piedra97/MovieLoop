@@ -39,7 +39,7 @@ class AdapterUserRating(var context: Context?, items:ArrayList<ModelListRatings>
         holder?.ratingText?.text = items!![position].ratingValue
         Picasso.
             get().
-            load(BASE_URL + items!![position].movieURL).
+            load(BASE_URL + items!![position].movie?.posterPath).
             placeholder(R.drawable.ic_launcher_foreground).
             into(holder?.image)
 

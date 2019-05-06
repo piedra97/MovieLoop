@@ -43,17 +43,12 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
         holder?.reviewText?.maxLines = 3
         Picasso.
             get().
-            load(BASE_URL + items!![position].movieURL).
+            load(BASE_URL + items!![position].movie?.title).
             placeholder(R.drawable.ic_launcher_foreground).
             into(holder?.image)
 
         holder?.deleteTextView?.setOnClickListener{
-            deleteReview(items!![position].reviewuid)
-            if (success) {
-                items!!.removeAt(position)
-                this.notifyDataSetChanged()
-            }
-
+            deleteReview(items!![position].reviewuid, position)
         }
 
 
@@ -65,14 +60,13 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
 
     }
 
-    private fun deleteReview(uidToDelete:String) {
+    private fun deleteReview(uidToDelete:String, position:Int) {
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("ReviewMovie").child(uidToDelete)
         ref.removeValue().addOnSuccessListener {
-            success = true
+            items!!.removeAt(position)
+            this.notifyDataSetChanged()
         }
-
-
 
 
     }

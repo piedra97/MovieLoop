@@ -30,7 +30,7 @@
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
             <ImageView
-                    android:id="@+id/movieDetailsBackdrop"
+                    android:id="@+id/movieDetailsBackdropFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"

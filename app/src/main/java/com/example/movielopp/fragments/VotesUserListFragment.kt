@@ -1,17 +1,20 @@
 package com.example.movielopp.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
 
 import com.example.movielopp.R
 import com.example.movielopp.adapters.AdapterUserRating
 import com.example.movielopp.model.ModelListRatings
+import com.example.movielopp.model.Movie
 import com.example.movielopp.model.UserMovieRating
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -37,6 +40,12 @@ class VotesUserListFragment : Fragment() {
     private var listVotes:ArrayList<ModelListRatings> = ArrayList()
 
     private var adapterRating:AdapterUserRating? = null
+
+    private lateinit var listenerVote: OnVoteFilmClicked
+
+    interface OnVoteFilmClicked {
+        fun onVoteFilmClicked(movie: Movie)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,7 +92,7 @@ class VotesUserListFragment : Fragment() {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         userRatingIT?.let {
                             if (userRatingIT.userUID == currentUserUID) {
-                                listVotes.add(ModelListRatings(userRatingIT.posterPath, userRatingIT.rating))
+                                listVotes.add(ModelListRatings(userRatingIT.movie, userRatingIT.rating))
                             }
                         }
                     }
@@ -91,7 +100,9 @@ class VotesUserListFragment : Fragment() {
                         val noDataTextView = activity?.findViewById<TextView>(R.id.noVotesFoundText)
                         noDataTextView?.visibility = View.VISIBLE
                     } else {
-                        configureList()
+                        val listRatings = activity?.findViewById<ListView>(R.id.votesUser_list)
+                        configureList(listRatings)
+                        setListener(listRatings)
                     }
                 } else {
                     val noDataTextView = activity?.findViewById<TextView>(R.id.noVotesFoundText)
@@ -104,11 +115,21 @@ class VotesUserListFragment : Fragment() {
 
     }
 
+    private fun setListener(listRatings: ListView?) {
+        listRatings?.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            listenerVote.onVoteFilmClicked(listVotes[position].movie!!)
+        }
+    }
 
-    private fun configureList() {
+
+    private fun configureList(listRatings: ListView?) {
         adapterRating = AdapterUserRating(context, listVotes, IMAGE_BASE_URL)
-        val listRatings = activity?.findViewById<ListView>(R.id.votesUser_list)
         listRatings?.adapter = adapterRating
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        listenerVote = context as OnVoteFilmClicked
     }
 
 
