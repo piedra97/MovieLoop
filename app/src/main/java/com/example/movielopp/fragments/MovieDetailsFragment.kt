@@ -81,6 +81,8 @@ class MovieDetailsFragment : Fragment() {
 
         //setupToolbar()
 
+        getMovie()
+
         mDatabase = FirebaseDatabase.getInstance().reference
 
         if (auth.currentUser != null) {
@@ -226,7 +228,6 @@ class MovieDetailsFragment : Fragment() {
 
         })
 
-        getMovie()
     }
 
     private fun checkIfUserHasReviewed(uid: String) {
@@ -257,7 +258,6 @@ class MovieDetailsFragment : Fragment() {
             }
 
         })
-        getMovie()
 
         if (!userHasReviewed) {
             setUserReviewInteractionsComponents()

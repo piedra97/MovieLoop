@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class Movie() : Parcelable {
+class Movie() : Parcelable{
 
     @SerializedName("id")
     @Expose
@@ -54,7 +54,7 @@ class Movie() : Parcelable {
 
     @SerializedName("revenue")
     @Expose
-    var revenue:Int?= null
+    var revenue:Float?= null
 
     @SerializedName("runtime")
     @Expose
@@ -75,11 +75,10 @@ class Movie() : Parcelable {
         budget = parcel.readValue(Int::class.java.classLoader) as? Int
         originalLanguage = parcel.readString()
         originalTitle = parcel.readString()
-        revenue = parcel.readValue(Int::class.java.classLoader) as? Int
+        revenue = parcel.readValue(Float::class.java.classLoader) as? Float
         runtime = parcel.readValue(Int::class.java.classLoader) as? Int
         status = parcel.readString()
     }
-
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
