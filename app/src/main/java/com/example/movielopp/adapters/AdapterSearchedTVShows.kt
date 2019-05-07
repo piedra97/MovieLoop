@@ -10,7 +10,7 @@ import com.example.movielopp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.search_template_grid.view.*
 
-class AdapterSearchedTVShows(mContext: Context, tvshows:List<TVShow>, val listener: (Int) -> Unit) : RecyclerView.Adapter<AdapterSearchedTVShows.ViewHolder>() {
+class AdapterSearchedTVShows(mContext: Context, tvshows:List<TVShow>, val listener: (TVShow) -> Unit) : RecyclerView.Adapter<AdapterSearchedTVShows.ViewHolder>() {
 
     private var mContext: Context
     private var tvshows: List<TVShow> = ArrayList()
@@ -46,11 +46,11 @@ class AdapterSearchedTVShows(mContext: Context, tvshows:List<TVShow>, val listen
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
 
 
-        fun bind(tvshow: TVShow, listener: (Int) -> Unit) = with(itemView) {
+        fun bind(tvshow: TVShow, listener: (TVShow) -> Unit) = with(itemView) {
             itemTitle.text = tvshow.name
             Picasso.get().load(IMAGE_BASE_URL + tvshow.backdrop).placeholder(R.drawable.ic_launcher_foreground).into(itemCover)
             setOnClickListener{
-                listener(tvshow.id)
+                listener(tvshow)
             }
         }
 

@@ -89,17 +89,6 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginLeft="16dp"/>
 
-            <TextView
-                    android:id="@+id/movieDetailsGenres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:alpha="0.7"
-                    android:textSize="10sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rating"
-                    />
 
             <TextView
                     android:id="@+id/movieDetailsOverview"
@@ -223,6 +212,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/aditionalInformationLabel">
 
                 <TextView
+                        android:id="@+id/filmGenres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="Géneros"
+                        android:textStyle="bold"/>
+
+                <TextView
+                        android:id="@+id/genresText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"/>
+
+                <TextView
                         android:id="@+id/filmStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -318,7 +321,7 @@
                     android:alpha="0.7"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieDetailsGenres"
+                    app:layout_constraintTop_toBottomOf="@+id/rating"
                     app:layout_constraintHorizontal_bias="0.0"/>
 
             <HorizontalScrollView
@@ -387,7 +390,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/movieDetailsGenres"
+                    app:layout_constraintStart_toEndOf="@+id/rating"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
@@ -448,6 +451,7 @@
                         android:id="@+id/addButton"
                         android:textColor="@color/white"
                         android:text="Añadir a:"
+                        android:gravity="center"
                         android:background="@drawable/button_back"
                         android:visibility="gone"
                         android:layout_marginTop="5dp"

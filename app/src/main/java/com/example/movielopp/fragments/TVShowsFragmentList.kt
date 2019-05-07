@@ -30,7 +30,7 @@ private const val ARG_PARAM2 = "param2"
 class TVShowsFragmentList : Fragment() {
 
     interface OnTVShowsClickedListener {
-        fun onTVShowsClicked(iDTVShow:Int)
+        fun onTVShowsClicked(tvShow:TVShow)
     }
 
     private var sortBy = "POPULAR"

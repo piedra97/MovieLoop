@@ -12,21 +12,25 @@ import com.example.movielopp.R
 import com.example.movielopp.adapters.MyPagerAdapter
 import com.example.movielopp.fragments.*
 import com.example.movielopp.model.Movie
+import com.example.movielopp.model.TVShow
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list_film.*
 
-class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener, MovieDetailsFragment.OnReviewFilmClicked{
-
+class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener, MovieDetailsFragment.OnReviewFilmClicked, TVShowDetailsFragment.OnReviewTVShowClicked{
 
 
     var movieClicked = false
 
     var tvShowCliked = false
 
+    override fun onReviewTVShowClicked(tvshow: TVShow) {
+
+    }
+
     override fun onReviewFilmClicked(movie: Movie) {
 
-        val intent = Intent(this, ReviewActivity::class.java)
+        val intent = Intent(this, ReviewMovieActivity::class.java)
         intent.putExtra("movie", movie)
         startActivity(intent)
         finish()
@@ -39,9 +43,9 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
             commit()*/
     }
 
-    override fun onTVShowsClicked(iDTVShow: Int) {
+    override fun onTVShowsClicked(tvShow: TVShow) {
         tvShowCliked = true
-        val tvShowDetails = TVShowDetailsFragment.newInstance(iDTVShow)
+        val tvShowDetails = TVShowDetailsFragment.newInstance(tvShow)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container, tvShowDetails).

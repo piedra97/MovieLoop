@@ -37,7 +37,7 @@ class SearchFragment : Fragment() {
     }
 
     interface OnGetTVShowSearchedClicked {
-        fun onTVShowSearchedClicked(tvShowID:Int)
+        fun onTVShowSearchedClicked(tvShow:TVShow)
     }
 
     lateinit var query:String

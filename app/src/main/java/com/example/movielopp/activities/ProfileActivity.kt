@@ -32,7 +32,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onReviewFilmClicked(movie: Movie) {
-        val intent = Intent(this, ReviewActivity::class.java)
+        val intent = Intent(this, ReviewMovieActivity::class.java)
         intent.putExtra("movie", movie)
         startActivity(intent)
         finish()

@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,7 +127,6 @@ class RegisterFragment : Fragment() {
 
         ref.setValue(user)
             .addOnSuccessListener {
-                Log.d("RegisterActivity", "Finally we saved the user to Firebasa Database")
                 buttonRegisteredListener.onRegistrationConfirmPressed()
             }
     }
@@ -154,7 +152,7 @@ class RegisterFragment : Fragment() {
 
     private fun checkRepeatPassword() {
         if (password2.text.toString() != password1.text.toString()) {
-            password1.error = "Passwords doesn't match"
+            password1.error = "Las contraseañs no coinciden"
             fieldsOk = false
         }
     }
@@ -162,7 +160,7 @@ class RegisterFragment : Fragment() {
     private fun checkPassword(){
         val password = password1.text.toString()
         if (password.isEmpty() || password.length < 8) {
-            password1.error = "The password cannot be empty or have a length of less then 8 characters"
+            password1.error = "La contraseña no puede estar vacía o tener menos de 8 cáracteres."
             fieldsOk = false
         }
     }
@@ -170,7 +168,7 @@ class RegisterFragment : Fragment() {
     private fun checkUserName() {
         val user = username.text.toString()
         if (!Pattern.compile("^[a-zA-Z0-9]+$").matcher(user).matches()) {
-            username.error = "Username not valid"
+            username.error = "Username no válido"
             fieldsOk = false
         }
     }

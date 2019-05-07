@@ -8,11 +8,12 @@ import com.example.movielopp.fragments.MovieDetailsFragment
 import com.example.movielopp.fragments.SearchFragment
 import com.example.movielopp.fragments.TVShowDetailsFragment
 import com.example.movielopp.model.Movie
+import com.example.movielopp.model.TVShow
 
 class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedClicked, SearchFragment.OnGetTVShowSearchedClicked, MovieDetailsFragment.OnReviewFilmClicked{
 
     override fun onReviewFilmClicked(movie: Movie) {
-        val intent = Intent(this, ReviewActivity::class.java)
+        val intent = Intent(this, ReviewMovieActivity::class.java)
         intent.putExtra("movie", movie)
         startActivity(intent)
         finish()
@@ -27,8 +28,8 @@ class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedCli
             commit()
     }
 
-    override fun onTVShowSearchedClicked(tvShowID: Int) {
-        val tvShowDetails = TVShowDetailsFragment.newInstance(tvShowID)
+    override fun onTVShowSearchedClicked(tvShow: TVShow) {
+        val tvShowDetails = TVShowDetailsFragment.newInstance(tvShow)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.main_container_search, tvShowDetails).

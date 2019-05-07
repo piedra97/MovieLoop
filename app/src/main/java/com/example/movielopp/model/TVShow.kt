@@ -1,9 +1,11 @@
 package com.example.movielopp.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class TVShow {
+class TVShow () : Parcelable{
     @SerializedName("poster_path")
     @Expose
     var posterPath: String? = null
@@ -66,8 +68,47 @@ class TVShow {
     @Expose
     var createdBy:List<Creator>? = null
 
+    constructor(parcel: Parcel) : this() {
+        posterPath = parcel.readString()
+        id = parcel.readInt()
+        name = parcel.readString()
+        firstAirDate = parcel.readString()
+        rating = parcel.readFloat()
+        overview = parcel.readString()
+        backdrop = parcel.readString()
+        originalLanguage = parcel.readString()
+        originalName = parcel.readString()
+        numberOfSeasons = parcel.readValue(Int::class.java.classLoader) as? Int
+        status = parcel.readString()
+    }
 
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(posterPath)
+        parcel.writeInt(id)
+        parcel.writeString(name)
+        parcel.writeString(firstAirDate)
+        parcel.writeFloat(rating)
+        parcel.writeString(overview)
+        parcel.writeString(backdrop)
+        parcel.writeString(originalLanguage)
+        parcel.writeString(originalName)
+        parcel.writeValue(numberOfSeasons)
+        parcel.writeString(status)
+    }
 
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<TVShow> {
+        override fun createFromParcel(parcel: Parcel): TVShow {
+            return TVShow(parcel)
+        }
+
+        override fun newArray(size: Int): Array<TVShow?> {
+            return arrayOfNulls(size)
+        }
+    }
 
 
 }

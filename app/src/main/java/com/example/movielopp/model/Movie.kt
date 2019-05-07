@@ -54,7 +54,7 @@ class Movie() : Parcelable{
 
     @SerializedName("revenue")
     @Expose
-    var revenue:Float?= null
+    var revenue:Long?= null
 
     @SerializedName("runtime")
     @Expose
@@ -75,7 +75,7 @@ class Movie() : Parcelable{
         budget = parcel.readValue(Int::class.java.classLoader) as? Int
         originalLanguage = parcel.readString()
         originalTitle = parcel.readString()
-        revenue = parcel.readValue(Float::class.java.classLoader) as? Float
+        revenue = parcel.readValue(Long::class.java.classLoader) as? Long
         runtime = parcel.readValue(Int::class.java.classLoader) as? Int
         status = parcel.readString()
     }

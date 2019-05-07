@@ -217,7 +217,7 @@ class MovieDetailsFragment : Fragment() {
                 if (p0.exists()) {
                     for (it in p0.children) {
                         val userReviewIT = it.getValue(UserMovieReview::class.java)
-                        if (userReviewIT != null) {
+                        if (userReviewIT != null && userReviewIT.movie?.id == movieToWork?.id) {
                             val review = Review(userReviewIT.userName, userReviewIT.review)
                             userReviews.add(review)
                             }
@@ -797,7 +797,7 @@ class MovieDetailsFragment : Fragment() {
                     for (genre in movie.genres!!) {
                         currentGenres.add(genre.name!!)
                     }
-                    val movieGenres = activity?.findViewById<TextView>(R.id.movieDetailsGenres)
+                    val movieGenres = activity?.findViewById<TextView>(R.id.genresText)
                     movieGenres?.text = TextUtils.join(", ", currentGenres)
                 }
             }

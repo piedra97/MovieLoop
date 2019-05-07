@@ -10,7 +10,7 @@ import com.example.movielopp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.template_grid.view.*
 
-class AdapterPopularTVShows(mContext: Context, tvshows:List<TVShow>, val listener: (Int) -> Unit) : RecyclerView.Adapter<AdapterPopularTVShows.ViewHolder>() {
+class AdapterPopularTVShows(mContext: Context, tvshows:List<TVShow>, val listener: (TVShow) -> Unit) : RecyclerView.Adapter<AdapterPopularTVShows.ViewHolder>() {
 
     private var mContext: Context
     private var tvshows: List<TVShow> = ArrayList()
@@ -46,10 +46,10 @@ class AdapterPopularTVShows(mContext: Context, tvshows:List<TVShow>, val listene
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
 
 
-        fun bind(tvshow: TVShow, listener: (Int) -> Unit) = with(itemView) {
+        fun bind(tvshow: TVShow, listener: (TVShow) -> Unit) = with(itemView) {
             Picasso.get().load(IMAGE_BASE_URL + tvshow.posterPath).into(filmPoster)
             setOnClickListener{
-                listener(tvshow.id)
+                listener(tvshow)
             }
         }
 
