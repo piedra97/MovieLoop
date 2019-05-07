@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.CardView
 import android.text.TextUtils
@@ -274,6 +275,7 @@ class MovieDetailsFragment : Fragment() {
         else {
             reviewMovieButton?.visibility = View.VISIBLE
             reviewMovieButton?.text = "Película criticada"
+            reviewMovieButton?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
             reviewMovieButton?.isEnabled = false
         }
     }
@@ -513,7 +515,6 @@ class MovieDetailsFragment : Fragment() {
         moviesRepository = MoviesRepository.instance
         moviesRepository?.getMovie(movieToWork!!.id, object : OnGetMovieCallBack {
             override fun onSuccess(movie: Movie) {
-                val reviewMovie = activity?.findViewById<TextView>(R.id.reviewButton)
                 setUIComponents(movie)
                 getCredits(movie)
                 getTrailers(movie)

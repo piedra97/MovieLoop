@@ -59,7 +59,7 @@ class ReviewsUserListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //getTVShows()
-        getUserReviews()
+        getUserMovieReviews()
 
     }
 
@@ -67,7 +67,6 @@ class ReviewsUserListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         adapterReview?.setMovieListReviews(listReviews)
-        adapterReview?.notifyDataSetChanged()
 
     }
 
@@ -77,7 +76,7 @@ class ReviewsUserListFragment : Fragment() {
 
 
 
-    private fun getUserReviews() {
+    private fun getUserMovieReviews() {
         val auth = FirebaseAuth.getInstance()
         val currentUserUID = auth.currentUser?.uid
         val database = FirebaseDatabase.getInstance()
@@ -94,20 +93,19 @@ class ReviewsUserListFragment : Fragment() {
                         val userReviewIT = it.getValue(UserMovieReview::class.java)
                         userReviewIT?.let {
                             if (userReviewIT.userUID == currentUserUID) {
+                                if (!chechIfFilmIsAlreadyReviewed(userReviewIT))
                                 listReviews.add(ModelListReviews(userReviewIT.uidReview, userReviewIT.movie, userReviewIT.review, userReviewIT.userUID))
                             }
                         }
                     }
-                    if(listReviews.size == 0) {
+                    if(listReviews.isEmpty()) {
                         val noDataTextView = activity?.findViewById<TextView>(R.id.noReviewsText)
                         noDataTextView?.visibility = View.VISIBLE
                     } else {
                        val listViewReviews = activity?.findViewById<ListView>(R.id.reviewsUser_list)
                         configureList(listViewReviews)
-                        val layout = activity?.findViewById<LinearLayout>(R.id.layoutReviewFragment)
-                        layout?.visibility = View.VISIBLE
+                        setListener(listViewReviews)
                     }
-                    //setListener()
                 }
                 else {
                     val noDataTextView = activity?.findViewById<TextView>(R.id.noReviewsText)
@@ -117,20 +115,28 @@ class ReviewsUserListFragment : Fragment() {
 
         })
 
-
     }
 
-    private fun setListener() {
-        reviewsUser_list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+    private fun setListener(listViewReviews: ListView?) {
+        listViewReviews?.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             listenerReviewClicked.onReviewItemListClicked(listReviews[position].movie!!)
         }
     }
 
+    private fun chechIfFilmIsAlreadyReviewed(review:UserMovieReview) :Boolean{
+        for (film in listReviews) {
+            if (film.movie?.id == review.movie?.id) {
+                return true
+            }
+        }
+        return false
+    }
 
     private fun configureList(listViewReviews: ListView?) {
+        adapterReview?.notifyDataSetChanged()
         adapterReview = AdapterUserReview(context, listReviews, IMAGE_BASE_URL)
 
-        reviewsUser_list.adapter = adapterReview
+        listViewReviews?.adapter = adapterReview
 
         adapterReview?.notifyDataSetChanged()
     }

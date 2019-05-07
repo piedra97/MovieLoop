@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.CardView
 import android.text.TextUtils
@@ -211,7 +212,7 @@ class TVShowDetailsFragment : Fragment() {
             val addMovieButton = activity?.findViewById<TextView>(R.id.addButtonTV)
             checkIfUserHasVoted(auth.currentUser!!.uid)
             checkIfUserHasReviewed(auth.currentUser!!.uid)
-            reviewButton?.setOnClickListener {
+            reviewButtonTV?.setOnClickListener {
                 listenerReview.onReviewTVShowClicked(tvShowToWork!!)
             }
             addMovieButton?.visibility = View.VISIBLE
@@ -412,15 +413,16 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun setUserReviewInteractionsComponents() {
-        val reviewMovieButton = activity?.findViewById<TextView>(R.id.reviewButtonTV)
+        val reviewTVShowButton = activity?.findViewById<TextView>(R.id.reviewButtonTV)
         if (!userHasReviewed) {
-            reviewMovieButton?.visibility = View.VISIBLE
+            reviewTVShowButton?.visibility = View.VISIBLE
         }
 
         else {
-            reviewMovieButton?.visibility = View.VISIBLE
-            reviewMovieButton?.text = "Serie criticada"
-            reviewMovieButton?.isEnabled = false
+            reviewTVShowButton?.visibility = View.VISIBLE
+            reviewTVShowButton?.text = "Serie criticada"
+            reviewTVShowButton?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))//resources.getColor(R.color.red, resources.))
+            reviewTVShowButton?.isEnabled = false
         }
     }
 
@@ -499,6 +501,7 @@ class TVShowDetailsFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mContext = context
+        listenerReview = context as OnReviewTVShowClicked
     }
 
 
@@ -529,6 +532,7 @@ class TVShowDetailsFragment : Fragment() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun onSuccess(reviews: ArrayList<Review>) {
+                reviews.addAll(userReviews)
                 initializeReviewComponents(reviews)
                 setReviewComponents(reviews)
             }

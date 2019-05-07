@@ -10,13 +10,21 @@ import com.example.movielopp.fragments.TVShowDetailsFragment
 import com.example.movielopp.model.Movie
 import com.example.movielopp.model.TVShow
 
-class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedClicked, SearchFragment.OnGetTVShowSearchedClicked, MovieDetailsFragment.OnReviewFilmClicked{
+class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedClicked, SearchFragment.OnGetTVShowSearchedClicked, MovieDetailsFragment.OnReviewFilmClicked, TVShowDetailsFragment.OnReviewTVShowClicked{
 
     override fun onReviewFilmClicked(movie: Movie) {
         val intent = Intent(this, ReviewMovieActivity::class.java)
         intent.putExtra("movie", movie)
         startActivity(intent)
         finish()
+    }
+
+    override fun onReviewTVShowClicked(tvshow: TVShow) {
+        val intent = Intent(this, ReviewTVShowActivity::class.java)
+        intent.putExtra("tvShow", tvshow)
+        startActivity(intent)
+        finish()
+
     }
 
     override fun onMovieSearchedClicked(movie: Movie) {

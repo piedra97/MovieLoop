@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso
 class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>, var BASE_URL:String): BaseAdapter(){
     var items:ArrayList<ModelListReviews>? = null
 
-    private var success = false
 
     init {
         this.items = items
@@ -47,8 +46,10 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
             placeholder(R.drawable.ic_launcher_foreground).
             into(holder?.image)
 
-        holder?.deleteTextView?.setOnClickListener{
-            deleteReview(items!![position].reviewuid, position)
+       holder?.deleteTextView?.setOnClickListener{
+           deleteReview(items!![position].reviewuid)
+           items!!.removeAt(position)
+           this.notifyDataSetChanged()
         }
 
 
@@ -60,15 +61,10 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
 
     }
 
-    private fun deleteReview(uidToDelete:String, position:Int) {
+    private fun deleteReview(uidToDelete:String) {
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("ReviewMovie").child(uidToDelete)
-        ref.removeValue().addOnSuccessListener {
-            items!!.removeAt(position)
-            this.notifyDataSetChanged()
-        }
-
-
+        ref.removeValue()
     }
 
 

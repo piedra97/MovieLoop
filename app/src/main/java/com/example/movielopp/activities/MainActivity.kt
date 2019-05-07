@@ -20,11 +20,15 @@ import kotlinx.android.synthetic.main.fragment_list_film.*
 class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener, MovieDetailsFragment.OnReviewFilmClicked, TVShowDetailsFragment.OnReviewTVShowClicked{
 
 
-    var movieClicked = false
+    private var movieClicked = false
 
-    var tvShowCliked = false
+    private var tvShowCliked = false
 
     override fun onReviewTVShowClicked(tvshow: TVShow) {
+        val intent = Intent(this, ReviewTVShowActivity::class.java)
+        intent.putExtra("tvShow", tvshow)
+        startActivity(intent)
+        finish()
 
     }
 

@@ -3,8 +3,6 @@ package com.example.movielopp.activities
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.view.View
 import com.example.movielopp.R
 import com.example.movielopp.fragments.*
 import com.example.movielopp.model.Movie
