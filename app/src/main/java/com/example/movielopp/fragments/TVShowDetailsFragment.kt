@@ -440,7 +440,7 @@ class TVShowDetailsFragment : Fragment() {
                     for (it in p0.children) {
                         val userRatingIT = it.getValue(UserTVShowRating::class.java)
                         if (userRatingIT != null) {
-                            if (userRatingIT.userUID == uid && userRatingIT.movie?.id == tvShowToWork!!.id && userRatingIT.rating != "Votación") {
+                            if (userRatingIT.userUID == uid && userRatingIT.tvShow?.id == tvShowToWork!!.id && userRatingIT.rating != "Votación") {
                                 userHasVoted = true
                                 if (userRatingIT.rating != "") {
                                     userRatingVoted = Integer.parseInt(userRatingIT.rating)

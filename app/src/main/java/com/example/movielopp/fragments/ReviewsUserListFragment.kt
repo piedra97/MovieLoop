@@ -8,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 
 import com.example.movielopp.R
 import com.example.movielopp.adapters.AdapterUserReview
-import com.example.movielopp.model.ModelListReviews
+import com.example.movielopp.model.ModelMovieListReviews
 import com.example.movielopp.model.Movie
 import com.example.movielopp.model.UserMovieReview
 import com.google.firebase.auth.FirebaseAuth
@@ -22,7 +21,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_reviews_user_list.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,7 +40,7 @@ class ReviewsUserListFragment : Fragment() {
 
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
 
-    private var listReviews:ArrayList<ModelListReviews> = ArrayList()
+    private var listReviews:ArrayList<ModelMovieListReviews> = ArrayList()
 
     private var adapterReview: AdapterUserReview? = null
 
@@ -94,7 +92,7 @@ class ReviewsUserListFragment : Fragment() {
                         userReviewIT?.let {
                             if (userReviewIT.userUID == currentUserUID) {
                                 if (!chechIfFilmIsAlreadyReviewed(userReviewIT))
-                                listReviews.add(ModelListReviews(userReviewIT.uidReview, userReviewIT.movie, userReviewIT.review, userReviewIT.userUID))
+                                listReviews.add(ModelMovieListReviews(userReviewIT.uidReview, userReviewIT.movie, userReviewIT.review, userReviewIT.userUID))
                             }
                         }
                     }

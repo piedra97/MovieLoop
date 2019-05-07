@@ -12,17 +12,14 @@ import android.widget.ListView
 import android.widget.TextView
 
 import com.example.movielopp.R
-import com.example.movielopp.adapters.AdapterUserRating
-import com.example.movielopp.model.ModelListRatings
-import com.example.movielopp.model.Movie
-import com.example.movielopp.model.UserMovieRating
+import com.example.movielopp.adapters.AdapterMovieRating
+import com.example.movielopp.adapters.AdapterTVShowRating
+import com.example.movielopp.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_reviews_user_list.*
-import kotlinx.android.synthetic.main.fragment_votes_user_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,14 +34,24 @@ class VotesUserListFragment : Fragment() {
 
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
 
-    private var listVotes:ArrayList<ModelListRatings> = ArrayList()
+    private var listMovieVotes:ArrayList<ModelMovieListRatings> = ArrayList()
 
-    private var adapterRating:AdapterUserRating? = null
+    private var listTVShowVotes:ArrayList<ModelTVShowListRatings> = ArrayList()
 
-    private lateinit var listenerVote: OnVoteFilmClicked
+    private var adapterMovieRating:AdapterMovieRating? = null
+
+    private var adapterTVShowRating:AdapterTVShowRating? = null
+
+    private lateinit var listenerMovieVote: OnVoteFilmClicked
+
+    private lateinit var listenerTVShowVote: OnVoteTVShowClicked
 
     interface OnVoteFilmClicked {
         fun onVoteFilmClicked(movie: Movie)
+    }
+
+    interface OnVoteTVShowClicked {
+        fun onVoteTVShowClicked(tvShow: TVShow)
     }
 
     override fun onCreateView(
@@ -57,25 +64,70 @@ class VotesUserListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //getTVShows()
-        getUserVotes()
-
+        getUserMovieVotes()
+        getTVShows()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapterRating?.setMovieListRatings(listVotes)
-        adapterRating?.notifyDataSetChanged()
+        adapterMovieRating?.setMovieListRatings(listMovieVotes)
+        adapterMovieRating?.notifyDataSetChanged()
     }
 
     private fun getTVShows() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUserUID = auth.currentUser?.uid
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("RatingTVShow")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (it in p0.children) {
+                        val userRatingIT = it.getValue(UserTVShowRating::class.java)
+                        userRatingIT?.let {
+                            if (userRatingIT.userUID == currentUserUID) {
+                                listTVShowVotes.add(ModelTVShowListRatings(userRatingIT.tvShow, userRatingIT.rating))
+                            }
+                        }
+                    }
+                    if(listTVShowVotes.isEmpty()) {
+                        val noDataTextView = activity?.findViewById<TextView>(R.id.noRatingTVShowText)
+                        noDataTextView?.visibility = View.VISIBLE
+                    } else {
+                        val listRatings = activity?.findViewById<ListView>(R.id.votesUserTVShow_list)
+                        configureListTVShows(listRatings)
+                        setListenerTVShows(listRatings)
+                    }
+                } else {
+                    val noDataTextView = activity?.findViewById<TextView>(R.id.noRatingTVShowText)
+                    noDataTextView?.visibility = View.VISIBLE
+                }
+            }
+
+        })
+
 
     }
 
+    private fun setListenerTVShows(listRatings: ListView?) {
+        listRatings?.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            listenerTVShowVote.onVoteTVShowClicked(listTVShowVotes[position].tvShow!!)
+        }
+    }
+
+    private fun configureListTVShows(listRatings: ListView?) {
+        adapterTVShowRating = AdapterTVShowRating(context, listTVShowVotes, IMAGE_BASE_URL)
+        listRatings?.adapter = adapterTVShowRating
+    }
 
 
-    private fun getUserVotes() {
+    private fun getUserMovieVotes() {
         val auth = FirebaseAuth.getInstance()
         val currentUserUID = auth.currentUser?.uid
         val database = FirebaseDatabase.getInstance()
@@ -92,20 +144,20 @@ class VotesUserListFragment : Fragment() {
                         val userRatingIT = it.getValue(UserMovieRating::class.java)
                         userRatingIT?.let {
                             if (userRatingIT.userUID == currentUserUID) {
-                                listVotes.add(ModelListRatings(userRatingIT.movie, userRatingIT.rating))
+                                listMovieVotes.add(ModelMovieListRatings(userRatingIT.movie, userRatingIT.rating))
                             }
                         }
                     }
-                    if(listVotes.isEmpty()) {
-                        val noDataTextView = activity?.findViewById<TextView>(R.id.noVotesFoundText)
+                    if(listMovieVotes.isEmpty()) {
+                        val noDataTextView = activity?.findViewById<TextView>(R.id.noRatingMovieText)
                         noDataTextView?.visibility = View.VISIBLE
                     } else {
-                        val listRatings = activity?.findViewById<ListView>(R.id.votesUser_list)
-                        configureList(listRatings)
-                        setListener(listRatings)
+                        val listRatings = activity?.findViewById<ListView>(R.id.votesUserFilm_list)
+                        configureListMovies(listRatings)
+                        setListenerMovies(listRatings)
                     }
                 } else {
-                    val noDataTextView = activity?.findViewById<TextView>(R.id.noVotesFoundText)
+                    val noDataTextView = activity?.findViewById<TextView>(R.id.noRatingMovieText)
                     noDataTextView?.visibility = View.VISIBLE
                 }
             }
@@ -115,21 +167,22 @@ class VotesUserListFragment : Fragment() {
 
     }
 
-    private fun setListener(listRatings: ListView?) {
+    private fun setListenerMovies(listRatings: ListView?) {
         listRatings?.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            listenerVote.onVoteFilmClicked(listVotes[position].movie!!)
+            listenerMovieVote.onVoteFilmClicked(listMovieVotes[position].movie!!)
         }
     }
 
 
-    private fun configureList(listRatings: ListView?) {
-        adapterRating = AdapterUserRating(context, listVotes, IMAGE_BASE_URL)
-        listRatings?.adapter = adapterRating
+    private fun configureListMovies(listRatings: ListView?) {
+        adapterMovieRating = AdapterMovieRating(context, listMovieVotes, IMAGE_BASE_URL)
+        listRatings?.adapter = adapterMovieRating
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        listenerVote = context as OnVoteFilmClicked
+        listenerMovieVote = context as OnVoteFilmClicked
+        listenerTVShowVote = context as OnVoteTVShowClicked
     }
 
 

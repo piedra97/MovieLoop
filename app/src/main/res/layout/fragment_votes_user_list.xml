@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/layoutReviewFragment">
-
-    <TextView
-            android:id="@+id/noVotesFoundText"
-            android:layout_width="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="No ha realizado ningún voto todavía."
-            android:textAlignment="center"
-            android:visibility="gone"
-            android:textStyle="bold"
-            android:layout_marginTop="70dp"
-            android:layout_marginStart="30dp"
-            android:textSize="20sp"
-            android:layout_marginLeft="50dp"/>
+            android:fillViewport="true" >
 
-    <ListView
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/votesUser_list"/>
-</LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dip" >
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Películas" />
+
+        <TextView
+                android:id="@+id/noRatingMovieText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No ha realizado ningun voto todavía."
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="50dp"/>
+
+        <ListView
+                android:id="@+id/votesUserFilm_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip">
+        </ListView>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:gravity="center_vertical"
+                android:text="Series" />
+
+        <TextView
+                android:id="@+id/noRatingTVShowText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No ha realizado ningun voto todavía."
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="50dp"/>
+
+        <ListView
+                android:id="@+id/votesUserTVShow_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip">
+        </ListView>
+    </LinearLayout>
+
+</ScrollView>

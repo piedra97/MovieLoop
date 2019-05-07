@@ -9,12 +9,12 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.movielopp.R
-import com.example.movielopp.model.ModelListReviews
+import com.example.movielopp.model.ModelMovieListReviews
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 
-class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>, var BASE_URL:String): BaseAdapter(){
-    var items:ArrayList<ModelListReviews>? = null
+class AdapterUserReview(var context: Context?, items:ArrayList<ModelMovieListReviews>, var BASE_URL:String): BaseAdapter(){
+    var items:ArrayList<ModelMovieListReviews>? = null
 
 
     init {
@@ -56,7 +56,7 @@ class AdapterUserReview(var context: Context?, items:ArrayList<ModelListReviews>
         return vista!!
     }
 
-    fun setMovieListReviews(items: ArrayList<ModelListReviews>) {
+    fun setMovieListReviews(items: ArrayList<ModelMovieListReviews>) {
         this.items = items
 
     }

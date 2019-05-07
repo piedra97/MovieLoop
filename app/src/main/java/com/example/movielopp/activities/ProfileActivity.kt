@@ -6,19 +6,41 @@ import android.os.Bundle
 import com.example.movielopp.R
 import com.example.movielopp.fragments.*
 import com.example.movielopp.model.Movie
+import com.example.movielopp.model.TVShow
 import com.google.firebase.auth.FirebaseAuth
 
 
-class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener{
+class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener, VotesUserListFragment.OnVoteTVShowClicked{
+
 
 
     private var fragmentMovieDetails: MovieDetailsFragment? = null
 
-    private var ratingClicked = false
+    private var fragmentTVShowDetails: TVShowDetailsFragment? = null
+
+    private var ratingMovieClicked = false
+
+    private var ratingTVShowClicked = false
 
     private var movieClicked = false
 
+    private var tvShowClicked = false
+
+    override fun onVoteTVShowClicked(tvShow: TVShow) {
+
+        ratingTVShowClicked = true
+
+        fragmentTVShowDetails = TVShowDetailsFragment.newInstance(tvShow)
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentTVShowDetails!!).
+            commit()
+
+    }
+
     override fun onMovieClicked(movie: Movie) {
+
         movieClicked = true
 
         fragmentMovieDetails = MovieDetailsFragment.newInstance(movie)
@@ -37,7 +59,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onVoteFilmClicked(movie: Movie) {
-        ratingClicked = true
+        ratingMovieClicked = true
 
         fragmentMovieDetails = MovieDetailsFragment.newInstance(movie)
 
@@ -145,14 +167,23 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     override fun onBackPressed() {
         val count = supportFragmentManager.backStackEntryCount
 
-        if (ratingClicked) {
+        if (ratingMovieClicked) {
             supportFragmentManager.beginTransaction().remove(fragmentMovieDetails!!).commit()
-            ratingClicked = false
+            ratingMovieClicked = false
+        }
+
+        if (ratingTVShowClicked) {
+            supportFragmentManager.beginTransaction().remove(fragmentTVShowDetails!!).commit()
+            ratingTVShowClicked = false
         }
 
         if (movieClicked) {
             supportFragmentManager.beginTransaction().remove(fragmentMovieDetails!!).commit()
             movieClicked = false
+        }
+
+        if (tvShowClicked) {
+            supportFragmentManager.beginTransaction().remove(fragmentTVShowDetails!!).commit()
         }
 
         if (count == 0) {

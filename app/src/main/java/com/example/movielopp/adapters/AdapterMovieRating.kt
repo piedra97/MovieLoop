@@ -9,11 +9,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.movielopp.R
-import com.example.movielopp.model.ModelListRatings
+import com.example.movielopp.model.ModelMovieListRatings
 import com.squareup.picasso.Picasso
 
-class AdapterUserRating(var context: Context?, items:ArrayList<ModelListRatings>, var BASE_URL:String): BaseAdapter(){
-    var items:ArrayList<ModelListRatings>? = null
+class AdapterMovieRating(var context: Context?, items:ArrayList<ModelMovieListRatings>, var BASE_URL:String): BaseAdapter(){
+    var items:ArrayList<ModelMovieListRatings>? = null
 
     init {
         this.items = items
@@ -47,7 +47,7 @@ class AdapterUserRating(var context: Context?, items:ArrayList<ModelListRatings>
         return vista!!
     }
 
-     fun setMovieListRatings(items: ArrayList<ModelListRatings>) {
+     fun setMovieListRatings(items: ArrayList<ModelMovieListRatings>) {
         this.items = items
 
     }
