@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import com.example.movielopp.model.User
 import com.example.movielopp.R
 import com.google.firebase.FirebaseApp
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import java.util.regex.Pattern
+import android.net.ConnectivityManager
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -62,23 +64,27 @@ class RegisterFragment : Fragment() {
         FirebaseApp.initializeApp(context!!)
         database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
-
-
-
         signUp.setOnClickListener {
-            fieldsOk = true
-            checkFields()
-            if (fieldsOk) {
-                createNewAccount()
-
+            if (thereIsConnexion()) {
+                fieldsOk = true
+                checkFields()
+                if (fieldsOk) {
+                    createNewAccount()
+                }
+            }else {
+                Toast.makeText(activity?.applicationContext, "No tienes conexión a Internet", Toast.LENGTH_SHORT).show()
+            }
+            goToLogin.setOnClickListener {
+                textGoToLoginPressed.onGoToLoginPressed()
             }
         }
 
-        goToLogin.setOnClickListener {
-            textGoToLoginPressed.onGoToLoginPressed()
-        }
 
+    }
 
+    private fun thereIsConnexion():Boolean {
+        val cm = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return cm!!.activeNetworkInfo != null
     }
 
 
@@ -138,7 +144,7 @@ class RegisterFragment : Fragment() {
 
     private fun updateText() {
         val usernameToRegister = arguments!!.getSerializable("username")
-        username.text = Editable.Factory.getInstance().newEditable(usernameToRegister.toString())
+        email.text = Editable.Factory.getInstance().newEditable(usernameToRegister.toString())
     }
 
 

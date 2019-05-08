@@ -1,12 +1,13 @@
 package com.example.movielopp.fragments
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.movielopp.model.User
+import android.widget.Toast
 import com.example.movielopp.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -26,9 +27,6 @@ class LoginFragment : Fragment() {
     private lateinit var loginSuccesfull: OnButtonLoginPressedListener
     private lateinit var registerListener: OnTextRegistredPressedListener
     private lateinit var auth:FirebaseAuth
-    private var userToInsert:User? = null
-    private var loginOk = false
-
 
     interface OnButtonLoginPressedListener {
         fun onLoginPressed()
@@ -37,11 +35,6 @@ class LoginFragment : Fragment() {
     interface OnTextRegistredPressedListener {
         fun onRegisteredPressed(username:String)
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-       // userToInsert = arguments!!.getParcelable("user")
     }
 
 
@@ -58,13 +51,22 @@ class LoginFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         signIn.setOnClickListener {
-            loginUser()
+            if (thereIsConnexion()) {
+                loginUser()
+            } else {
+                Toast.makeText(activity?.applicationContext, "No tienes conexión a Internet", Toast.LENGTH_SHORT).show()
+            }
         }
 
         goToRegister.setOnClickListener {
             registerListener.onRegisteredPressed(email.text.toString())
         }
 
+    }
+
+    private fun thereIsConnexion():Boolean {
+        val cm = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return cm!!.activeNetworkInfo != null
     }
 
     private fun loginUser() {
@@ -87,22 +89,6 @@ class LoginFragment : Fragment() {
             email.error = "El mail o el Password no pueden estar vacíos"
         }
 
-        /*val authenticationRepository = TokenAuthenticationRepository.instance
-        var succes = true
-        authenticationRepository.authenticate(RequestUser(userToInsert?.userName!!, userToInsert?.password!!, userToInsert?.requestToken!!), object : OnPutAuthenticationCallBack {
-            override fun onSuccess(success: Boolean) {
-                succes = success
-                if (succes) {
-                    print("User authenticated")
-                }
-            }
-
-            override fun onError() {
-                print("Not possible to validate the Token")
-            }
-
-        })*/
-
     }
 
     private fun disableUIcomponents() {
@@ -121,19 +107,6 @@ class LoginFragment : Fragment() {
         super.onAttach(context)
         loginSuccesfull = activity as OnButtonLoginPressedListener
         registerListener = activity as OnTextRegistredPressedListener
-    }
-
-    companion object {
-
-        fun newInstance(user: User): LoginFragment{
-            val fragmentDetails = LoginFragment()
-            val args = Bundle()
-
-            //args.putParcelable("user", user)
-            fragmentDetails.arguments = args
-
-            return fragmentDetails
-        }
     }
 
 
