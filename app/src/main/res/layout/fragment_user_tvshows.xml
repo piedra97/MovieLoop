@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        android:id="@+id/filmLayout"
+        android:id="@+id/tvShowLayout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -8,10 +8,10 @@
         android:orientation="vertical">
 
     <TextView
-            android:id="@+id/noMoviesFoundText"
+            android:id="@+id/noTVShowsFoundText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No hay películas en esta lista."
+            android:text="No hay series en esta lista."
             android:textAlignment="center"
             android:visibility="gone"
             android:textStyle="bold"
@@ -23,7 +23,7 @@
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/movies_userListing"
+            android:id="@+id/tvShows_userListing"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
 
 </LinearLayout>

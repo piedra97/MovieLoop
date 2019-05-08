@@ -10,7 +10,7 @@ import com.example.movielopp.model.TVShow
 import com.google.firebase.auth.FirebaseAuth
 
 
-class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnMovieReviewItemListClicked, ReviewsUserListFragment.OnTVShowReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener, VotesUserListFragment.OnVoteTVShowClicked, TVShowDetailsFragment.OnReviewTVShowClicked{
+class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnMovieReviewItemListClicked, ReviewsUserListFragment.OnTVShowReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseMovieListType.OnListMoviesFavClicked, FragmentChooseMovieListType.OnWatchListMovieClicked, FragmentChooseMovieListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener, VotesUserListFragment.OnVoteTVShowClicked, TVShowDetailsFragment.OnReviewTVShowClicked, FragmentUserListContainer.OnListTVShowsusersClciked, FragmentChooseTVShowListType.OnListTVShowFavClicked, FragmentChooseTVShowListType.OnListTVShowWatchedClicked, FragmentChooseTVShowListType.OnWatchListTVShowClicked, FragmentUsersTVShows.OnTVshowClickedListener {
 
     private var fragmentMovieDetails: MovieDetailsFragment? = null
 
@@ -23,6 +23,16 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     private var movieClicked = false
 
     private var tvShowClicked = false
+
+    override fun onListTVShowsUsersClicked() {
+        val fragmentChooseListType = FragmentChooseTVShowListType()
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentChooseListType).
+            addToBackStack(null).
+            commit()
+    }
 
     override fun onReviewTVShowClicked(tvshow: TVShow) {
         val intent = Intent(this, ReviewTVShowActivity::class.java)
@@ -42,6 +52,17 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
             replace(R.id.main_container_profile, fragmentTVShowDetails!!).
             commit()
 
+    }
+
+    override fun onTVShowClicked(tvShow: TVShow) {
+        tvShowClicked = true
+
+        fragmentTVShowDetails = TVShowDetailsFragment.newInstance(tvShow)
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentTVShowDetails!!).
+            commit()
     }
 
     override fun onMovieClicked(movie: Movie) {
@@ -93,7 +114,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onListMoviesUsersClicked() {
-        val fragmentChooseListType = FragmentChooseListType()
+        val fragmentChooseListType = FragmentChooseMovieListType()
 
         supportFragmentManager.
             beginTransaction().
@@ -102,8 +123,37 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
             commit()
     }
 
-    override fun onListMoviesFavsClciked() {
+    override fun onListTVShowFavsClicked() {
+        val fragmentTVShowFav = FragmentUsersTVShows.newInstance("FavoriteTVShow")
 
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentTVShowFav).
+            addToBackStack(null).
+            commit()
+    }
+
+    override fun onListTVShowWatchedClicked() {
+        val fragmentTVShowWatched = FragmentUsersTVShows.newInstance("WatchedTVShowList")
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentTVShowWatched).
+            addToBackStack(null).
+            commit()
+    }
+
+    override fun onWatchListTVShowClicked() {
+        val fragmentTVShowWatchList = FragmentUsersTVShows.newInstance("WatchListTVShow")
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentTVShowWatchList).
+            addToBackStack(null).
+            commit()
+    }
+
+    override fun onListMovieFavsClicked() {
         val fragmentMovieFav = FragmentUsersFilm.newInstance("FavoriteMovie")
 
         supportFragmentManager.
@@ -112,8 +162,8 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
             addToBackStack(null).
             commit()
 
-
     }
+
 
     override fun onListMoviesWatchedClicked() {
 
@@ -198,6 +248,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
 
         if (tvShowClicked) {
             supportFragmentManager.beginTransaction().remove(fragmentTVShowDetails!!).commit()
+            tvShowClicked = false
         }
 
         if (count == 0) {

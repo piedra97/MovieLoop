@@ -20,10 +20,10 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class FragmentChooseListType : Fragment() {
+class FragmentChooseMovieListType : Fragment() {
 
     interface OnListMoviesFavClicked {
-        fun onListMoviesFavsClciked()
+        fun onListMovieFavsClicked()
     }
 
     interface OnListMoviesWatchedClicked {
@@ -53,7 +53,7 @@ class FragmentChooseListType : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         favoriteMovies.setOnClickListener {
-            listenerFavoriteMovies.onListMoviesFavsClciked()
+            listenerFavoriteMovies.onListMovieFavsClicked()
         }
 
         watchedMovies.setOnClickListener {

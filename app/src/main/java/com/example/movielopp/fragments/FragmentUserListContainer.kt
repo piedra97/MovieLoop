@@ -26,13 +26,13 @@ class FragmentUserListContainer : Fragment() {
         fun onListMoviesUsersClicked()
     }
 
-    /*interface OnListTVShowsusersClciked {
+    interface OnListTVShowsusersClciked {
         fun onListTVShowsUsersClicked()
-    }*/
+    }
 
     private lateinit var listenerMoviesUserList: OnListMoviesUsersClicked
 
-   // private lateinit var listenerTVShowsUserlIST: OnListTVShowsusersClciked
+   private lateinit var listenerTVShowsUserlIST: OnListTVShowsusersClciked
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +50,7 @@ class FragmentUserListContainer : Fragment() {
         }
 
         tvShowsUser.setOnClickListener {
-            //listenerTVShowsUserlIST.onListTVShowsUsersClicked()
+            listenerTVShowsUserlIST.onListTVShowsUsersClicked()
         }
 
     }
@@ -59,7 +59,7 @@ class FragmentUserListContainer : Fragment() {
         super.onAttach(context)
 
         listenerMoviesUserList = context as OnListMoviesUsersClicked
-        //listenerTVShowsUserlIST = context as OnListTVShowsusersClciked
+        listenerTVShowsUserlIST = context as OnListTVShowsusersClciked
     }
 
 
