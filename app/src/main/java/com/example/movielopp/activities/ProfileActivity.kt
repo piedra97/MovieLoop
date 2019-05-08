@@ -10,9 +10,7 @@ import com.example.movielopp.model.TVShow
 import com.google.firebase.auth.FirebaseAuth
 
 
-class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener, VotesUserListFragment.OnVoteTVShowClicked{
-
-
+class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , ProfileFragment.OnRatingsClicked, ProfileFragment.OnReviewsClicked, ReviewsUserListFragment.OnMovieReviewItemListClicked, ReviewsUserListFragment.OnTVShowReviewItemListClicked, ProfileFragment.OnListsClicked, FragmentUserListContainer.OnListMoviesUsersClicked, FragmentChooseListType.OnListMoviesFavClicked, FragmentChooseListType.OnWatchListMovieClicked, FragmentChooseListType.OnListMoviesWatchedClicked, VotesUserListFragment.OnVoteFilmClicked, MovieDetailsFragment.OnReviewFilmClicked, FragmentUsersFilm.OnMoviesClickedListener, VotesUserListFragment.OnVoteTVShowClicked, TVShowDetailsFragment.OnReviewTVShowClicked{
 
     private var fragmentMovieDetails: MovieDetailsFragment? = null
 
@@ -25,6 +23,13 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     private var movieClicked = false
 
     private var tvShowClicked = false
+
+    override fun onReviewTVShowClicked(tvshow: TVShow) {
+        val intent = Intent(this, ReviewTVShowActivity::class.java)
+        intent.putExtra("tvShow", tvshow)
+        startActivity(intent)
+        finish()
+    }
 
     override fun onVoteTVShowClicked(tvShow: TVShow) {
 
@@ -69,7 +74,16 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
             commit()
     }
 
-    override fun onReviewItemListClicked(movie: Movie) {
+    override fun ontvshowReviewItemListClicked(tvShow: TVShow) {
+        val fragmentTVShowDetails = TVShowDetailsFragment.newInstance(tvShow)
+
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.main_container_profile, fragmentTVShowDetails).
+            commit()
+    }
+
+    override fun onMovieReviewItemListClicked(movie: Movie) {
         val fragmentMovieDetails = MovieDetailsFragment.newInstance(movie)
 
         supportFragmentManager.

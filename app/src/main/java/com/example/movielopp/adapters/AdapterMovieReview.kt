@@ -13,7 +13,7 @@ import com.example.movielopp.model.ModelMovieListReviews
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 
-class AdapterUserReview(var context: Context?, items:ArrayList<ModelMovieListReviews>, var BASE_URL:String): BaseAdapter(){
+class AdapterMovieReview(var context: Context?, items:ArrayList<ModelMovieListReviews>, var BASE_URL:String): BaseAdapter(){
     var items:ArrayList<ModelMovieListReviews>? = null
 
 
