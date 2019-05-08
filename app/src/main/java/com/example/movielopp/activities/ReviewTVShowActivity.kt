@@ -74,6 +74,7 @@ class ReviewTVShowActivity : AppCompatActivity() {
 
     private fun insertReview() {
 
+        eraseBreaklines()
         val uidReview = UUID.randomUUID().toString()
         val ref = FirebaseDatabase.getInstance().getReference("/ReviewTVShow/$uidReview")
 
@@ -85,6 +86,13 @@ class ReviewTVShowActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun eraseBreaklines() {
+        for (i in reviewTextTVShowActivity.text.length downTo 1) {
+            if (reviewTextTVShowActivity.text.subSequence(i - 1, i).toString() == "\n")
+                reviewTextTVShowActivity.text.replace(i - 1, i, " ")
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)
@@ -94,6 +102,6 @@ class ReviewTVShowActivity : AppCompatActivity() {
 
 
     private fun checkMandatoryReviewConditions() {
-        reviewConditionsOk = reviewTextTVShowActivity.lineCount >= 5
+        reviewConditionsOk = reviewTextTVShowActivity.lineCount >= 5 && !reviewTextTVShowActivity.text.isEmpty()
     }
 }

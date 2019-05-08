@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_review_tvshow.*
 import java.util.*
 
 
@@ -25,10 +24,9 @@ class ReviewMovieActivity : AppCompatActivity() {
 
     private var reviewConditionsOk = true
 
-    private var userName:String? = null
+    private var userName: String? = null
 
-    private var auth:FirebaseAuth? = null
-
+    private var auth: FirebaseAuth? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +44,8 @@ class ReviewMovieActivity : AppCompatActivity() {
         submitButtonActivity.setOnClickListener {
             checkMandatoryReviewConditions()
             if (reviewTextActivity.text.isEmpty() || !reviewConditionsOk) {
-                Toast.makeText(applicationContext,
+                Toast.makeText(
+                    applicationContext,
                     "La crítica no a de estar vacía y tiene que tener un mínimo de 5 líneas.",
                     Toast.LENGTH_LONG
                 ).show()
@@ -76,17 +75,31 @@ class ReviewMovieActivity : AppCompatActivity() {
     }
 
     private fun insertReview() {
-
+        eraseBreaklines()
         val uidReview = UUID.randomUUID().toString()
         val ref = FirebaseDatabase.getInstance().getReference("/ReviewMovie/$uidReview")
 
-        val userReview = UserMovieReview(uidReview, auth!!.currentUser!!.uid, userName!!, movieToWork!!, reviewTextActivity.text.toString())
+        val userReview = UserMovieReview(
+            uidReview,
+            auth!!.currentUser!!.uid,
+            userName!!,
+            movieToWork!!,
+            reviewTextActivity.text.toString()
+        )
         ref.setValue(userReview)
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
+
+    private fun eraseBreaklines() {
+        for (i in reviewTextActivity.text.length downTo 1) {
+            if (reviewTextActivity.text.subSequence(i - 1, i).toString() == "\n")
+                reviewTextActivity.text.replace(i - 1, i, " ")
+        }
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -97,7 +110,7 @@ class ReviewMovieActivity : AppCompatActivity() {
 
 
     private fun checkMandatoryReviewConditions() {
-        reviewConditionsOk = reviewTextActivity.lineCount >= 5
+        reviewConditionsOk = !reviewTextActivity.text.isEmpty() && reviewTextActivity.text.trim().length > 250
     }
 }
 

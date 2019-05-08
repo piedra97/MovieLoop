@@ -812,7 +812,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun showError() {
-        Toast.makeText(context, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity?.applicationContext, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
     }
 
    /* private fun setupToolbar() {

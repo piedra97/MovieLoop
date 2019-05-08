@@ -70,7 +70,7 @@ class TVShowsFragmentList : Fragment() {
         tvShowsRepository = TVShowsRepository.instance
         tvShowsRepository!!.getTVShows(sortBy, object : OnGetTVShowsCallback {
             override fun onSuccess(tvshows: List<TVShow>) {
-                adapterCustom = AdapterPopularTVShows(context!!, tvshows) {
+                adapterCustom = AdapterPopularTVShows(activity?.applicationContext!!, tvshows) {
                     listenerList.onTVShowsClicked(it)
                 }
                 tvShows_listing.adapter = adapterCustom

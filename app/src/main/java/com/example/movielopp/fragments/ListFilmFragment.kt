@@ -33,6 +33,7 @@ class ListFilmFragment : Fragment() {
         fun onMovieClicked(movie:Movie)
 
     }
+
     private var adapterCustom: AdapterPopularMovies? = null
 
     private var moviesRepository: MoviesRepository? = null
@@ -122,7 +123,7 @@ class ListFilmFragment : Fragment() {
         moviesRepository!!.getMovies(sortBy, object : OnGetMoviesCallBack {
 
         override fun onSuccess(movies: List<Movie>) {
-            adapterCustom = AdapterPopularMovies(context!!, movies) {
+            adapterCustom = AdapterPopularMovies(activity?.applicationContext!!, movies) {
                 listenerList.onMovieClicked(it)
             }
             movies_listing.adapter = adapterCustom
@@ -134,7 +135,6 @@ class ListFilmFragment : Fragment() {
         }
         })
     }
-
 
 
     private fun configureList() {

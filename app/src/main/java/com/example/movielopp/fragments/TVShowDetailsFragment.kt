@@ -545,6 +545,7 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun setReviewComponents(reviews: List<Review>) {
+        val reviewsLayout = activity?.findViewById<LinearLayout>(R.id.TVShowReviews)
         for (review in reviews) {
             val parent = layoutInflater.inflate(R.layout.review, TVShowReviews, false)
             val authorReview = parent.findViewById<TextView>(R.id.reviewAuthor)
@@ -553,7 +554,7 @@ class TVShowDetailsFragment : Fragment() {
             authorReview.text = review.author
             contentReview.text = review.content
             contentReview.maxLines = 3
-            TVShowReviews.addView(parent)
+            reviewsLayout?.addView(parent)
             btnShowMore.setOnClickListener {
 
                 if (btnShowMore.text.toString() == "Muéstrame más...") {
@@ -569,11 +570,13 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun initializeReviewComponents(reviews: List<Review>) {
+        val tvShowReviewsLabel = activity?.findViewById<TextView>(R.id.tvshowreviewsLabel)
         if (reviews.isEmpty()) {
-            tvshowreviewsLabel.text = " "
+            tvShowReviewsLabel?.text = " "
         }
-        tvshowreviewsLabel.visibility = View.VISIBLE
-        TVShowReviews.removeAllViews()
+        val tvShowReviewsDetails = activity?.findViewById<LinearLayout>(R.id.TVShowReviews)
+        tvShowReviewsLabel?.visibility = View.VISIBLE
+        tvShowReviewsDetails?.removeAllViews()
     }
 
     private fun getVideos(tvshow: TVShow) {
@@ -591,6 +594,7 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun setTrailerComponents(trailers: List<Trailer>) {
+        val tvShowTrailerLayout = activity?.findViewById<LinearLayout>(R.id.TVShowTrailers)
         for (trailer in trailers) {
             val parent = layoutInflater.inflate(R.layout.thumbnail_trailer, TVShowTrailers, false)
             val thumbnail = parent.findViewById<ImageView>(R.id.thumbnail)
@@ -599,7 +603,7 @@ class TVShowDetailsFragment : Fragment() {
                 showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
             }
             loadTrailerPreview(trailer, thumbnail)
-            TVShowTrailers.addView(parent)
+            tvShowTrailerLayout?.addView(parent)
         }
     }
 
@@ -616,11 +620,13 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun initializeTrailerComponents(trailers: List<Trailer>) {
+        val tvShowTrailersLabel = activity?.findViewById<TextView>(R.id.tvShowstrailersLabel)
+        val tvShowTrailersLayout = activity?.findViewById<LinearLayout>(R.id.TVShowTrailers)
         if (trailers.isEmpty()) {
-            tvShowstrailersLabel.visibility = View.GONE
+            tvShowTrailersLabel?.visibility = View.GONE
         }
-        tvShowstrailersLabel.visibility = View.VISIBLE
-        TVShowTrailers.removeAllViews()
+        tvShowTrailersLabel?.visibility = View.VISIBLE
+        tvShowTrailersLayout?.removeAllViews()
     }
 
 
@@ -640,6 +646,7 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun setCastComponents(cast: List<Cast>) {
+        val tvShowCastLayout = activity?.findViewById<LinearLayout>(R.id.TVShowCast)
         for (castIT in cast) {
             val parent = layoutInflater.inflate(R.layout.cast, TVShowCast, false)
             val card = parent.findViewById<CardView>(R.id.castCard)
@@ -650,7 +657,7 @@ class TVShowDetailsFragment : Fragment() {
             loadProfileCastImage(castIT, profileCast)
             nameCharacter.text = castIT.character
             actor.text = castIT.name
-            TVShowCast.addView(parent)
+            tvShowCastLayout?.addView(parent)
         }
     }
 
@@ -663,65 +670,83 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun initializeCastComponents() {
-        tvshowcastLabel.visibility = View.VISIBLE
-        TVShowCast.removeAllViews()
+        val tvShowCastLabel = activity?.findViewById<TextView>(R.id.tvshowcastLabel)
+        val tvShowCastLayout = activity?.findViewById<LinearLayout>(R.id.TVShowCast)
+        tvShowCastLabel?.visibility = View.VISIBLE
+        tvShowCastLayout?.removeAllViews()
     }
 
     private fun setUIComponents(tvshow: TVShow) {
-        TVShowDetailsTitle.text = tvshow.name
-        tvshowsummaryLabel.visibility = View.VISIBLE
-        TVShowDetailsOverview.text = tvshow.overview
-        tvshowcreatedbyLabel.visibility = View.VISIBLE
+        val tvShowTitle = activity?.findViewById<TextView>(R.id.TVShowDetailsTitle)
+        tvShowTitle?.text = tvshow.name
+        val tvShowSummaryLabel = activity?.findViewById<TextView>(R.id.tvshowsummaryLabel)
+        tvShowSummaryLabel?.visibility = View.VISIBLE
+        val tvShowOverview = activity?.findViewById<TextView>(R.id.TVShowDetailsOverview)
+        tvShowOverview?.text = tvshow.overview
+        val tvShowCreatedByLabel = activity?.findViewById<TextView>(R.id.tvshowcreatedbyLabel)
+        tvShowCreatedByLabel?.visibility = View.VISIBLE
         seTvShowCreators(tvshow)
-        tvshowrating.visibility = View.VISIBLE
-        tvshowrating.text = tvshow.rating.toString()
-        setGenres(tvshow)
-        TVShowDetailsReleaseDate.text = tvshow.firstAirDate
+        val tvShowRating = activity?.findViewById<TextView>(R.id.tvshowrating)
+        tvShowRating?.visibility = View.VISIBLE
+        tvShowRating?.text = tvshow.rating.toString()
+        val tvReleaseDate = activity?.findViewById<TextView>(R.id.TVShowDetailsReleaseDate)
+        tvReleaseDate?.text = tvshow.firstAirDate
         loadTVShowBackdrop(tvshow)
-        tvshowaditionalInformationLabel.visibility = View.VISIBLE
+        val tvAditionalLabel = activity?.findViewById<TextView>(R.id.tvshowaditionalInformationLabel)
+        tvAditionalLabel?.visibility = View.VISIBLE
         setGenres(tvshow)
-        tvshowstatusText.text = tvshow.status
-        tvshowloText.text = tvshow.originalLanguage
-        tvshowtoText.text = tvshow.originalName
+        val tvStatus = activity?.findViewById<TextView>(R.id.tvshowstatusText)
+        tvStatus?.text = tvshow.status
+        val tvLanguage = activity?.findViewById<TextView>(R.id.tvshowloText)
+        tvLanguage?.text = tvshow.originalLanguage
+        val tvOriginal = activity?.findViewById<TextView>(R.id.tvshowtoText)
+        tvOriginal?.text = tvshow.originalName
         val runtime = """${tvshow.runtime.toString()} min"""
-        tvshowruntimeText.text = runtime
+        val tvrunTime = activity?.findViewById<TextView>(R.id.tvshowruntimeText)
+        tvrunTime?.text = runtime
         setNetwork(tvshow)
-        tvShowSeasonsText.text = tvshow.numberOfSeasons.toString()
+        val tvSeasons = activity?.findViewById<TextView>(R.id.tvShowSeasonsText)
+        tvSeasons?.text = tvshow.numberOfSeasons.toString()
 
     }
 
     private fun seTvShowCreators(tvshow:TVShow) {
+        val tvShowCreatedBy = activity?.findViewById<TextView>(R.id.TVShowDetailsCreatedBy)
         val currentCreators:ArrayList<String> = ArrayList()
         for (creator in tvshow.createdBy!!) {
             currentCreators.add(creator.name!!)
         }
-        TVShowDetailsCreatedBy.text = TextUtils.join(", ", currentCreators)
+        tvShowCreatedBy?.text = TextUtils.join(", ", currentCreators)
     }
 
     private fun setNetwork(tvshow: TVShow) {
+        val tvnetworkText = activity?.findViewById<TextView>(R.id.networkText)
         loadNetworkLogo(tvshow)
-        networkText.text = tvshow.networks!![0].name
+        tvnetworkText?.text = tvshow.networks!![0].name
     }
 
     private fun loadNetworkLogo(tvshow: TVShow) {
+        val tvnetWorkLogo = activity?.findViewById<ImageView>(R.id.networkLogo)
         Picasso.get().
             load(IMAGE_BASE_URL + tvshow.networks!![0].logoPath)
             .placeholder(R.drawable.ic_launcher_foreground).
-                into(networkLogo)
+                into(tvnetWorkLogo)
     }
 
     private fun loadTVShowBackdrop(tvshow: TVShow) {
+        val tvBackdrop = activity?.findViewById<ImageView>(R.id.tvShowDetailsBackdrop)
         Picasso.get().
             load(IMAGE_BASE_URL + tvshow.backdrop).
-            into(tvShowDetailsBackdrop)
+            into(tvBackdrop)
     }
 
     private fun setGenres(tvshow: TVShow) {
+        val tvShowsGenres = activity?.findViewById<TextView>(R.id.tvshowsgenreText)
         val currentGenres:ArrayList<String> = ArrayList()
         for (genre in tvshow.genres!!) {
             currentGenres.add(genre.name!!)
         }
-        tvshowsgenreText.text = TextUtils.join(", ", currentGenres)
+        tvShowsGenres?.text = TextUtils.join(", ", currentGenres)
     }
 
     companion object {

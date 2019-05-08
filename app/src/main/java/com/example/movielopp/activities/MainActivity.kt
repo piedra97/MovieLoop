@@ -16,6 +16,7 @@ import com.example.movielopp.model.TVShow
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list_film.*
+import kotlinx.android.synthetic.main.fragment_tvshows_fragment_list.*
 
 class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListener, TVShowsFragmentList.OnTVShowsClickedListener, MovieDetailsFragment.OnReviewFilmClicked, TVShowDetailsFragment.OnReviewTVShowClicked{
 
@@ -39,17 +40,11 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
         startActivity(intent)
         finish()
 
-        /*val reviewMovieFragment = ReviewMovieFragment.newInstance(movie)
-        supportFragmentManager.
-            beginTransaction().
-            replace(R.id.main_container, reviewMovieFragment).
-            addToBackStack(null).
-            commit()*/
     }
 
     override fun onTVShowsClicked(tvShow: TVShow) {
         tvShowCliked = true
-        progressLayout.visibility = View.VISIBLE
+        progressLayoutTV.visibility = View.VISIBLE
         val tvShowDetails = TVShowDetailsFragment.newInstance(tvShow)
         supportFragmentManager.
             beginTransaction().
@@ -75,6 +70,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     override fun onBackPressed() {
         super.onBackPressed()
         progressLayout.visibility = View.GONE
+        progressLayoutTV.visibility = View.GONE
         movieClicked = false
         tvShowCliked = false
 
