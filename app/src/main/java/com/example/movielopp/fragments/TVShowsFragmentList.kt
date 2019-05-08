@@ -74,7 +74,7 @@ class TVShowsFragmentList : Fragment() {
                     listenerList.onTVShowsClicked(it)
                 }
                 tvShows_listing.adapter = adapterCustom
-                listTVShows_progressBar.visibility = View.GONE
+                progressLayoutTV.visibility = View.GONE
             }
 
             override fun onError() {

@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
     override fun onTVShowsClicked(tvShow: TVShow) {
         tvShowCliked = true
+        progressLayout.visibility = View.VISIBLE
         val tvShowDetails = TVShowDetailsFragment.newInstance(tvShow)
         supportFragmentManager.
             beginTransaction().

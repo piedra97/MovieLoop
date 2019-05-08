@@ -10,12 +10,18 @@
         android:orientation="vertical">
 
 
-    <ProgressBar
-            android:id="@+id/listTVShows_progressBar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="300dp"/>
+    <LinearLayout
+            android:id="@+id/progressLayoutTV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="300dp"/>
+    </LinearLayout>
 
 
     <android.support.v7.widget.RecyclerView
