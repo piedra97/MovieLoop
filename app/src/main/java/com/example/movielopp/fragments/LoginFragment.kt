@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import com.example.movielopp.R
 import com.google.firebase.auth.FirebaseAuth
@@ -49,8 +50,9 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val signInButton = activity?.findViewById<TextView>(R.id.signIn)
         auth = FirebaseAuth.getInstance()
-        signIn.setOnClickListener {
+        signInButton?.setOnClickListener {
             if (thereIsConnexion()) {
                 loginUser()
             } else {
@@ -98,9 +100,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun enableUIcomponents() {
-        signIn.isEnabled = true
-        email.isEnabled = true
-        password.isEnabled = true
+        val signInButton = activity?.findViewById<TextView>(R.id.signIn)
+        signInButton?.isEnabled = true
+        val emailText = activity?.findViewById<TextView>(R.id.email)
+        emailText?.isEnabled = true
+        val passwordText = activity?.findViewById<TextView>(R.id.password)
+        passwordText?.isEnabled = true
     }
 
     override fun onAttach(context: Context?) {

@@ -42,31 +42,32 @@ private const val ARG_PARAM2 = "param2"
 class MovieDetailsFragment : Fragment() {
 
     interface OnReviewFilmClicked {
-        fun onReviewFilmClicked(movie:Movie)
+        fun onReviewFilmClicked(movie: Movie)
     }
 
     private val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780"
     private val YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s"
     private val YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg"
-    private var moviesRepository:MoviesRepository? = null
-    private var movieToWork:Movie? = null
-    private var userReviews:ArrayList<Review> = ArrayList()
-    private lateinit var mDatabase:DatabaseReference
-    private lateinit var auth:FirebaseAuth
-    private lateinit var spinnerAdapter:ArrayAdapter<Int>
-    private lateinit var listenerReview:OnReviewFilmClicked
+    private var moviesRepository: MoviesRepository? = null
+    private var movieToWork: Movie? = null
+    private var userReviews: ArrayList<Review> = ArrayList()
+    private lateinit var mDatabase: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var spinnerAdapter: ArrayAdapter<Int>
+    private lateinit var listenerReview: OnReviewFilmClicked
     private var userHasVoted = false
     private var userHasReviewed = false
-    private var userRatingVoted:Int ? = null
+    private var userRatingVoted: Int? = null
     private var currentUserRating: UserMovieRating? = null
-    private var mContext:Context ? = null
+    private var mContext: Context? = null
     private var check = 0
-    private var currentMovieFavoriteToWork:MovieToList ? = null
-    private var currentMovieWatchedToWork:MovieToList ? = null
-    private var currentMovieInWatchListToWork:MovieToList ? = null
+    private var currentMovieFavoriteToWork: MovieToList? = null
+    private var currentMovieWatchedToWork: MovieToList? = null
+    private var currentMovieInWatchListToWork: MovieToList? = null
     private var movieIsFav = false
     private var movieIsWatched = false
     private var movieIsWatchList = false
+    private var isBackPressedEnabled = false
 
 
     override fun onCreateView(
@@ -82,10 +83,11 @@ class MovieDetailsFragment : Fragment() {
 
         //setupToolbar()
 
+        isBackPressedEnabled = false
+
         getMovie()
 
         mDatabase = FirebaseDatabase.getInstance().reference
-
         if (auth.currentUser != null) {
             val addMovieButton = activity?.findViewById<TextView>(R.id.addButton)
             checkIfUserHasVoted(auth.currentUser!!.uid)
@@ -97,14 +99,12 @@ class MovieDetailsFragment : Fragment() {
             addMovieButton?.setOnClickListener {
                 showAlertDialog()
             }
-        }
-        else {
+        } else {
             getFireBaseReviews()
         }
-
         handleSpinnerClik()
-
     }
+
 
     private fun showAlertDialog() {
         val builder = AlertDialog.Builder(context!!)
@@ -120,6 +120,10 @@ class MovieDetailsFragment : Fragment() {
         dialog.show()
         setCompoundButtons(favoriteButton, watchedButton, watchListButton)
 
+    }
+
+    fun allowBackPressed() :Boolean {
+        return this.isBackPressedEnabled
     }
 
     private fun setCompoundButtons(favoriteButton:ToggleButton, watchedButton:ToggleButton, watchListButton: ToggleButton) {
@@ -550,15 +554,17 @@ class MovieDetailsFragment : Fragment() {
     private fun setCastComponents(cast: List<Cast>) {
         val movieCastLayout = activity?.findViewById<LinearLayout>(R.id.movieCast)
         for (castIT in cast) {
-            val parent = layoutInflater.inflate(R.layout.cast, movieCast, false)
-            val card = parent.findViewById<CardView>(R.id.castCard)
-            val profileCast = parent.findViewById<ImageView>(R.id.castProfile)
-            val nameCharacter = parent.findViewById<TextView>(R.id.characterName)
-            val actor = parent.findViewById<TextView>(R.id.actorName)
-            card.requestLayout()
-            loadProfileCastImage(castIT, profileCast)
-            nameCharacter.text = castIT.character
-            actor.text = castIT.name
+            val parent = activity?.layoutInflater?.inflate(R.layout.cast, movieCast, false)
+            val card = parent?.findViewById<CardView>(R.id.castCard)
+            val profileCast = parent?.findViewById<ImageView>(R.id.castProfile)
+            val nameCharacter = parent?.findViewById<TextView>(R.id.characterName)
+            val actor = parent?.findViewById<TextView>(R.id.actorName)
+            card?.requestLayout()
+            if (isAdded) {
+                loadProfileCastImage(castIT, profileCast!!)
+            }
+            nameCharacter?.text = castIT.character
+            actor?.text = castIT.name
             movieCastLayout?.addView(parent)
         }
     }
@@ -578,28 +584,28 @@ class MovieDetailsFragment : Fragment() {
         val movieCrew = activity?.findViewById<LinearLayout>(R.id.movieCrewDetails)
 
         for (crewIT in crew) {
-            val parent = layoutInflater.inflate(R.layout.crew, movieCrewDetails, false)
-            val nameCrew = parent.findViewById<TextView>(R.id.crewName)
-            val jobCrew = parent.findViewById<TextView>(R.id.crewJob)
+            val parent = activity?.layoutInflater?.inflate(R.layout.crew, movieCrewDetails, false)
+            val nameCrew = parent?.findViewById<TextView>(R.id.crewName)
+            val jobCrew = parent?.findViewById<TextView>(R.id.crewJob)
             when (crewIT.job) {
                 "Director" -> {
-                    nameCrew.text = crewIT.name
-                    jobCrew.text = crewIT.job
+                    nameCrew?.text = crewIT.name
+                    jobCrew?.text = crewIT.job
                     movieCrew?.addView(parent)
                 }
                 "Screenplay" -> {
-                    nameCrew.text = crewIT.name
-                    jobCrew.text = "Guión"
+                    nameCrew?.text = crewIT.name
+                    jobCrew?.text = "Guión"
                     movieCrew?.addView(parent)
                 }
                 "Director of Photography" -> {
-                    nameCrew.text = crewIT.name
-                    jobCrew.text = "Director de Fotografía"
+                    nameCrew?.text = crewIT.name
+                    jobCrew?.text = "Director de Fotografía"
                     movieCrew?.addView(parent)
                 }
                 "Original Music Composer" -> {
-                    nameCrew.text = crewIT.name
-                    jobCrew.text = "Compositor Música Original"
+                    nameCrew?.text = crewIT.name
+                    jobCrew?.text = "Compositor Música Original"
                     movieCrew?.addView(parent)
                 }
 
@@ -691,7 +697,9 @@ class MovieDetailsFragment : Fragment() {
         getGenres(movie)
         val movieReleaseDate = activity?.findViewById<TextView>(R.id.movieDetailsReleaseDate)
         movieReleaseDate?.text = movie.releaseDate
-        loadMovieBackdrop(movie)
+        if (isAdded) {
+            loadMovieBackdrop(movie)
+        }
         val movieAditionalInformationLabel = activity?.findViewById<TextView>(R.id.aditionalInformationLabel)
         movieAditionalInformationLabel?.visibility = View.VISIBLE
         val movieStatus = activity?.findViewById<TextView>(R.id.statusText)
@@ -720,26 +728,27 @@ class MovieDetailsFragment : Fragment() {
     private fun setReviewComponents(reviews:List<Review>) {
         val movieReviewsLayout = activity?.findViewById<LinearLayout>(R.id.movieReviews)
         for (review in reviews) {
-            val parent = layoutInflater.inflate(R.layout.review, movieReviews, false)
-            val authorReview = parent.findViewById<TextView>(R.id.reviewAuthor)
-            val contentReview = parent.findViewById<TextView>(R.id.reviewContent)
-            val btnShowMore = parent.findViewById<TextView>(R.id.showMore)
-            authorReview.text = review.author
-            contentReview.text = review.content
-            contentReview.maxLines = 3
+            val parent = activity?.layoutInflater?.inflate(R.layout.review, movieReviews, false)
+            val authorReview = parent?.findViewById<TextView>(R.id.reviewAuthor)
+            val contentReview = parent?.findViewById<TextView>(R.id.reviewContent)
+            val btnShowMore = parent?.findViewById<TextView>(R.id.showMore)
+            authorReview?.text = review.author
+            contentReview?.text = review.content
+            contentReview?.maxLines = 3
             movieReviewsLayout?.addView(parent)
-            btnShowMore.setOnClickListener {
+            btnShowMore?.setOnClickListener {
 
                 if (btnShowMore.text.toString() == "Muéstrame más...") {
-                    contentReview.maxLines = Integer.MAX_VALUE
+                    contentReview?.maxLines = Integer.MAX_VALUE
                     btnShowMore.text = "Muéstrame menos"
                 }
                 else {
-                    contentReview.maxLines = 3
+                    contentReview?.maxLines = 3
                     btnShowMore.text = "Muéstrame más..."
                 }
             }
         }
+        isBackPressedEnabled = true
     }
 
     private fun getTrailers(movie: Movie) {
@@ -768,13 +777,15 @@ class MovieDetailsFragment : Fragment() {
 
     private fun setTrailerComponents(trailers:List<Trailer>) {
         for (trailer in trailers) {
-            val parent = layoutInflater.inflate(R.layout.thumbnail_trailer, movieTrailers, false)
-            val thumbnail = parent.findViewById<ImageView>(R.id.thumbnail)
-            thumbnail.requestLayout()
-            thumbnail.setOnClickListener {
+            val parent = activity?.layoutInflater?.inflate(R.layout.thumbnail_trailer, movieTrailers, false)
+            val thumbnail = parent?.findViewById<ImageView>(R.id.thumbnail)
+            thumbnail?.requestLayout()
+            thumbnail?.setOnClickListener {
                 showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
             }
-            loadTrailerPreview(trailer, thumbnail)
+            if (isAdded) {
+                loadTrailerPreview(trailer, thumbnail!!)
+            }
             val movieTrailersLayout = activity?.findViewById<LinearLayout>(R.id.movieTrailers)
             movieTrailersLayout?.addView(parent)
         }
@@ -813,6 +824,7 @@ class MovieDetailsFragment : Fragment() {
 
     private fun showError() {
         Toast.makeText(activity?.applicationContext, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
+        isBackPressedEnabled = true
     }
 
    /* private fun setupToolbar() {

@@ -67,6 +67,7 @@ class TVShowDetailsFragment : Fragment() {
     private var userHasReviewed = false
     private var userRatingVoted:Int ? = null
     private var currentUserRating: UserTVShowRating? = null
+    private var isBackPressedEnabled = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -199,10 +200,17 @@ class TVShowDetailsFragment : Fragment() {
         profile?.isVisible = false
     }
 
+
+    fun allowBackPressed() :Boolean {
+        return this.isBackPressedEnabled
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         //setupToolbar()
+
+        isBackPressedEnabled = false
 
         getTvShow()
 
@@ -524,7 +532,8 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun showError() {
-        Toast.makeText(context, "Por favor comprueba tu conexión a Internet. GetTVshow", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
+        isBackPressedEnabled = true
     }
 
     private fun getReviews(tvshow: TVShow) {
@@ -535,6 +544,7 @@ class TVShowDetailsFragment : Fragment() {
                 reviews.addAll(userReviews)
                 initializeReviewComponents(reviews)
                 setReviewComponents(reviews)
+                isBackPressedEnabled = true
             }
 
             override fun onError() {
@@ -547,22 +557,22 @@ class TVShowDetailsFragment : Fragment() {
     private fun setReviewComponents(reviews: List<Review>) {
         val reviewsLayout = activity?.findViewById<LinearLayout>(R.id.TVShowReviews)
         for (review in reviews) {
-            val parent = layoutInflater.inflate(R.layout.review, TVShowReviews, false)
-            val authorReview = parent.findViewById<TextView>(R.id.reviewAuthor)
-            val contentReview = parent.findViewById<TextView>(R.id.reviewContent)
-            val btnShowMore = parent.findViewById<TextView>(R.id.showMore)
-            authorReview.text = review.author
-            contentReview.text = review.content
-            contentReview.maxLines = 3
+            val parent = activity?.layoutInflater?.inflate(R.layout.review, TVShowReviews, false)
+            val authorReview = parent?.findViewById<TextView>(R.id.reviewAuthor)
+            val contentReview = parent?.findViewById<TextView>(R.id.reviewContent)
+            val btnShowMore = parent?.findViewById<TextView>(R.id.showMore)
+            authorReview?.text = review.author
+            contentReview?.text = review.content
+            contentReview?.maxLines = 3
             reviewsLayout?.addView(parent)
-            btnShowMore.setOnClickListener {
+            btnShowMore?.setOnClickListener {
 
                 if (btnShowMore.text.toString() == "Muéstrame más...") {
-                    contentReview.maxLines = Integer.MAX_VALUE
+                    contentReview?.maxLines = Integer.MAX_VALUE
                     btnShowMore.text = "Muéstrame menos"
                 }
                 else {
-                    contentReview.maxLines = 3
+                    contentReview?.maxLines = 3
                     btnShowMore.text = "Muéstrame más..."
                 }
             }
@@ -596,13 +606,15 @@ class TVShowDetailsFragment : Fragment() {
     private fun setTrailerComponents(trailers: List<Trailer>) {
         val tvShowTrailerLayout = activity?.findViewById<LinearLayout>(R.id.TVShowTrailers)
         for (trailer in trailers) {
-            val parent = layoutInflater.inflate(R.layout.thumbnail_trailer, TVShowTrailers, false)
-            val thumbnail = parent.findViewById<ImageView>(R.id.thumbnail)
-            thumbnail.requestLayout()
-            thumbnail.setOnClickListener {
+            val parent = activity?.layoutInflater?.inflate(R.layout.thumbnail_trailer, TVShowTrailers, false)
+            val thumbnail = parent?.findViewById<ImageView>(R.id.thumbnail)
+            thumbnail?.requestLayout()
+            thumbnail?.setOnClickListener {
                 showTrailer(String.format(YOUTUBE_VIDEO_URL, trailer.key))
             }
-            loadTrailerPreview(trailer, thumbnail)
+            if (isAdded) {
+                loadTrailerPreview(trailer, thumbnail)
+            }
             tvShowTrailerLayout?.addView(parent)
         }
     }
@@ -623,7 +635,7 @@ class TVShowDetailsFragment : Fragment() {
         val tvShowTrailersLabel = activity?.findViewById<TextView>(R.id.tvShowstrailersLabel)
         val tvShowTrailersLayout = activity?.findViewById<LinearLayout>(R.id.TVShowTrailers)
         if (trailers.isEmpty()) {
-            tvShowTrailersLabel?.visibility = View.GONE
+            tvShowTrailersLabel?.text = " "
         }
         tvShowTrailersLabel?.visibility = View.VISIBLE
         tvShowTrailersLayout?.removeAllViews()
@@ -648,15 +660,17 @@ class TVShowDetailsFragment : Fragment() {
     private fun setCastComponents(cast: List<Cast>) {
         val tvShowCastLayout = activity?.findViewById<LinearLayout>(R.id.TVShowCast)
         for (castIT in cast) {
-            val parent = layoutInflater.inflate(R.layout.cast, TVShowCast, false)
-            val card = parent.findViewById<CardView>(R.id.castCard)
-            val profileCast = parent.findViewById<ImageView>(R.id.castProfile)
-            val nameCharacter = parent.findViewById<TextView>(R.id.characterName)
-            val actor = parent.findViewById<TextView>(R.id.actorName)
-            card.requestLayout()
-            loadProfileCastImage(castIT, profileCast)
-            nameCharacter.text = castIT.character
-            actor.text = castIT.name
+            val parent = activity?.layoutInflater?.inflate(R.layout.cast, TVShowCast, false)
+            val card = parent?.findViewById<CardView>(R.id.castCard)
+            val profileCast = parent?.findViewById<ImageView>(R.id.castProfile)
+            val nameCharacter = parent?.findViewById<TextView>(R.id.characterName)
+            val actor = parent?.findViewById<TextView>(R.id.actorName)
+            card?.requestLayout()
+            if (isAdded) {
+                loadProfileCastImage(castIT, profileCast)
+            }
+            nameCharacter?.text = castIT.character
+            actor?.text = castIT.name
             tvShowCastLayout?.addView(parent)
         }
     }
@@ -691,7 +705,9 @@ class TVShowDetailsFragment : Fragment() {
         tvShowRating?.text = tvshow.rating.toString()
         val tvReleaseDate = activity?.findViewById<TextView>(R.id.TVShowDetailsReleaseDate)
         tvReleaseDate?.text = tvshow.firstAirDate
-        loadTVShowBackdrop(tvshow)
+        if (isAdded) {
+            loadTVShowBackdrop(tvshow)
+        }
         val tvAditionalLabel = activity?.findViewById<TextView>(R.id.tvshowaditionalInformationLabel)
         tvAditionalLabel?.visibility = View.VISIBLE
         setGenres(tvshow)
@@ -721,7 +737,9 @@ class TVShowDetailsFragment : Fragment() {
 
     private fun setNetwork(tvshow: TVShow) {
         val tvnetworkText = activity?.findViewById<TextView>(R.id.networkText)
-        loadNetworkLogo(tvshow)
+        if (isAdded) {
+            loadNetworkLogo(tvshow)
+        }
         tvnetworkText?.text = tvshow.networks!![0].name
     }
 

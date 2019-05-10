@@ -132,6 +132,7 @@ class ListFilmFragment : Fragment() {
 
         override fun onError() {
             Toast.makeText(activity, "Please check your internet connection.", Toast.LENGTH_SHORT).show()
+            progressLayout.visibility = View.GONE
         }
         })
     }

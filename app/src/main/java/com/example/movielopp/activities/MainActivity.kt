@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
     private var tvShowCliked = false
 
+    private var movieDetails :MovieDetailsFragment? = null
+
+    private var tvShowDetails: TVShowDetailsFragment? = null
+
     override fun onReviewTVShowClicked(tvshow: TVShow) {
         val intent = Intent(this, ReviewTVShowActivity::class.java)
         intent.putExtra("tvShow", tvshow)
@@ -45,10 +49,10 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     override fun onTVShowsClicked(tvShow: TVShow) {
         tvShowCliked = true
         progressLayoutTV.visibility = View.VISIBLE
-        val tvShowDetails = TVShowDetailsFragment.newInstance(tvShow)
+        tvShowDetails = TVShowDetailsFragment.newInstance(tvShow)
         supportFragmentManager.
             beginTransaction().
-            replace(R.id.main_container, tvShowDetails).
+            replace(R.id.main_container, tvShowDetails!!).
             addToBackStack(null).
             commit()
     }
@@ -58,21 +62,31 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
         movieClicked = true
         progressLayout.visibility = View.VISIBLE
-        val movieDetails = MovieDetailsFragment.newInstance(movie)
+        movieDetails = MovieDetailsFragment.newInstance(movie)
         supportFragmentManager.
             beginTransaction().
-            replace(R.id.main_container, movieDetails).
+            replace(R.id.main_container, movieDetails!!).
             addToBackStack(null).
             commit()
     }
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
         progressLayout.visibility = View.GONE
         progressLayoutTV.visibility = View.GONE
-        movieClicked = false
-        tvShowCliked = false
+        if (movieDetails != null || tvShowDetails != null) {
+            if (movieDetails != null) {
+                if (movieDetails!!.allowBackPressed()) {
+                    super.onBackPressed()
+                    movieClicked = false
+                }
+            } else if (tvShowDetails!!.allowBackPressed()) {
+                super.onBackPressed()
+                tvShowCliked = false
+            }
+        } else {
+            super.onBackPressed()
+        }
 
     }
 
