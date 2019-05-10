@@ -78,7 +78,7 @@ class TVShowsFragmentList : Fragment() {
             }
 
             override fun onError() {
-                Toast.makeText(activity, "Please check your internet connection.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Por favor comprueba tu  conexion a internet.", Toast.LENGTH_SHORT).show()
             }
 
 

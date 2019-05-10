@@ -51,6 +51,7 @@ class ListFilmFragment : Fragment() {
 
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         configureList()
@@ -131,7 +132,7 @@ class ListFilmFragment : Fragment() {
         }
 
         override fun onError() {
-            Toast.makeText(activity, "Please check your internet connection.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Por favor comprueba tu conexión a internet .", Toast.LENGTH_SHORT).show()
             progressLayout.visibility = View.GONE
         }
         })

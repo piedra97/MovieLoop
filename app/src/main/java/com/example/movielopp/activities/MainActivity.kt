@@ -72,16 +72,18 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
 
     override fun onBackPressed() {
-        progressLayout.visibility = View.GONE
-        progressLayoutTV.visibility = View.GONE
         if (movieDetails != null || tvShowDetails != null) {
             if (movieDetails != null) {
                 if (movieDetails!!.allowBackPressed()) {
                     super.onBackPressed()
+                    progressLayout.visibility = View.GONE
+                    progressLayoutTV.visibility = View.GONE
                     movieClicked = false
                 }
             } else if (tvShowDetails!!.allowBackPressed()) {
                 super.onBackPressed()
+                progressLayout.visibility = View.GONE
+                progressLayoutTV.visibility = View.GONE
                 tvShowCliked = false
             }
         } else {
