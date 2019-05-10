@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
     private fun loginUser() {
         val mail = email.text.toString()
         val passwd = password.text.toString()
-        if (!mail.isEmpty() || !passwd.isEmpty()) {
+        if (!mail.isEmpty() && !passwd.isEmpty()) {
             disableUIcomponents()
             FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, passwd).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -83,12 +83,12 @@ class LoginFragment : Fragment() {
 
                 } else {
                     enableUIcomponents()
-                    email.error = "Usuario o Contraseña incorrectos"
+                    email.error = "Email o Contraseña incorrectos"
                 }
             }
         }else {
             enableUIcomponents()
-            email.error = "El mail o el Password no pueden estar vacíos"
+            email.error = "El email o el Password no pueden estar vacíos"
         }
 
     }

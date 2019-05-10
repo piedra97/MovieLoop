@@ -74,11 +74,11 @@ class RegisterFragment : Fragment() {
             }else {
                 Toast.makeText(activity?.applicationContext, "No tienes conexión a Internet", Toast.LENGTH_SHORT).show()
             }
-            goToLogin.setOnClickListener {
-                textGoToLoginPressed.onGoToLoginPressed()
-            }
         }
 
+        goToLogin.setOnClickListener {
+            textGoToLoginPressed.onGoToLoginPressed()
+        }
 
     }
 

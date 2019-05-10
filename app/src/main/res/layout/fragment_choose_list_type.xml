@@ -27,7 +27,10 @@
             android:layout_marginStart="76dp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/favoriteMovies"
-            android:id="@+id/textView3"/>
+            android:id="@+id/textView3"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.049"/>
 
     <ImageView
             android:layout_width="50dp"
@@ -51,7 +54,10 @@
             app:layout_constraintStart_toEndOf="@+id/textView3"
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
-            android:id="@+id/textView4"/>
+            android:id="@+id/textView4"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.049"/>
 
     <ImageView
             android:layout_width="50dp"
@@ -64,7 +70,11 @@
             app:layout_constraintStart_toEndOf="@+id/watchedMovies"
             android:layout_marginStart="44dp"
             android:layout_marginLeft="44dp"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:layout_marginEnd="44dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="44dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -75,6 +85,12 @@
             app:layout_constraintStart_toEndOf="@+id/textView4"
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.049"/>
 
 </android.support.constraint.ConstraintLayout>

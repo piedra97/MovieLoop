@@ -17,20 +17,23 @@
             android:layout_marginTop="32dp"
             app:layout_constraintTop_toBottomOf="@+id/moviesUser"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="104dp"
-            android:layout_marginStart="104dp"/>
+            android:layout_marginLeft="108dp"
+            android:layout_marginStart="108dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
 
     <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:srcCompat="@drawable/icons8_film_reel_48"
             android:id="@+id/moviesUser"
-            android:layout_marginTop="284dp"
             app:layout_constraintTop_toTopOf="parent"
             android:clickable="true"
-            android:layout_marginStart="92dp"
+            android:layout_marginStart="96dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="92dp"/>
+            android:layout_marginTop="284dp"
+            android:layout_marginLeft="96dp"/>
 
     <ImageView
             android:layout_width="80dp"
@@ -43,7 +46,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/moviesUser"
             android:layout_marginStart="60dp"
-            android:layout_marginLeft="60dp"/>
+            android:layout_marginLeft="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginEnd="96dp"
+            android:layout_marginRight="96dp"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -54,6 +61,13 @@
             app:layout_constraintTop_toBottomOf="@+id/tvShowsUser"
             app:layout_constraintStart_toEndOf="@+id/moviesListText"
             android:layout_marginLeft="80dp"
-            android:layout_marginStart="80dp"/>
+            android:layout_marginStart="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="108dp"
+            android:layout_marginRight="108dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintVertical_bias="0.0"/>
 
 </android.support.constraint.ConstraintLayout>

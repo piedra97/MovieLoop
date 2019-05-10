@@ -46,7 +46,7 @@ class ReviewMovieActivity : AppCompatActivity() {
             if (reviewTextActivity.text.isEmpty() || !reviewConditionsOk) {
                 Toast.makeText(
                     applicationContext,
-                    "La crítica no a de estar vacía y tiene que tener un mínimo de 5 líneas.",
+                    "La crítica no ha de estar vacía y tiene que tener un mínimo de 250 caracteres.",
                     Toast.LENGTH_LONG
                 ).show()
             } else {
