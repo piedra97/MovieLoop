@@ -109,7 +109,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="75dp"
-                    android:text="Resumen"
+                    android:text="@string/resumen_text"
                     android:textSize="24sp"
                     android:visibility="gone"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -127,7 +127,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="31dp"
-                    android:text="Creada por"
+                    android:text="@string/creada_por_text"
                     android:textSize="15sp"
                     android:visibility="gone"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -170,7 +170,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="32dp"
-                    android:text="Reparto"
+                    android:text="@string/reparto_text"
                     android:textSize="24sp"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -206,7 +206,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="32dp"
-                    android:text="Infromación adicional"
+                    android:text="@string/infromacion_adicional_text"
                     android:textSize="24sp"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -231,7 +231,7 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Generos"
+                        android:text="@string/generos_text"
                         android:textStyle="bold"/>
 
                 <TextView
@@ -247,7 +247,7 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Estado"
+                        android:text="@string/estado_text"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/tvshowstatusText"
@@ -261,7 +261,7 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Lenguaje Original"
+                        android:text="@string/lenguaje_original_text"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/tvshowloText"
@@ -276,7 +276,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Título Original"
+                        android:text="@string/titulo_original_text"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/tvshowtoText"
@@ -291,7 +291,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Duración"
+                        android:text="@string/duracion_text"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/tvshowruntimeText"
@@ -306,7 +306,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Cadena"
+                        android:text="@string/cadena_text"
                         android:textStyle="bold"/>
 
                 <TextView
@@ -328,7 +328,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Número de temporadas"
+                        android:text="@string/numero_de_temporadas_text"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/tvShowSeasonsText"
@@ -381,7 +381,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="32dp"
-                    android:text="Trailers"
+                    android:text="@string/trailers_text"
                     android:textSize="24sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -395,7 +395,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="24dp"
-                    android:text="Reviews"
+                    android:text="@string/reviews_text"
                     android:textSize="24sp"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -465,7 +465,7 @@
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:ems="10"
-                        android:text="Critica la serie"
+                        android:text="@string/critica_la_serie_text"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:background="@drawable/button_back"
@@ -480,7 +480,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/addButtonTV"
                         android:textColor="@color/white"
-                        android:text="Añadir a:"
+                        android:text="@string/añadir_a_text"
                         android:gravity="center"
                         android:background="@drawable/button_back"
                         android:visibility="gone"

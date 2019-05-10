@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
-            android:text="Muéstrame más..."
+            android:text="@string/muestrame_mas_text"
             android:clickable="true"
             android:focusable="true"/>
 </LinearLayout>

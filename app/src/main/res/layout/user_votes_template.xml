@@ -23,7 +23,7 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-                android:text="Tu votación:"
+                android:text="@string/tu_votacion_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView5"

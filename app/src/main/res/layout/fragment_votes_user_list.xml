@@ -14,13 +14,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="Películas" />
+                android:text="@string/peliculas_text" />
 
         <TextView
                 android:id="@+id/noRatingMovieText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No ha realizado ningun voto todavía."
+                android:text="@string/no_ha_realizado_ningun_voto_todavia_text"
                 android:textAlignment="center"
                 android:visibility="gone"
                 android:textStyle="bold"
@@ -41,13 +41,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
-                android:text="Series" />
+                android:text="@string/series_text" />
 
         <TextView
                 android:id="@+id/noRatingTVShowText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No ha realizado ningun voto todavía."
+                android:text="@string/no_ha_realizado_ningun_voto_todavia_text"
                 android:textAlignment="center"
                 android:visibility="gone"
                 android:textStyle="bold"

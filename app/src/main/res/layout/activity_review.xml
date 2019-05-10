@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="Enviar Crítica"
+            android:text="@string/enviar_critica"
             android:background="@drawable/button_back"
             android:layout_marginTop="20dp"
             android:layout_marginStart="290dp"

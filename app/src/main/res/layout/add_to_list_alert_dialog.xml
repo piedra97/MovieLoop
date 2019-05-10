@@ -24,7 +24,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Favorita"
+            android:text="@string/favorite_text"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="44dp"
             android:layout_marginStart="44dp"
@@ -50,7 +50,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vista"
+            android:text="@string/vista_text"
             android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@+id/buttonWatched"
             app:layout_constraintStart_toEndOf="@+id/textView3"
@@ -76,7 +76,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pendiente"
+            android:text="@string/pendiente_text"
             android:layout_marginBottom="76dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="12dp"

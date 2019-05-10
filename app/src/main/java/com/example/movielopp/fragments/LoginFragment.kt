@@ -95,6 +95,7 @@ class LoginFragment : Fragment() {
 
     private fun disableUIcomponents() {
         signIn.isEnabled = false
+        goToRegister.isEnabled = false
         email.isEnabled = false
         password.isEnabled = false
     }
@@ -106,6 +107,8 @@ class LoginFragment : Fragment() {
         emailText?.isEnabled = true
         val passwordText = activity?.findViewById<TextView>(R.id.password)
         passwordText?.isEnabled = true
+        val goToRegisterButton = activity?.findViewById<TextView>(R.id.goToRegister)
+        goToRegisterButton?.isEnabled = true
     }
 
     override fun onAttach(context: Context?) {

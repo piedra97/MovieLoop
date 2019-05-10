@@ -11,7 +11,7 @@
             android:id="@+id/noMoviesFoundText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No hay películas en esta lista."
+            android:text="@string/no_hay_pel_culas_en_esta_lista_text"
             android:textAlignment="center"
             android:visibility="gone"
             android:textStyle="bold"

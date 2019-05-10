@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
     <TextView
-            android:text="Películas"
+            android:text="@string/peliculas_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/moviesListText"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvShowsList"
-            android:text="Series"
+            android:text="@string/series_text"
             android:layout_marginTop="32dp"
             app:layout_constraintTop_toBottomOf="@+id/tvShowsUser"
             app:layout_constraintStart_toEndOf="@+id/moviesListText"
