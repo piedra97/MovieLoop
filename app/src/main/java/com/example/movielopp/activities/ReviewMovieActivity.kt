@@ -42,6 +42,7 @@ class ReviewMovieActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         submitButtonActivity.setOnClickListener {
+            eraseBreaklines()
             checkMandatoryReviewConditions()
             if (reviewTextActivity.text.isEmpty() || !reviewConditionsOk) {
                 Toast.makeText(
@@ -75,7 +76,6 @@ class ReviewMovieActivity : AppCompatActivity() {
     }
 
     private fun insertReview() {
-        eraseBreaklines()
         val uidReview = UUID.randomUUID().toString()
         val ref = FirebaseDatabase.getInstance().getReference("/ReviewMovie/$uidReview")
 

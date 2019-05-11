@@ -59,7 +59,7 @@
     <string name="no_hay_pel_culas_en_esta_lista_text">No hay películas en esta lista.</string>
     <string name="no_ha_realizado_ningun_voto_todavia_text">No ha realizado ningun voto todavía.</string>
     <string name="muestrame_mas_text">Muéstrame más...</string>
-    <string name="borra_esta_critica_text">Borra esta crítica</string>
+    <string name="borra_esta_critica_text">Borrar crítica</string>
     <string name="tu_votacion_text">Tu votación:</string>
 
 </resources>
