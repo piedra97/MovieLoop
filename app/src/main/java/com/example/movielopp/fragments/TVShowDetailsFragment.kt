@@ -738,18 +738,18 @@ class TVShowDetailsFragment : Fragment() {
 
     private fun setNetwork(tvshow: TVShow) {
         val tvnetworkText = activity?.findViewById<TextView>(R.id.networkText)
-        if (isAdded) {
+        if (isAdded && !tvshow.networks!!.isEmpty()) {
             loadNetworkLogo(tvshow)
+            tvnetworkText?.text = tvshow.networks!![0].name
+        }else if(tvshow.networks!!.isEmpty()) {
+            tvnetworkText?.text = ""
         }
-        tvnetworkText?.text = tvshow.networks!![0].name
     }
 
     private fun loadNetworkLogo(tvshow: TVShow) {
         val tvnetWorkLogo = activity?.findViewById<ImageView>(R.id.networkLogo)
-        Picasso.get().
-            load(IMAGE_BASE_URL + tvshow.networks!![0].logoPath)
-            .placeholder(R.drawable.ic_launcher_foreground).
-                into(tvnetWorkLogo)
+        Picasso.get().load(IMAGE_BASE_URL + tvshow.networks!![0].logoPath)
+            .placeholder(R.drawable.ic_launcher_foreground).into(tvnetWorkLogo)
     }
 
     private fun loadTVShowBackdrop(tvshow: TVShow) {
