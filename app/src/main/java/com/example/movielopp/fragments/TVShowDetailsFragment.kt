@@ -544,7 +544,7 @@ class TVShowDetailsFragment : Fragment() {
                 reviews.addAll(userReviews)
                 initializeReviewComponents(reviews)
                 setReviewComponents(reviews)
-                isBackPressedEnabled = true
+                //isBackPressedEnabled = true
             }
 
             override fun onError() {
@@ -577,6 +577,7 @@ class TVShowDetailsFragment : Fragment() {
                 }
             }
         }
+        isBackPressedEnabled = true
     }
 
     private fun initializeReviewComponents(reviews: List<Review>) {
