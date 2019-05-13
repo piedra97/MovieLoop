@@ -3,22 +3,22 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="300dp"
-        android:layout_height="200dp">
+        android:layout_width="@dimen/simple300dp"
+        android:layout_height="@dimen/simple200dp">
 
     <ToggleButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/simple50dp"
+            android:layout_height="@dimen/simple50dp"
             android:id="@+id/buttonFavorite"
             android:background="@drawable/button_favorite"
             android:checked="false"
             android:text=""
             android:textOff=""
             android:textOn=""
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="@dimen/simple44dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="44dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginLeft="@dimen/simple44dp"
+            android:layout_marginTop="@dimen/simple40dp"
             app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -26,41 +26,41 @@
             android:layout_height="wrap_content"
             android:text="@string/favorite_text"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="44dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginLeft="@dimen/simple44dp"
+            android:layout_marginStart="@dimen/simple44dp"
+            android:layout_marginTop="@dimen/simple12dp"
             app:layout_constraintTop_toBottomOf="@+id/buttonFavorite"
             android:id="@+id/textView3"/>
 
     <ToggleButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/simple50dp"
+            android:layout_height="@dimen/simple50dp"
             android:id="@+id/buttonWatched"
             android:background="@drawable/button_watched"
             android:checked="false"
             android:text=""
             android:textOff=""
             android:textOn=""
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/simple40dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonFavorite"
-            android:layout_marginStart="44dp"
-            android:layout_marginLeft="44dp"/>
+            android:layout_marginStart="@dimen/simple44dp"
+            android:layout_marginLeft="@dimen/simple44dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vista_text"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/simple12dp"
             app:layout_constraintTop_toBottomOf="@+id/buttonWatched"
             app:layout_constraintStart_toEndOf="@+id/textView3"
-            android:layout_marginLeft="44dp"
-            android:layout_marginStart="44dp"
+            android:layout_marginLeft="@dimen/simple44dp"
+            android:layout_marginStart="@dimen/simple44dp"
             android:id="@+id/textView4"/>
 
     <ToggleButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/simple50dp"
+            android:layout_height="@dimen/simple50dp"
             android:id="@+id/buttonWatchList"
             android:background="@drawable/watch_list_button"
             android:checked="false"
@@ -68,22 +68,22 @@
             android:textOff=""
             android:textOn=""
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/simple40dp"
             app:layout_constraintStart_toEndOf="@+id/buttonWatched"
-            android:layout_marginStart="44dp"
-            android:layout_marginLeft="44dp"/>
+            android:layout_marginStart="@dimen/simple44dp"
+            android:layout_marginLeft="@dimen/simple44dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pendiente_text"
-            android:layout_marginBottom="76dp"
+            android:layout_marginBottom="@dimen/simple76dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/simple12dp"
             app:layout_constraintTop_toBottomOf="@+id/buttonWatchList"
             app:layout_constraintStart_toEndOf="@+id/textView4"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginLeft="@dimen/simple60dp"
+            android:layout_marginStart="@dimen/simple60dp"
             app:layout_constraintVertical_bias="0.571"/>
 
 </android.support.constraint.ConstraintLayout>

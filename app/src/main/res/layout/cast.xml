@@ -3,11 +3,11 @@
         android:id="@+id/castCard"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="130dp"
-        android:layout_height="190dp"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="10dp">
+        android:layout_width="@dimen/simple130dp"
+        android:layout_height="@dimen/simple190dp"
+        android:layout_margin="@dimen/simple10dp"
+        app:cardCornerRadius="@dimen/simple8dp"
+        app:cardElevation="@dimen/simple10dp">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <ImageView
                 android:id="@+id/castProfile"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/simple100dp"
                 android:scaleType="centerCrop"/>
 
         <TextView
@@ -33,7 +33,7 @@
         <TextView
                 android:id="@+id/characterName"
                 android:textColor="@color/black"
-                android:layout_width="110dp"
+                android:layout_width="@dimen/simple110dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textSize="12sp"

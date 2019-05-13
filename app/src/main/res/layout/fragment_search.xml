@@ -11,15 +11,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:fillViewport="true"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/simple8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="@dimen/simple8dp"
+                android:layout_marginStart="@dimen/simple8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/simple8dp"
+                android:layout_marginRight="@dimen/simple8dp"
+                android:layout_marginTop="@dimen/simple8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintVertical_bias="0.072">
@@ -31,7 +31,7 @@
 
             <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="@dimen/simple30dp"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:text="@string/resultado_de_peliculas_text"
@@ -41,7 +41,7 @@
                     android:id="@+id/searched_movies_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"/>
+                    android:layout_marginBottom="@dimen/simple5dp"/>
 
             <TextView
                     android:id="@+id/noResultFilm"
@@ -50,13 +50,13 @@
                     android:text="@string/no_se_han_econtrado_resultados_text"
                     android:visibility="gone"
                     android:textAlignment="center"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
+                    android:paddingTop="@dimen/simple10dp"
+                    android:paddingBottom="@dimen/simple5dp"
                     android:alpha="0.5"/>
 
             <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="@dimen/simple30dp"
                     android:gravity="center"
                     android:text="@string/resultado_de_series_text"/>
 
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/no_se_han_econtrado_resultados_text"
                     android:visibility="gone"
-                    android:paddingTop="10dp"
+                    android:paddingTop="@dimen/simple10dp"
                     android:paddingBottom="5dp"
                     android:alpha="0.5"/>
         </LinearLayout>

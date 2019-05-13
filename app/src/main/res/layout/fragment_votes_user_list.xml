@@ -24,22 +24,22 @@
                 android:textAlignment="center"
                 android:visibility="gone"
                 android:textStyle="bold"
-                android:layout_marginTop="50dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/simple50dp"
+                android:layout_marginStart="@dimen/simple10dp"
                 android:textSize="20sp"
-                android:layout_marginLeft="50dp"/>
+                android:layout_marginLeft="@dimen/simple50dp"/>
 
         <ListView
                 android:id="@+id/votesUserFilm_list"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="@dimen/simple300dp"
                 android:layout_marginTop="10dip">
         </ListView>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/simple20dp"
                 android:gravity="center_vertical"
                 android:text="@string/series_text" />
 
@@ -51,15 +51,15 @@
                 android:textAlignment="center"
                 android:visibility="gone"
                 android:textStyle="bold"
-                android:layout_marginTop="50dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/simple50dp"
+                android:layout_marginStart="@dimen/simple10dp"
                 android:textSize="20sp"
-                android:layout_marginLeft="50dp"/>
+                android:layout_marginLeft="@dimen/simple50dp"/>
 
         <ListView
                 android:id="@+id/votesUserTVShow_list"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="@dimen/simple300dp"
                 android:layout_marginTop="10dip">
         </ListView>
     </LinearLayout>

@@ -15,10 +15,10 @@
             android:textAlignment="center"
             android:visibility="gone"
             android:textStyle="bold"
-            android:layout_marginTop="70dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginTop="@dimen/simple70dp"
+            android:layout_marginStart="@dimen/simple30dp"
             android:textSize="20sp"
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="@dimen/simple50dp"/>
 
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

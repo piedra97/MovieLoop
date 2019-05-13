@@ -5,7 +5,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="47dp"
+        android:paddingTop="@dimen/simple47dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
@@ -17,10 +17,10 @@
             android:orientation="vertical">
 
         <ProgressBar
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/simple50dp"
+                android:layout_height="@dimen/simple50dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="300dp"/>
+                android:layout_marginTop="@dimen/simple300dp"/>
     </LinearLayout>
 
 

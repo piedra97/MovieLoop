@@ -10,7 +10,7 @@
     <EditText
             android:id="@+id/reviewTextFragment"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="@dimen/simple600dp"
             android:textAlignment="textStart"
             android:inputType="textMultiLine"
             android:gravity="start"/>
@@ -21,8 +21,8 @@
             android:textColor="@color/white"
             android:text="@string/enviar_critica_text"
             android:background="@drawable/button_back"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="290dp"
-            android:layout_marginLeft="290dp"/>
+            android:layout_marginTop="@dimen/simple20dp"
+            android:layout_marginStart="@dimen/simple290dp"
+            android:layout_marginLeft="@dimen/simple290dp"/>
 
 </LinearLayout>
