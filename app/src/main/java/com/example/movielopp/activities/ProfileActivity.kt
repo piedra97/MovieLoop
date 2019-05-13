@@ -36,7 +36,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
 
     override fun onReviewTVShowClicked(tvshow: TVShow) {
         val intent = Intent(this, ReviewTVShowActivity::class.java)
-        intent.putExtra("tvShow", tvshow)
+        intent.putExtra(getString(R.string.tv_show_resource), tvshow)
         startActivity(intent)
         finish()
     }
@@ -79,7 +79,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
 
     override fun onReviewFilmClicked(movie: Movie) {
         val intent = Intent(this, ReviewMovieActivity::class.java)
-        intent.putExtra("movie", movie)
+        intent.putExtra(getString(R.string.movie_resource), movie)
         startActivity(intent)
         finish()
     }
@@ -124,7 +124,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onListTVShowFavsClicked() {
-        val fragmentTVShowFav = FragmentUsersTVShows.newInstance("FavoriteTVShow")
+        val fragmentTVShowFav = FragmentUsersTVShows.newInstance(getString(R.string.favorite_tv_show))
 
         supportFragmentManager.
             beginTransaction().
@@ -134,7 +134,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onListTVShowWatchedClicked() {
-        val fragmentTVShowWatched = FragmentUsersTVShows.newInstance("WatchedTVShowList")
+        val fragmentTVShowWatched = FragmentUsersTVShows.newInstance(getString(R.string.watched_tv_show))
 
         supportFragmentManager.
             beginTransaction().
@@ -144,7 +144,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onWatchListTVShowClicked() {
-        val fragmentTVShowWatchList = FragmentUsersTVShows.newInstance("WatchListTVShow")
+        val fragmentTVShowWatchList = FragmentUsersTVShows.newInstance(getString(R.string.watch_list_tv_show))
 
         supportFragmentManager.
             beginTransaction().
@@ -154,7 +154,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
     }
 
     override fun onListMovieFavsClicked() {
-        val fragmentMovieFav = FragmentUsersFilm.newInstance("FavoriteMovie")
+        val fragmentMovieFav = FragmentUsersFilm.newInstance(getString(R.string.favorite_movie))
 
         supportFragmentManager.
             beginTransaction().
@@ -167,7 +167,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
 
     override fun onListMoviesWatchedClicked() {
 
-        val fragmentMovieWatched = FragmentUsersFilm.newInstance("WatchedMovieList")
+        val fragmentMovieWatched = FragmentUsersFilm.newInstance(getString(R.string.watched_movie))
 
         supportFragmentManager.
             beginTransaction().
@@ -179,7 +179,7 @@ class ProfileActivity : AppCompatActivity(), ProfileFragment.OnSignOutClicked , 
 
     override fun onWatchListMovieClicked() {
 
-        val fragmentMovieWatchList = FragmentUsersFilm.newInstance("WatchListMovie")
+        val fragmentMovieWatchList = FragmentUsersFilm.newInstance(getString(R.string.watch_list_movie))
 
         supportFragmentManager.
             beginTransaction().

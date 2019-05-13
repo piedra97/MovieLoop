@@ -49,4 +49,11 @@
     <dimen name="simple284dp">284dp</dimen>
     <dimen name="simple150dp">150dp</dimen>
     <dimen name="simple25dp">25dp</dimen>
+    <dimen name="simple256dp">256dp</dimen>
+    <dimen name="simple64dp">64dp</dimen>
+    <dimen name="simple48dp">48dp</dimen>
+    <dimen name="simple27dp">27dp</dimen>
+    <dimen name="simple31dp">31dp</dimen>
+    <dimen name="simple75dp">75dp</dimen>
+    <dimen name="simple1dp">1dp</dimen>
 </resources>

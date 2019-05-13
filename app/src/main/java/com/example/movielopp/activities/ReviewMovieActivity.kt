@@ -34,7 +34,7 @@ class ReviewMovieActivity : AppCompatActivity() {
         setContentView(R.layout.activity_review)
 
         auth = FirebaseAuth.getInstance()
-        movieToWork = intent.getParcelableExtra("movie")
+        movieToWork = intent.getParcelableExtra(getString(R.string.movie_resource))
         setUserName(auth!!.currentUser)
 
     }
@@ -47,7 +47,7 @@ class ReviewMovieActivity : AppCompatActivity() {
             if (reviewTextActivity.text.isEmpty() || !reviewConditionsOk) {
                 Toast.makeText(
                     applicationContext,
-                    "La crítica no ha de estar vacía y tiene que tener un mínimo de 250 caracteres.",
+                    getString(R.string.review_conditions),
                     Toast.LENGTH_LONG
                 ).show()
             } else {

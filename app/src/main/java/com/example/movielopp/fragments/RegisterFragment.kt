@@ -72,7 +72,7 @@ class RegisterFragment : Fragment() {
                     createNewAccount()
                 }
             }else {
-                Toast.makeText(activity?.applicationContext, "No tienes conexión a Internet", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity?.applicationContext, getString(R.string.no_internet_conexion), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -100,7 +100,7 @@ class RegisterFragment : Fragment() {
 
             } else {
                 enableUIInteractions()
-                email.error = "Ya hay una cuenta registrada con este email."
+                email.error = getString(R.string.mail_already_used)
             }
         }
     }
@@ -158,7 +158,7 @@ class RegisterFragment : Fragment() {
 
     private fun checkRepeatPassword() {
         if (password2.text.toString() != password1.text.toString()) {
-            password1.error = "Las contraseañs no coinciden"
+            password1.error = getString(R.string.no_match_pwd)
             fieldsOk = false
         }
     }
@@ -166,7 +166,7 @@ class RegisterFragment : Fragment() {
     private fun checkPassword(){
         val password = password1.text.toString()
         if (password.isEmpty() || password.length < 8) {
-            password1.error = "La contraseña no puede estar vacía o tener menos de 8 cáracteres."
+            password1.error = getString(R.string.pwd_condition)
             fieldsOk = false
         }
     }
@@ -174,7 +174,7 @@ class RegisterFragment : Fragment() {
     private fun checkUserName() {
         val user = username.text.toString()
         if (!Pattern.compile("^[a-zA-Z0-9]+$").matcher(user).matches()) {
-            username.error = "Username no válido"
+            username.error = getString(R.string.username_not_valid)
             fieldsOk = false
         }
     }
@@ -182,7 +182,7 @@ class RegisterFragment : Fragment() {
     private fun checkEmail() {
         val mail = email.text.toString()
         if (!Pattern.compile(".+\\@.+\\..+").matcher(mail).matches()) {
-            email.error = "Mail no válido"
+            email.error = getString(R.string.not_mail_valid)
             fieldsOk = false
         }
     }

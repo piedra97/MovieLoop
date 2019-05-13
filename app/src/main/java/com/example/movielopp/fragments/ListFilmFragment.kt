@@ -132,7 +132,7 @@ class ListFilmFragment : Fragment() {
         }
 
         override fun onError() {
-            Toast.makeText(activity, "Por favor comprueba tu conexión a internet .", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, getString(R.string.internet_condition), Toast.LENGTH_SHORT).show()
             progressLayout.visibility = View.GONE
         }
         })

@@ -56,7 +56,7 @@ class LoginFragment : Fragment() {
             if (thereIsConnexion()) {
                 loginUser()
             } else {
-                Toast.makeText(activity?.applicationContext, "No tienes conexión a Internet", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity?.applicationContext, getString(R.string.no_internet_conexion), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -83,12 +83,12 @@ class LoginFragment : Fragment() {
 
                 } else {
                     enableUIcomponents()
-                    email.error = "Email o Contraseña incorrectos"
+                    email.error = getString(R.string.wrong_mail_pwd)
                 }
             }
         }else {
             enableUIcomponents()
-            email.error = "El email o el Password no pueden estar vacíos"
+            email.error = getString(R.string.mail__pwd_empty)
         }
 
     }

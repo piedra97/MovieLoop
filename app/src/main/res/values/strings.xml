@@ -61,5 +61,30 @@
     <string name="muestrame_mas_text">Muéstrame más...</string>
     <string name="borra_esta_critica_text">Borrar crítica</string>
     <string name="tu_votacion_text">Tu votación:</string>
+    <string name="tv_show_resource">tvShow</string>
+    <string name="movie_resource">movie</string>
+    <string name="int_busqueda">Introduce tu búsqueda...</string>
+    <string name="query_resource">query</string>
+    <string name="favorite_tv_show">FavoriteTVShow</string>
+    <string name="watched_tv_show">WatchedTVShowList</string>
+    <string name="watch_list_tv_show">WatchListTVShow</string>
+    <string name="favorite_movie">FavoriteMovie</string>
+    <string name="watched_movie">WatchedMovieList</string>
+    <string name="watch_list_movie">WatchListMovie</string>
+    <string name="review_conditions">La crítica no ha de estar vacía y tiene que tener un mínimo de 250 caracteres.</string>
+    <string name="internet_condition">Por favor comprueba tu conexión a internet .</string>
+    <string name="no_internet_conexion">No tienes conexión a Internet</string>
+    <string name="wrong_mail_pwd">Email o Contraseña incorrectos</string>
+    <string name="mail__pwd_empty">El email o el Password no pueden estar vacíos</string>
+    <string name="show_more">Muéstrame más...</string>
+    <string name="show_less">Muéstrame menos</string>
+    <string name="mail_already_used">Ya hay una cuenta registrada con este email.</string>
+    <string name="no_match_pwd">Las contraseañs no coinciden</string>
+    <string name="pwd_condition">La contraseña no puede estar vacía o tener menos de 8 cáracteres.</string>
+    <string name="username_not_valid">Username no válido</string>
+    <string name="not_mail_valid">Mail no válido</string>
+    <string name="make_your_vote">Realice su votación.</string>
+    <string name="rating">Votación</string>
+    <string name="reviewed_tv_show">Serie criticada</string>
 
 </resources>

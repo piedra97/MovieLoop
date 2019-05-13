@@ -116,7 +116,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showError() {
-        Toast.makeText(context!!, "Comprueba tu conexión a Internet", Toast.LENGTH_LONG).show()
+        Toast.makeText(context!!, getString(R.string.internet_condition), Toast.LENGTH_LONG).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

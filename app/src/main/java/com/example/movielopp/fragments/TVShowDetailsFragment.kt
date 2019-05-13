@@ -239,7 +239,7 @@ class TVShowDetailsFragment : Fragment() {
     private fun handleSpinnerClik() {
         spinnerRatingTV.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                spinnerRating.error = "Realice su votación."
+                spinnerRating.error = getString(R.string.make_your_vote)
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -250,12 +250,12 @@ class TVShowDetailsFragment : Fragment() {
 
                 val userRatingSelected = spinnerRatingTV.getItemAtPosition(position).toString()
 
-                if (check > 1 && !userHasVoted && userRatingSelected != "Votación") {
+                if (check > 1 && !userHasVoted && userRatingSelected != getString(R.string.rating)) {
 
                     insertRating(uidRating, userRatingSelected)
 
 
-                } else if (check > 1 && userRatingSelected != "Votación"){
+                } else if (check > 1 && userRatingSelected != getString(R.string.rating)){
                     val uidToUpdate = currentUserRating?.uidRating
                     updateRating(uidToUpdate, position)
 
@@ -428,7 +428,7 @@ class TVShowDetailsFragment : Fragment() {
 
         else {
             reviewTVShowButton?.visibility = View.VISIBLE
-            reviewTVShowButton?.text = "Serie criticada"
+            reviewTVShowButton?.text = getString(R.string.reviewed_tv_show)
             reviewTVShowButton?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))//resources.getColor(R.color.red, resources.))
             reviewTVShowButton?.isEnabled = false
         }
@@ -532,7 +532,7 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     private fun showError() {
-        Toast.makeText(context, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, getString(R.string.internet_condition), Toast.LENGTH_SHORT).show()
         isBackPressedEnabled = true
     }
 
@@ -567,13 +567,13 @@ class TVShowDetailsFragment : Fragment() {
             reviewsLayout?.addView(parent)
             btnShowMore?.setOnClickListener {
 
-                if (btnShowMore.text.toString() == "Muéstrame más...") {
+                if (btnShowMore.text.toString() == getString(R.string.show_more)) {
                     contentReview?.maxLines = Integer.MAX_VALUE
-                    btnShowMore.text = "Muéstrame menos"
+                    btnShowMore.text = getString(R.string.show_less)
                 }
                 else {
                     contentReview?.maxLines = 3
-                    btnShowMore.text = "Muéstrame más..."
+                    btnShowMore.text = getString(R.string.show_more)
                 }
             }
         }

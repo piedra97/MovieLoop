@@ -33,7 +33,7 @@ class ReviewTVShowActivity : AppCompatActivity() {
         setContentView(R.layout.activity_review_tvshow)
 
         auth = FirebaseAuth.getInstance()
-        tvShowToWork = intent.getParcelableExtra("tvShow")
+        tvShowToWork = intent.getParcelableExtra(getString(R.string.tv_show_resource))
         setUserName(auth!!.currentUser)
 
     }
@@ -45,7 +45,7 @@ class ReviewTVShowActivity : AppCompatActivity() {
             checkMandatoryReviewConditions()
             if (reviewTextTVShowActivity.text.isEmpty() || !reviewConditionsOk) {
                 Toast.makeText(applicationContext,
-                    "La crítica no ha de estar vacía y tiene que tener un mínimo de 250 caracteres.",
+                    getString(R.string.review_conditions),
                     Toast.LENGTH_LONG
                 ).show()
             } else {

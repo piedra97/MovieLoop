@@ -14,14 +14,14 @@ class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedCli
 
     override fun onReviewFilmClicked(movie: Movie) {
         val intent = Intent(this, ReviewMovieActivity::class.java)
-        intent.putExtra("movie", movie)
+        intent.putExtra(getString(R.string.movie_resource), movie)
         startActivity(intent)
         finish()
     }
 
     override fun onReviewTVShowClicked(tvshow: TVShow) {
         val intent = Intent(this, ReviewTVShowActivity::class.java)
-        intent.putExtra("tvShow", tvshow)
+        intent.putExtra(getString(R.string.tv_show_resource), tvshow)
         startActivity(intent)
         finish()
 
@@ -49,7 +49,7 @@ class SearchActivity : AppCompatActivity() ,SearchFragment.OnGetMovieSearchedCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val query = intent.getStringExtra("query")
+        val query = intent.getStringExtra(getString(R.string.query_resource))
 
         val searchFragment = SearchFragment.newInstance(query)
 

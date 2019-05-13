@@ -738,13 +738,13 @@ class MovieDetailsFragment : Fragment() {
             movieReviewsLayout?.addView(parent)
             btnShowMore?.setOnClickListener {
 
-                if (btnShowMore.text.toString() == "Muéstrame más...") {
+                if (btnShowMore.text.toString() == getString(R.string.show_more)) {
                     contentReview?.maxLines = Integer.MAX_VALUE
-                    btnShowMore.text = "Muéstrame menos"
+                    btnShowMore.text = getString(R.string.show_less)
                 }
                 else {
                     contentReview?.maxLines = 3
-                    btnShowMore.text = "Muéstrame más..."
+                    btnShowMore.text = getString(R.string.show_more)
                 }
             }
         }
@@ -823,7 +823,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun showError() {
-        Toast.makeText(activity?.applicationContext, "Por favor comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity?.applicationContext, getString(R.string.internet_condition), Toast.LENGTH_SHORT).show()
         isBackPressedEnabled = true
     }
 

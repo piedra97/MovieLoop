@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
     override fun onReviewTVShowClicked(tvshow: TVShow) {
         val intent = Intent(this, ReviewTVShowActivity::class.java)
-        intent.putExtra("tvShow", tvshow)
+        intent.putExtra(getString(R.string.tv_show_resource), tvshow)
         startActivity(intent)
         finish()
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
     override fun onReviewFilmClicked(movie: Movie) {
 
         val intent = Intent(this, ReviewMovieActivity::class.java)
-        intent.putExtra("movie", movie)
+        intent.putExtra(getString(R.string.movie_resource), movie)
         startActivity(intent)
         finish()
 
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
             R.id.searchItem -> {
                 val searchView = item.actionView as SearchView
 
-                searchView.queryHint = "Introduce tu búsqueda..."
+                searchView.queryHint = getString(R.string.int_busqueda)
 
                 searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
                     override fun onQueryTextChange(p0: String?): Boolean {
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity(), ListFilmFragment.OnMoviesClickedListen
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         val intent = Intent(this@MainActivity, SearchActivity::class.java)
-                        intent.putExtra("query",query)
+                        intent.putExtra(getString(R.string.query_resource),query)
                         startActivity(intent)
                         return true
                     }
