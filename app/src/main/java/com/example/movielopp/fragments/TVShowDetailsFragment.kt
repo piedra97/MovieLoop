@@ -177,10 +177,10 @@ class TVShowDetailsFragment : Fragment() {
 
         }else {
             hideSignInComponent(menu)
-
         }
         hideSortAndSearchComponents(menu)
     }
+
 
     private fun hideSortAndSearchComponents(menu: Menu?) {
         val sort = menu?.findItem(R.id.sort)

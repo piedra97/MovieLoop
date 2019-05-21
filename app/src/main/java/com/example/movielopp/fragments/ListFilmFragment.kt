@@ -64,10 +64,24 @@ class ListFilmFragment : Fragment() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
+    /*override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
         menu?.clear()
         inflater.inflate(R.menu.menu, menu)
+    }*/
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+        menu?.clear()
+        inflater.inflate(R.menu.menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
+
+
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        val sort = menu?.findItem(R.id.sort)
+        sort?.isVisible = true
+        super.onPrepareOptionsMenu(menu)
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

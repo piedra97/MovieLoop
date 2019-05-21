@@ -49,9 +49,16 @@ class TVShowsFragmentList : Fragment() {
         return inflater.inflate(R.layout.fragment_tvshows_fragment_list, container, false)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater){
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        val sort = menu?.findItem(R.id.sort)
+        sort?.isVisible = true
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         menu?.clear()
         inflater.inflate(R.menu.menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
