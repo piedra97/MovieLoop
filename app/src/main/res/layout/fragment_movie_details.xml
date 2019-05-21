@@ -91,7 +91,7 @@
                     android:layout_marginRight="@dimen/simple16dp"
                     android:layout_marginStart="@dimen/simple16dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/simple32dp"
+                    android:layout_marginTop="@dimen/simple64dp"
                     android:alpha="0.7"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="parent"

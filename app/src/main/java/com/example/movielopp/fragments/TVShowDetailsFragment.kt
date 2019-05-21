@@ -169,7 +169,6 @@ class TVShowDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
         super.onCreateOptionsMenu(menu, inflater)
         if (auth.currentUser != null) {
@@ -563,16 +562,19 @@ class TVShowDetailsFragment : Fragment() {
             val btnShowMore = parent?.findViewById<TextView>(R.id.showMore)
             authorReview?.text = review.author
             contentReview?.text = review.content
-            contentReview?.maxLines = 3
+            if(contentReview?.text!!.length > 200) {
+                contentReview.maxLines = 3
+                btnShowMore?.visibility = View.VISIBLE
+            }
             reviewsLayout?.addView(parent)
             btnShowMore?.setOnClickListener {
 
                 if (btnShowMore.text.toString() == getString(R.string.show_more)) {
-                    contentReview?.maxLines = Integer.MAX_VALUE
+                    contentReview.maxLines = Integer.MAX_VALUE
                     btnShowMore.text = getString(R.string.show_less)
                 }
                 else {
-                    contentReview?.maxLines = 3
+                    contentReview.maxLines = 3
                     btnShowMore.text = getString(R.string.show_more)
                 }
             }

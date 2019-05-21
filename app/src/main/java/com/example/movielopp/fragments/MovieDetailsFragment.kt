@@ -624,8 +624,6 @@ class MovieDetailsFragment : Fragment() {
 
     private fun getReviews(movie: Movie) {
         moviesRepository?.getReviews(movie.id, object: OnGetReviewsCallback {
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun onSuccess(reviews: ArrayList<Review>) {
                 reviews.addAll(userReviews)
                 initializeReviewComponents(reviews)
@@ -724,7 +722,6 @@ class MovieDetailsFragment : Fragment() {
             into(movieBackdrop)
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun setReviewComponents(reviews:List<Review>) {
         val movieReviewsLayout = activity?.findViewById<LinearLayout>(R.id.movieReviews)
         for (review in reviews) {
@@ -734,16 +731,19 @@ class MovieDetailsFragment : Fragment() {
             val btnShowMore = parent?.findViewById<TextView>(R.id.showMore)
             authorReview?.text = review.author
             contentReview?.text = review.content
-            contentReview?.maxLines = 3
+            if(contentReview?.text!!.length > 200) {
+                contentReview.maxLines = 3
+                btnShowMore?.visibility = View.VISIBLE
+            }
             movieReviewsLayout?.addView(parent)
             btnShowMore?.setOnClickListener {
 
                 if (btnShowMore.text.toString() == getString(R.string.show_more)) {
-                    contentReview?.maxLines = Integer.MAX_VALUE
+                    contentReview.maxLines = Integer.MAX_VALUE
                     btnShowMore.text = getString(R.string.show_less)
                 }
                 else {
-                    contentReview?.maxLines = 3
+                    contentReview.maxLines = 3
                     btnShowMore.text = getString(R.string.show_more)
                 }
             }

@@ -23,6 +23,7 @@
     <TextView
             android:id="@+id/showMore"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
             android:text="@string/muestrame_mas_text"
