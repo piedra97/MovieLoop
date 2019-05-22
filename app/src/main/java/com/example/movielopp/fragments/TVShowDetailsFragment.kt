@@ -625,7 +625,7 @@ class TVShowDetailsFragment : Fragment() {
     private fun loadTrailerPreview(trailer: Trailer, thumbnail: ImageView?) {
         Picasso.get().
             load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).
-            placeholder(R.drawable.ic_launcher_foreground).
+            placeholder(R.drawable.icons8_anonymous_mask_48).
             into(thumbnail)
     }
 
@@ -681,7 +681,7 @@ class TVShowDetailsFragment : Fragment() {
     private fun loadProfileCastImage(castIT: Cast, profileCast: ImageView?) {
         Picasso.get().
             load(IMAGE_BASE_URL + castIT.profile_path).
-            placeholder(R.drawable.ic_launcher_foreground).
+            placeholder(R.drawable.icons8_anonymous_mask_48).
             into(profileCast)
 
     }
@@ -751,7 +751,7 @@ class TVShowDetailsFragment : Fragment() {
     private fun loadNetworkLogo(tvshow: TVShow) {
         val tvnetWorkLogo = activity?.findViewById<ImageView>(R.id.networkLogo)
         Picasso.get().load(IMAGE_BASE_URL + tvshow.networks!![0].logoPath)
-            .placeholder(R.drawable.ic_launcher_foreground).into(tvnetWorkLogo)
+            .placeholder(R.drawable.icons8_anonymous_mask_48).into(tvnetWorkLogo)
     }
 
     private fun loadTVShowBackdrop(tvshow: TVShow) {

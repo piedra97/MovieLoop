@@ -570,7 +570,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun loadProfileCastImage(castIT: Cast, profile: ImageView) {
-        Picasso.get().load(IMAGE_BASE_URL + castIT.profile_path).placeholder(R.drawable.ic_launcher_foreground).into(profile)
+        Picasso.get().load(IMAGE_BASE_URL + castIT.profile_path).placeholder(R.drawable.icons8_anonymous_mask_48).into(profile)
     }
 
     private fun initializeCastComponents() {
@@ -792,7 +792,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun loadTrailerPreview(trailer: Trailer, thumbnail:ImageView) {
-        Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).placeholder(R.drawable.ic_launcher_foreground).into(thumbnail)
+        Picasso.get().load(String.format(YOUTUBE_THUMBNAIL_URL, trailer.key)).placeholder(R.drawable.ic_launcher).into(thumbnail)
     }
 
 

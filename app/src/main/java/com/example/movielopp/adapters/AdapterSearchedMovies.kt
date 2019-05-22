@@ -48,7 +48,7 @@ class AdapterSearchedMovies(mContext:Context, movies:List<Movie>, val listener: 
 
         fun bind(movie:Movie, listener: (Movie) -> Unit) = with(itemView) {
             itemTitle.text = movie.title
-            Picasso.get().load(IMAGE_BASE_URL + movie.backdrop).placeholder(R.drawable.ic_launcher_foreground).into(itemCover)
+            Picasso.get().load(IMAGE_BASE_URL + movie.backdrop).placeholder(R.drawable.icons8_anonymous_mask_48).into(itemCover)
             setOnClickListener{
                 listener(movie)
             }

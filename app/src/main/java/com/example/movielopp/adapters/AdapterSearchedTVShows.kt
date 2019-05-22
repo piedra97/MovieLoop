@@ -48,7 +48,7 @@ class AdapterSearchedTVShows(mContext: Context, tvshows:List<TVShow>, val listen
 
         fun bind(tvshow: TVShow, listener: (TVShow) -> Unit) = with(itemView) {
             itemTitle.text = tvshow.name
-            Picasso.get().load(IMAGE_BASE_URL + tvshow.backdrop).placeholder(R.drawable.ic_launcher_foreground).into(itemCover)
+            Picasso.get().load(IMAGE_BASE_URL + tvshow.backdrop).placeholder(R.drawable.icons8_anonymous_mask_48).into(itemCover)
             setOnClickListener{
                 listener(tvshow)
             }
