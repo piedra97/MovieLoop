@@ -1,6 +1,7 @@
 package com.example.movielopp.fragments
 
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
@@ -688,7 +689,11 @@ class MovieDetailsFragment : Fragment() {
         val summaryText = activity?.findViewById<TextView>(R.id.summaryLabel)
         summaryText?.visibility = View.VISIBLE
         val movieOverview = activity?.findViewById<TextView>(R.id.movieDetailsOverview)
-        movieOverview?.text = movie.overview
+        if (movie.overview != "") {
+            movieOverview?.text = movie.overview
+        } else {
+            movieOverview?.text = getString(R.string.no_available)
+        }
         val movieRating = activity?.findViewById<TextView>(R.id.rating)
         movieRating?.visibility = View.VISIBLE
         movieRating?.text = movie.rating.toString()
@@ -706,7 +711,11 @@ class MovieDetailsFragment : Fragment() {
         movieOriginalLanguage?.text = movie.originalLanguage
         val movieOriginalTitle = activity?.findViewById<TextView>(R.id.toText)
         movieOriginalTitle?.text = movie.originalTitle
-        val runtime = """${movie.runtime.toString()} min"""
+        val runtime: String = if (movie.runtime != null) {
+            """${movie.runtime.toString()} min"""
+        } else {
+            " - "
+        }
         val movieRunTime = activity?.findViewById<TextView>(R.id.runtimeText)
         movieRunTime?.text = runtime
         val budget = movie.budget.toString()

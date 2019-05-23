@@ -699,7 +699,11 @@ class TVShowDetailsFragment : Fragment() {
         val tvShowSummaryLabel = activity?.findViewById<TextView>(R.id.tvshowsummaryLabel)
         tvShowSummaryLabel?.visibility = View.VISIBLE
         val tvShowOverview = activity?.findViewById<TextView>(R.id.TVShowDetailsOverview)
-        tvShowOverview?.text = tvshow.overview
+        if (tvshow.overview != "") {
+            tvShowOverview?.text = tvshow.overview
+        } else {
+            tvShowOverview?.text = getString(R.string.no_available)
+        }
         val tvShowCreatedByLabel = activity?.findViewById<TextView>(R.id.tvshowcreatedbyLabel)
         tvShowCreatedByLabel?.visibility = View.VISIBLE
         seTvShowCreators(tvshow)
@@ -720,7 +724,11 @@ class TVShowDetailsFragment : Fragment() {
         tvLanguage?.text = tvshow.originalLanguage
         val tvOriginal = activity?.findViewById<TextView>(R.id.tvshowtoText)
         tvOriginal?.text = tvshow.originalName
-        val runtime = """${tvshow.runtime.toString()} min"""
+        val runtime: String = if (tvshow.runtime != null) {
+            """${tvshow.runtime.toString()} min"""
+        } else {
+            " - "
+        }
         val tvrunTime = activity?.findViewById<TextView>(R.id.tvshowruntimeText)
         tvrunTime?.text = runtime
         setNetwork(tvshow)

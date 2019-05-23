@@ -86,5 +86,6 @@
     <string name="make_your_vote">Realice su votación.</string>
     <string name="rating">Votación</string>
     <string name="reviewed_tv_show">Serie criticada</string>
+    <string name="no_available">No disponible todavía.</string>
 
 </resources>
